@@ -1,0 +1,33 @@
+<?php
+use Illuminate\Support\Facades\Schedule;
+use App\Console\Commands\DailyDataFetchCommand;
+use App\Console\Commands\FetchAndStoreLogo;
+use App\Console\Commands\GenerateExportCommand;
+use App\Console\Commands\RemoveExportedFiles;
+
+Schedule::command(GenerateExportCommand::class)->everyMinute();
+Schedule::command(FetchAndStoreLogo::class)->everyMinute();
+// Schedule::command(DailyDataFetchCommand::class)->everyMinute();
+Schedule::command(RemoveExportedFiles::class)->daily();
+Schedule::command('sync:data')->everyMinute()->withoutOverlapping();
+       Schedule::command('test:schedule')->everyFiveMinutes();
+       Schedule::command('daily-data-transaction-fetch')->everyTenMinutes()->withoutOverlapping();
+        Schedule::command('daily-data-fetch')->everyMinute()->withoutOverlapping();
+       Schedule::command('daily-make-history')->everyThreeMinutes()->withoutOverlapping();
+      Schedule::command('daily-clicks-history')->everyFiveMinutes()->withoutOverlapping();
+       Schedule::command('generate:link')->everyMinute();
+       Schedule::command('app:advertiser-joined-auto')->everyMinute();
+        Schedule::command('app:auto-joined')->daily();
+     // Schedule::command('send:email')->everyMinute();
+     Schedule::command('checker-tracking-url')->everyFourHours();
+   //  Schedule::command('check-tracking-link')->everyMinute();
+      Schedule::command('sync-payment-total')->everyTenMinutes();
+      Schedule::command('app:sid-command')->everyMinute();
+       Schedule::command('clear-notifications')->monthlyOn(1, '12:00');
+       Schedule::command('clean:links')->everyTwoMinutes();
+       Schedule::command('links:delete')->daily();
+      Schedule::command('make-custom-domain')->daily();
+     Schedule::command('advertiser-link-transaction')->daily();
+       Schedule::command('app:generate-export-export')->everyMinute();
+        Schedule::command('app-fetch-and-store-logo')->everyMinute()->withoutOverlapping();
+     Schedule::command('app:remove-exported-files')->daily();
