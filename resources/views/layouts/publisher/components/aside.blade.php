@@ -26,7 +26,8 @@
                         data-feather="bar-chart-2"></i><span>Reporting</span></a>
                 <ul class="dropdown-menu">
                     <li><a class="nav-link" href="{{route('publisher.transactions')}}">Transactions</a></li>
-                    <li><a class="nav-link" href="{{route('publisher.advertiser-performance')}}">Performance</a></li>
+                    <li><a class="nav-link" href="{{route('publisher.advertiser-performance')}}">Advertisers Performance</a></li>
+                    <li><a class="nav-link" href="{{route('publisher.click-performance')}}">Clicks Performance</a></li>
                 </ul>
             </li>
             <li class="menu-header">creativity</li>
@@ -35,8 +36,8 @@
                         data-feather="tag"></i><span>Promotional</span></a>
                 <ul class="dropdown-menu">
                     <li><a class="nav-link" href="{{route('publisher.coupons')}}">Coupons</a></li>
-                    <li><a class="nav-link" href="{{route('publisher.text-links')}}">Deep Links</a></li>
-                    <li><a class="nav-link" href="{{route('publisher.deep-links')}}">Text Links</a></li>
+                    <li><a class="nav-link" href="{{route('publisher.deep-links')}}">Deep Links</a></li>
+                    <li><a class="nav-link" href="{{route('publisher.text-links')}}">Text Links</a></li>
                 </ul>
             </li>
             <li class="menu-header">finance management</li>

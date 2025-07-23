@@ -13,7 +13,7 @@
                                 <div class="d-flex flex-center mb-6">
                                     <a href="{{ url('/') }}">
                                         <img alt="Logo"
-                                            src="{{ \App\Helper\Methods::staticAsset('assets/media/logos/logo.webp') }}" class="h-100 w-70"/>
+                                            src="{{ asset('publisherAssets/assets/affiloTechLogo.png') }}" class="h-100 w-70"/>
                                     </a>
                                 </div>
                                 <div class="card-header pb-0 text-left bg-transparent">

@@ -3,6 +3,7 @@
 <title>Affilo Tech | Publisher Dashboard | {{$title}}</title>
 <meta name="csrf-token" content="{{ csrf_token() }}">
 <!-- General CSS Files -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-daterangepicker/3.1/daterangepicker.min.css">
 <link rel="stylesheet" href="{{asset('publisherAssets/assets/css/app.css')}}">
 <!-- Template CSS -->
 <link rel="stylesheet" href="{{asset('publisherAssets/assets/css/style.css')}}">

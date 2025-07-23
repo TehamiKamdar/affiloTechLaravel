@@ -130,25 +130,13 @@
     </style>
 @endsection
 
-@section('navbar')
-    <nav class="navbar navbar-expand-lg navbar-light sticky-top">
-        <div class="w-100 d-flex justify-content-between">
-            <ul class="navbar-nav mr-3">
-                <div class="menu-box"><a href="#" data-toggle="sidebar" class="bg-white rounded-circle nav-link nav-link-lg
-                                            collapse-btn"> <i data-feather="align-justify"></i></a></div>
-            </ul>
+@section('breadcrumb')
             <ol class="breadcrumb mb-0 bg-white rounded-50 nav-link nav-link-lg
                                             collapse-btn">
                 <li class="breadcrumb-item active">
                     <a href="{{ route('publisher.dashboard')}}"><i data-feather="home" class="text-primary"></i></a>
                 </li>
             </ol>
-            <div class="logout-box">
-                <a href="" class="bg-white rounded-circle nav-link nav-link-lg collapse-btn" title="Logout"><i
-                        data-feather="power" class="text-danger"></i></a>
-            </div>
-        </div>
-    </nav>
 @endsection
 
 @section('content')
@@ -586,7 +574,6 @@
 </div>
 
 
-
 <!-- Graph Chart Start -->
 
 
@@ -599,36 +586,36 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-lg-12 ">
-                        <div id="chart1" style="height: 300px;"></div>
+                        <div id="salesChart" style="height: 400px;"></div>
                         <div class="row mb-0">
                             <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
                                 <div class="list-inline text-center">
-                                    <div class="list-inline-item p-r-30">
-                                        <h5 class="m-b-0" id="sales">$0.00</h5>
+                                    <div class="list-inline-item p-r-30" onclick="changeChartData('sales', '#00a9da')">
+                                        <h5 class="m-b-0 cursor-pointer " id="sales">$0.00</h5>
                                         <p class="text-muted font-14 m-b-0">Total</p>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
                                 <div class="list-inline text-center">
-                                    <div class="list-inline-item p-r-30">
-                                        <h5 class="m-b-0" id="approved">$0.00</h5>
+                                    <div class="list-inline-item p-r-30" onclick="changeChartData('approved', '#54ca68')">
+                                        <h5 class="m-b-0 cursor-pointer " id="approved">$0.00</h5>
                                         <p class="text-muted font-14 m-b-0">Approved</p>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
                                 <div class="list-inline text-center">
-                                    <div class="list-inline-item p-r-30">
-                                        <h5 class="mb-0 m-b-0" id="pending">$0.00</h5>
+                                    <div class="list-inline-item p-r-30" onclick="changeChartData('pending', '#ffa426')">
+                                        <h5 class="mb-0 cursor-pointer m-b-0" id="pending">$0.00</h5>
                                         <p class="text-muted font-14 m-b-0">Pending</p>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
                                 <div class="list-inline text-center">
-                                    <div class="list-inline-item p-r-30">
-                                        <h5 class="mb-0 m-b-0" id="rejected">$0.00</h5>
+                                    <div class="list-inline-item p-r-30" onclick="changeChartData('rejected', '#fc544b')">
+                                        <h5 class="mb-0 cursor-pointer m-b-0" id="rejected">$0.00</h5>
                                         <p class="text-muted font-14 m-b-0">Rejected</p>
                                     </div>
                                 </div>
@@ -927,7 +914,7 @@
                         <h6 class="mb-0 text-center">Advertisers Record</h6>
                     </div>
                     <div class="card-body d-flex justify-content-center">
-                        <div id="chart1" style="max-width: 380px; width: 100%; height: 300px;"></div>
+                        <div id="advertisersChart" style="width: 100%; height: 300px;"></div>
                     </div>
                 </div>
             </div>
@@ -938,9 +925,22 @@
                         <h6 class="mb-0 text-center">Top 5 Advertisers Sales</h6>
                     </div>
                     <div class="card-body d-flex justify-content-center">
-                        <canvas id="topAdvertiserBar" height="150"></canvas>
+                        <div id="topAdvertiserBar" style="height:400px; width: 100%;"></div>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h4>Clicks Performance (Country Wise)</h4>
+            </div>
+            <div class="card-body">
+                <div id="countryClicksMap" style="height: 500px; width: 100%;"></div>
             </div>
         </div>
     </div>
@@ -965,15 +965,8 @@
                                 <option value="{{ $advertiserList['sid'] }}" @if(isset($advertiser->sid) && $advertiser->sid === $advertiserList['sid']) selected @endif data-dd="{{ $advertiserList['deeplink_enabled'] }}">{{ $advertiserList['name'] }}</option>
                             @endforeach
                         </select>
-                        <div id="deepLinkContent" style="margin-top: 5px;">
-                            <div class="pt-1" style="color: green;">
-                                <img src="{{ asset('publisherAssets/assets/icons8-check.gif') }}" alt="enabled">
-                                <span class="icon-text ml-1">Deep Link</span>
-                            </div>
-                            <div class="pt-1" style="color: red;">
-                                <img src="{{ asset('publisherAssets/assets/icons8-cross.gif') }}" alt="disabled">
-                                <span class="icon-text ml-1">Deep Link</span>
-                            </div>
+                        <div class="mt-2" id="deeplinkStatusContainer">
+
                         </div>
                     </div>
 
@@ -984,7 +977,7 @@
                         <div class="input-group-prepend">
                           <span class="input-group-text"><i class="fas fa-keyboard"></i></span>
                         </div>
-                        <input type="text" class="form-control text-black" id="input1" placeholder="Enter something...">
+                        <input type="text" disabled class="form-control text-black" id="input1" placeholder="Enter Landing Page URL..." required>
                       </div>
                     </div>
 
@@ -995,8 +988,8 @@
                         <div class="input-group-prepend">
                           <span class="input-group-text"><i class="fas fa-keyboard"></i></span>
                         </div>
-                        <input type="text" class="form-control text-black" id="input2"
-                          placeholder="Enter something else...">
+                        <input type="text" disabled class="form-control text-black" id="input2"
+                          placeholder="Enter Sub ID...">
                       </div>
                     </div>
 
@@ -1020,4 +1013,121 @@
     <script src="{{asset('publisherAssets/assets/bundles/amcharts4/worldLow.js')}}"></script>
     <!-- Page Specific JS File -->
     <script src="{{asset('publisherAssets/assets/js/page/index.js')}}"></script>
+    <script>
+        function top5AdvertChart(){
+            am4core.ready(function () {
+                // Use animated theme
+                am4core.useTheme(am4themes_animated);
+
+                // Data from Blade
+                const advertiserLabels = @json(collect($topSales)->pluck('advertiser_name'));
+                const advertiserSales = @json(collect($topSales)->pluck('total_sales_amount'));
+                const currency = "{{ $topSales->first()->sale_amount_currency ?? '' }}";
+
+                // Combine data
+                const chartData = advertiserLabels.map((label, index) => ({
+                    name: label,
+                    value: parseFloat(advertiserSales[index])
+                }));
+
+                // Create chart instance
+                let chart = am4core.create("topAdvertiserBar", am4charts.XYChart);
+                chart.data = chartData;
+
+                // X Axis (Category) - Horizontal
+                let categoryAxis = chart.xAxes.push(new am4charts.CategoryAxis());
+                categoryAxis.dataFields.category = "name";
+                categoryAxis.renderer.grid.template.disabled = true;
+                categoryAxis.renderer.labels.template.fill = am4core.color("#6c757d");
+                categoryAxis.renderer.minGridDistance = 20;
+                categoryAxis.renderer.labels.template.rotation = -25; // optional: rotate labels
+
+                // Y Axis (Value) - Vertical
+                let valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
+                valueAxis.renderer.grid.template.disabled = true;
+                valueAxis.renderer.labels.template.fill = am4core.color("#6c757d");
+                valueAxis.min = 0;
+
+                // Series
+                let series = chart.series.push(new am4charts.ColumnSeries());
+                series.dataFields.categoryX = "name";
+                series.dataFields.valueY = "value";
+                series.name = "Sales";
+                series.columns.template.fill = am4core.color("#00a9da");
+                series.columns.template.strokeWidth = 0;
+                series.columns.template.column.cornerRadiusTopLeft = 4;
+                series.columns.template.column.cornerRadiusTopRight = 4;
+                series.tooltipText = "{categoryX}: " + currency + " {valueY.formatNumber('#,###.00')}";
+
+                // Tooltip + Cursor
+                chart.cursor = new am4charts.XYCursor();
+                chart.cursor.lineX.disabled = true;
+                chart.cursor.lineY.disabled = true;
+
+                // Disable legend if not needed
+                chart.legend = new am4charts.Legend();
+                chart.legend.enabled = false;
+            });
+
+        }
+    </script>
+    <script>
+am4core.ready(function () {
+
+    am4core.useTheme(am4themes_animated);
+
+    // Create chart instance
+    let chart = am4core.create("countryClicksMap", am4maps.MapChart);
+    chart.geodata = am4geodata_worldLow;
+    chart.projection = new am4maps.projections.Miller();
+
+    // Disable zooming and panning
+    chart.maxZoomLevel = 1;
+    chart.seriesContainer.draggable = false;
+    chart.seriesContainer.resizable = false;
+    chart.chartContainer.wheelable = false;
+    chart.zoomControl = new am4maps.ZoomControl();
+    chart.zoomControl.slider.height = 0; // hide zoom slider
+
+    // Laravel data using ISO 2-letter country codes
+    const countryClicks = @json($clicks->pluck('total_clicks', 'country'));
+
+    // console.log(countryClicks);
+    const countryNameToISO={"Afghanistan":"AF","Albania":"AL","Algeria":"DZ","American Samoa":"AS","Andorra":"AD","Angola":"AO","Anguilla":"AI","Antarctica":"AQ","Antigua and Barbuda":"AG","Argentina":"AR","Armenia":"AM","Aruba":"AW","Australia":"AU","Austria":"AT","Azerbaijan":"AZ","Bahamas":"BS","Bahrain":"BH","Bangladesh":"BD","Barbados":"BB","Belarus":"BY","Belgium":"BE","Belize":"BZ","Benin":"BJ","Bermuda":"BM","Bhutan":"BT","Bolivia":"BO","Bosnia and Herzegovina":"BA","Botswana":"BW","Brazil":"BR","British Virgin Islands":"VG","Brunei":"BN","Bulgaria":"BG","Burkina Faso":"BF","Burundi":"BI","Cambodia":"KH","Cameroon":"CM","Canada":"CA","Cape Verde":"CV","Cayman Islands":"KY","Central African Republic":"CF","Chad":"TD","Chile":"CL","China":"CN","Colombia":"CO","Comoros":"KM","Congo":"CG","Cook Islands":"CK","Costa Rica":"CR","Croatia":"HR","Cuba":"CU","Cyprus":"CY","Czech Republic":"CZ","Denmark":"DK","Djibouti":"DJ","Dominica":"DM","Dominican Republic":"DO","Ecuador":"EC","Egypt":"EG","El Salvador":"SV","Equatorial Guinea":"GQ","Eritrea":"ER","Estonia":"EE","Ethiopia":"ET","Falkland Islands":"FK","Faroe Islands":"FO","Fiji":"FJ","Finland":"FI","France":"FR","French Guiana":"GF","French Polynesia":"PF","Gabon":"GA","Gambia":"GM","Georgia":"GE","Germany":"DE","Ghana":"GH","Gibraltar":"GI","Greece":"GR","Greenland":"GL","Grenada":"GD","Guadeloupe":"GP","Guam":"GU","Guatemala":"GT","Guernsey":"GG","Guinea":"GN","Guinea-Bissau":"GW","Guyana":"GY","Haiti":"HT","Honduras":"HN","Hong Kong":"HK","Hungary":"HU","Iceland":"IS","India":"IN","Indonesia":"ID","Iran":"IR","Iraq":"IQ","Ireland":"IE","Isle of Man":"IM","Israel":"IL","Italy":"IT","Ivory Coast":"CI","Jamaica":"JM","Japan":"JP","Jersey":"JE","Jordan":"JO","Kazakhstan":"KZ","Kenya":"KE","Kiribati":"KI","Kuwait":"KW","Kyrgyzstan":"KG","Laos":"LA","Latvia":"LV","Lebanon":"LB","Lesotho":"LS","Liberia":"LR","Libya":"LY","Liechtenstein":"LI","Lithuania":"LT","Luxembourg":"LU","Macau":"MO","Macedonia":"MK","Madagascar":"MG","Malawi":"MW","Malaysia":"MY","Maldives":"MV","Mali":"ML","Malta":"MT","Marshall Islands":"MH","Martinique":"MQ","Mauritania":"MR","Mauritius":"MU","Mayotte":"YT","Mexico":"MX","Micronesia":"FM","Moldova":"MD","Monaco":"MC","Mongolia":"MN","Montenegro":"ME","Montserrat":"MS","Morocco":"MA","Mozambique":"MZ","Myanmar":"MM","Namibia":"NA","Nauru":"NR","Nepal":"NP","Netherlands":"NL","New Caledonia":"NC","New Zealand":"NZ","Nicaragua":"NI","Niger":"NE","Nigeria":"NG","Niue":"NU","North Korea":"KP","Northern Mariana Islands":"MP","Norway":"NO","Oman":"OM","Pakistan":"PK","Palau":"PW","Palestine":"PS","Panama":"PA","Papua New Guinea":"PG","Paraguay":"PY","Peru":"PE","Philippines":"PH","Poland":"PL","Portugal":"PT","Puerto Rico":"PR","Qatar":"QA","Reunion":"RE","Romania":"RO","Russia":"RU","Rwanda":"RW","Saint Kitts and Nevis":"KN","Saint Lucia":"LC","Saint Vincent and the Grenadines":"VC","Samoa":"WS","San Marino":"SM","Sao Tome and Principe":"ST","Saudi Arabia":"SA","Senegal":"SN","Serbia":"RS","Seychelles":"SC","Sierra Leone":"SL","Singapore":"SG","Slovakia":"SK","Slovenia":"SI","Solomon Islands":"SB","Somalia":"SO","South Africa":"ZA","South Korea":"KR","South Sudan":"SS","Spain":"ES","Sri Lanka":"LK","Sudan":"SD","Suriname":"SR","Swaziland":"SZ","Sweden":"SE","Switzerland":"CH","Syria":"SY","Taiwan":"TW","Tajikistan":"TJ","Tanzania":"TZ","Thailand":"TH","Timor-Leste":"TL","Togo":"TG","Tokelau":"TK","Tonga":"TO","Trinidad and Tobago":"TT","Tunisia":"TN","Turkey":"TR","Turkmenistan":"TM","Turks and Caicos Islands":"TC","Tuvalu":"TV","Uganda":"UG","Ukraine":"UA","United Arab Emirates":"AE","United Kingdom":"GB","United States":"US","Uruguay":"UY","Uzbekistan":"UZ","Vanuatu":"VU","Vatican":"VA","Venezuela":"VE","Vietnam":"VN","Wallis and Futuna":"WF","Western Sahara":"EH","Yemen":"YE","Zambia":"ZM","Zimbabwe":"ZW"};
+
+
+    const mapData = Object.entries(countryClicks).map(([country, value]) => {
+        const iso = countryNameToISO[country];
+        return iso ? { id: iso, value } : null;
+    }).filter(Boolean);
+
+    // Create series
+    let polygonSeries = chart.series.push(new am4maps.MapPolygonSeries());
+    polygonSeries.useGeodata = true;
+    polygonSeries.exclude = ["AQ"];
+    polygonSeries.data = mapData;
+
+    polygonSeries.dataFields.id = "id";
+    polygonSeries.dataFields.value = "value";
+
+    polygonSeries.mapPolygons.template.tooltipText = "{name}: {value}";
+    polygonSeries.mapPolygons.template.stroke = am4core.color("#fff");
+    polygonSeries.mapPolygons.template.strokeWidth = 0.5;
+
+    // ✅ Default grey for all
+    polygonSeries.mapPolygons.template.fill = am4core.color("#E5E5E5");
+
+    // ✅ Colored only those with data
+    let hoverColor = am4core.color("#00a9da");
+    polygonSeries.mapPolygons.template.adapter.add("fill", function(fill, target) {
+        const data = target.dataItem?.dataContext;
+        return data && data.value > 0 ? am4core.color("#00a9da") : am4core.color("#E5E5E5");
+    });
+
+
+
+});
+</script>
+
+
 @endsection

@@ -1,10 +1,9 @@
 "use strict";
 
 $(function () {
-	changeChartData("sales", "#b32ab3");
-	chart2();
-	chart3();
-
+	changeChartData("sales", "#00a9da");
+    top5AdvertChart();
+    loadAdvertisersRecord();
 	// select all on checkbox click
 	$("[data-checkboxes]").each(function () {
 		var me = $(this),
@@ -41,24 +40,26 @@ $(function () {
 let salesChartInstance = null;
 
 function changeChartData(type, color) {
-    // Highlight selected card item
-    document.querySelectorAll('.sale-value').forEach(item => {
-        item.classList.remove(
-            'text-success', 'text-warning', 'text-danger', 'text-purple', 'text-lg'
-        );
-    });
-    const selectedItem = document.getElementById(type);
-    if (selectedItem) {
-        selectedItem.classList.add('text-lg');
-        if (type === 'approved') {
-            selectedItem.classList.add('text-success');
-        } else if (type === 'pending') {
-            selectedItem.classList.add('text-warning');
-        } else if (type === 'rejected') {
-            selectedItem.classList.add('text-danger');
-        } else if (type === 'sales') {
-            selectedItem.classList.add('text-purple');
+    showLoader('salesChart');
+    const typeColorMap = {
+        sales: 'text-primary',
+        approved: 'text-success',
+        pending: 'text-warning',
+        rejected: 'text-danger'
+    };
+
+    // Remove all highlights
+    Object.keys(typeColorMap).forEach(id => {
+        const el = document.getElementById(id);
+        if (el) {
+            el.classList.remove('text-lg', ...Object.values(typeColorMap));
         }
+    });
+
+    // Add highlight to selected item
+    const selectedItem = document.getElementById(type);
+    if (selectedItem && typeColorMap[type]) {
+        selectedItem.classList.add('text-lg', typeColorMap[type]);
     }
 
     fetch('/publisher/cart-data', {
@@ -71,25 +72,22 @@ function changeChartData(type, color) {
     })
     .then(response => response.json())
     .then(data => {
-        // Clean up old chart
         if (salesChartInstance) {
             salesChartInstance.dispose();
         }
 
-        // Format data for amCharts
         const dataCombined = [];
         const currentMonthData = data.currentMonth;
         const previousMonthData = data.previousMonth;
 
         for (let i = 0; i < currentMonthData.length; i++) {
             dataCombined.push({
-                date: currentMonthData[i].date,
+                date: currentMonthData[i].date, // must be "YYYY-MM-DD"
                 current: currentMonthData[i].total,
                 previous: previousMonthData[i] ? previousMonthData[i].total : 0
             });
         }
 
-        // Update totals
         const totals = data.totals;
         if (totals) {
             document.getElementById("sales").innerText = `$${totals.sales.toFixed(2)}`;
@@ -98,7 +96,6 @@ function changeChartData(type, color) {
             document.getElementById("rejected").innerText = `$${totals.rejected.toFixed(2)}`;
         }
 
-        // Axis label text
         let yAxisLabel = "";
         switch (data.type) {
             case 'sales': yAxisLabel = 'Sales'; break;
@@ -111,36 +108,38 @@ function changeChartData(type, color) {
         const titleEl = document.getElementById("chartTitle");
         if (titleEl) titleEl.innerText = yAxisLabel;
 
-        // Use amCharts animated theme
         am4core.useTheme(am4themes_animated);
 
-        // Create chart instance
-        let chart = am4core.create("chart1", am4charts.XYChart);
+        let chart = am4core.create("salesChart", am4charts.XYChart);
         salesChartInstance = chart;
-
         chart.data = dataCombined;
 
-        // Category Axis (dates)
-        let categoryAxis = chart.xAxes.push(new am4charts.CategoryAxis());
-        categoryAxis.dataFields.category = "date";
-        categoryAxis.title.text = "Date";
-        categoryAxis.renderer.labels.template.fill = am4core.color("#9aa0ac");
-        categoryAxis.renderer.minGridDistance = 30;
-
+        // Date Axis with MM-DD format
+        let dateAxis = chart.xAxes.push(new am4charts.DateAxis());
+        dateAxis.dataFields.date = "date";
+        dateAxis.dateFormats.setKey("day", "MM-dd");
+        dateAxis.periodChangeDateFormats.setKey("day", "MM-dd");
+        dateAxis.title.text = "Date";
+        dateAxis.renderer.labels.template.fill = am4core.color("#9aa0ac");
+        dateAxis.renderer.minGridDistance = 30;
+        // ✅ Rotate the date labels
+        dateAxis.renderer.labels.template.rotation = -45;
+        dateAxis.renderer.labels.template.horizontalCenter = "right";
+        dateAxis.renderer.labels.template.verticalCenter = "middle";
         // Value Axis
         let valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
         valueAxis.title.text = yAxisLabel + " ($)";
         valueAxis.min = 0;
         valueAxis.renderer.labels.template.fill = am4core.color("#9aa0ac");
 
-        // Series - Current Month
+        // Current Series
         let currentSeries = chart.series.push(new am4charts.LineSeries());
         currentSeries.dataFields.valueY = "current";
-        currentSeries.dataFields.categoryX = "date";
+        currentSeries.dataFields.dateX = "date";
         currentSeries.name = "Current Month";
         currentSeries.strokeWidth = 3;
         currentSeries.stroke = am4core.color(color);
-        currentSeries.tooltipText = "[bold]{categoryX}[/]: {valueY}";
+        currentSeries.tooltipText = "[bold]{dateX.formatDate('MM-dd')}[/]: {valueY}";
         currentSeries.tensionX = 0.8;
 
         let currentBullet = currentSeries.bullets.push(new am4charts.CircleBullet());
@@ -148,15 +147,15 @@ function changeChartData(type, color) {
         currentBullet.circle.fill = am4core.color(color);
         currentBullet.circle.strokeWidth = 2;
 
-        // Series - Previous Month
+        // Previous Series
         let previousSeries = chart.series.push(new am4charts.LineSeries());
         previousSeries.dataFields.valueY = "previous";
-        previousSeries.dataFields.categoryX = "date";
+        previousSeries.dataFields.dateX = "date";
         previousSeries.name = "Previous Month";
         previousSeries.strokeWidth = 2;
         previousSeries.stroke = am4core.color("#bbbbbb");
         previousSeries.strokeDasharray = "5,5";
-        previousSeries.tooltipText = "[bold]{categoryX}[/]: {valueY}";
+        previousSeries.tooltipText = "[bold]{dateX.formatDate('MM-dd')}[/]: {valueY}";
         previousSeries.tensionX = 0.8;
 
         let previousBullet = previousSeries.bullets.push(new am4charts.CircleBullet());
@@ -164,215 +163,59 @@ function changeChartData(type, color) {
         previousBullet.circle.fill = am4core.color("#bbbbbb");
         previousBullet.circle.strokeWidth = 2;
 
-        // Enable cursor
         chart.cursor = new am4charts.XYCursor();
-
-        // Add legend
         chart.legend = new am4charts.Legend();
         chart.legend.position = "top";
         chart.legend.align = "right";
-
-        // Scrollbar
         chart.scrollbarX = new am4core.Scrollbar();
+    })
+    .finally(()=>{
+        hideLoader('salesChart');
     });
 }
 
+function loadAdvertisersRecord(){
+        showLoader('advertisersChart')
+        am4core.ready(function () {
+            am4core.useTheme(am4themes_animated);
 
-function chart2() {
-	// Themes begin
-	am4core.useTheme(am4themes_animated);
-	// Themes end
+            let publisher_id = document.getElementById('publisher_id').value;
 
+            fetch(`/publisher/advertiser-status/${publisher_id}`)
+                .then(response => response.json())
+                .then(data => {
+                    // Prepare data for amCharts
+                    var chartData = [
+                        { category: "Joined", value: data.joined, color: am4core.color("#28a745") },
+                        { category: "Rejected", value: data.rejected, color: am4core.color("#dc3545") },
+                        { category: "Pending", value: data.pending, color: am4core.color("#ffc107") },
+                        { category: "Not Joined", value: data.not_joined, color: am4core.color("#00a9da") }
+                    ];
 
+                    // Create chart
+                    var chart = am4core.create("advertisersChart", am4charts.PieChart);
+                    chart.data = chartData;
 
-	// Create chart instance
-	var chart = am4core.create("chart2", am4charts.RadarChart);
+                    // Create pie series
+                    var pieSeries = chart.series.push(new am4charts.PieSeries());
+                    pieSeries.dataFields.value = "value";
+                    pieSeries.dataFields.category = "category";
+                    pieSeries.slices.template.propertyFields.fill = "color";
 
-	// Add data
-	chart.data = [{
-		"category": "Not Joined",
-		"value": 80,
-		"full": 100
-	}, {
-		"category": "Pending",
-		"value": 35,
-		"full": 100
-	}, {
-		"category": "Rejected",
-		"value": 92,
-		"full": 100
-	}, {
-		"category": "Approved",
-		"value": 68,
-		"full": 100
-	}];
+                    // Donut style
+                    pieSeries.innerRadius = am4core.percent(50);
 
-	// Make chart not full circle
-	chart.startAngle = -90;
-	chart.endAngle = 180;
-	chart.innerRadius = am4core.percent(20);
-
-	// Set number format
-	chart.numberFormatter.numberFormat = "#.#'%'";
-
-	// Create axes
-	var categoryAxis = chart.yAxes.push(new am4charts.CategoryAxis());
-	categoryAxis.dataFields.category = "category";
-	categoryAxis.renderer.grid.template.location = 0;
-	categoryAxis.renderer.grid.template.strokeOpacity = 0;
-	categoryAxis.renderer.labels.template.horizontalCenter = "right";
-	categoryAxis.renderer.labels.template.fontWeight = 500;
-	categoryAxis.renderer.labels.template.adapter.add("fill", function (fill, target) {
-		return (target.dataItem.index >= 0) ? chart.colors.getIndex(target.dataItem.index) : fill;
-	});
-	categoryAxis.renderer.minGridDistance = 10;
-
-	var valueAxis = chart.xAxes.push(new am4charts.ValueAxis());
-	valueAxis.renderer.grid.template.strokeOpacity = 0;
-	valueAxis.min = 0;
-	valueAxis.max = 100;
-	valueAxis.strictMinMax = true;
-	valueAxis.renderer.labels.template.fill = am4core.color("#9aa0ac");
-
-	// Create series
-	var series1 = chart.series.push(new am4charts.RadarColumnSeries());
-	series1.dataFields.valueX = "full";
-	series1.dataFields.categoryY = "category";
-	series1.clustered = false;
-	series1.columns.template.fill = new am4core.InterfaceColorSet().getFor("alternativeBackground");
-	series1.columns.template.fillOpacity = 0.08;
-	series1.columns.template.cornerRadiusTopLeft = 20;
-	series1.columns.template.strokeWidth = 0;
-	series1.columns.template.radarColumn.cornerRadius = 20;
-
-	var series2 = chart.series.push(new am4charts.RadarColumnSeries());
-	series2.dataFields.valueX = "value";
-	series2.dataFields.categoryY = "category";
-	series2.clustered = false;
-	series2.columns.template.strokeWidth = 0;
-	series2.columns.template.tooltipText = "{category}: [bold]{value}[/]";
-	series2.columns.template.radarColumn.cornerRadius = 20;
-
-	series2.columns.template.adapter.add("fill", function (fill, target) {
-		return chart.colors.getIndex(target.dataItem.index);
-	});
-
-	// Add cursor
-	chart.cursor = new am4charts.RadarCursor();
+                    // Legend
+                    chart.legend = new am4charts.Legend();
+                    chart.legend.position = "bottom";
+                })
+                .catch(error => console.error('Error fetching advertiser status:', error))
+                .finally(()=>{
+                     hideLoader('advertisersChart')
+                })
+        });
 }
 
-function chart3() {
-  am4core.ready(function () {
-    am4core.useTheme(am4themes_animated);
-
-    var chart = am4core.create("chart3", am4maps.MapChart);
-    chart.projection = new am4maps.projections.Orthographic();
-    chart.panBehavior = "rotateLongLat";
-    chart.deltaLatitude = -20;
-    chart.padding(20, 20, 20, 20);
-
-    var polygonSeries = chart.series.push(new am4maps.MapPolygonSeries());
-    polygonSeries.useGeodata = true;
-    polygonSeries.geodata = am4geodata_worldLow;
-
-    var polygonTemplate = polygonSeries.mapPolygons.template;
-    polygonTemplate.tooltipText = "{name}";
-    polygonTemplate.fill = am4core.color("#cccccc");
-    polygonTemplate.stroke = am4core.color("#000000");
-    polygonTemplate.strokeWidth = 0.5;
-    polygonTemplate.nonScalingStroke = true;
-
-    // Remove default hover fill
-    polygonTemplate.states.removeKey("hover");
-
-    var highlightedCountries = [
-      { id: "PK", name: "Pakistan", color: "#FF5733", advertisers: 120 },
-      { id: "US", name: "United States", color: "#33FF57", advertisers: 300 },
-      { id: "CN", name: "China", color: "#3357FF", advertisers: 250 },
-      { id: "RU", name: "Russia", color: "#FF33A1", advertisers: 150 },
-      { id: "BR", name: "Brazil", color: "#FFC300", advertisers: 180 },
-      { id: "IN", name: "India", color: "#A133FF", advertisers: 220 },
-      { id: "ZA", name: "South Africa", color: "#33FFF6", advertisers: 90 },
-      { id: "AU", name: "Australia", color: "#FF8F33", advertisers: 110 },
-      { id: "DE", name: "Germany", color: "#33FF99", advertisers: 160 },
-      { id: "GB", name: "United Kingdom", color: "#FF3333", advertisers: 140 }
-    ];
-
-    polygonSeries.events.once("inited", function () {
-      highlightedCountries.forEach(function (country) {
-        var polygon = polygonSeries.getPolygonById(country.id);
-        if (polygon) {
-          polygon.fill = am4core.color(country.color);
-          polygon.tooltipText = country.name + ": " + country.advertisers + " Advertisers";
-
-          // Add hover state *only* for highlighted countries
-          var hs = polygon.states.create("hover");
-          hs.properties.fill = am4core.color(country.color); // or any hover color you prefer
-        }
-      });
-    });
-  });
-}
-
-
-function chart4() {
-	var options = {
-		chart: {
-			height: 250,
-			type: 'area',
-			toolbar: {
-				show: false
-			},
-
-		},
-		colors: ['#999b9c', '#4CC2B0'], // line color
-		fill: {
-			colors: ['#999b9c', '#4CC2B0'] // fill color
-		},
-		dataLabels: {
-			enabled: false
-		},
-		stroke: {
-			curve: 'smooth'
-		},
-		markers: {
-			colors: ['#999b9c', '#4CC2B0'] // marker color
-		},
-		series: [{
-			name: 'series1',
-			data: [31, 40, 28, 51, 22, 64, 80]
-		}, {
-			name: 'series2',
-			data: [11, 32, 67, 32, 44, 52, 41]
-		}],
-		legend: {
-			show: false,
-		},
-		xaxis: {
-			categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'July'],
-			labels: {
-				style: {
-					colors: "#9aa0ac"
-				}
-			},
-		},
-		yaxis: {
-			labels: {
-				style: {
-					color: "#9aa0ac"
-				}
-			}
-		},
-	}
-
-	var chart = new ApexCharts(
-		document.querySelector("#chart4"),
-		options
-	);
-
-	chart.render();
-
-}
 
 var swiper = new Swiper(".mySwiper", {
 	slidesPerView: "auto", // Cards in a row
@@ -440,3 +283,49 @@ $("#advertiserDeeplinkForm").submit(function () {
     });
 });
 
+$(document).ready(function () {
+    const $dropdown = $('#dropdownSelect');
+    const $statusContainer = $('#deeplinkStatusContainer');
+    const checkGif = "{{ $checkGif }}";
+    const crossGif = "{{ $crossGif }}";
+
+
+    function updateDeeplinkStatus() {
+        const $selectedOption = $dropdown.find('option:selected');
+        const isDeeplinkEnabled = $selectedOption.data('dd');
+
+        $statusContainer.empty();
+
+        if (isDeeplinkEnabled === 1) {
+            $('#input1').removeAttr('disabled');
+            $('#input2').removeAttr('disabled');
+            $statusContainer.html(`
+                <div class="d-flex align-items-center p-2 bg-light-success rounded mb-2"
+                    style="background-color: rgba(40, 167, 69, 0.1);">
+                    <img src="../publisherAssets/assets/icons8-check.gif" class="rounded-circle mr-2" height="24" alt="Verified">
+                    <span class="text-success font-weight-bold">
+                        Deep Link Verified
+                    </span>
+                </div>`);
+        } else {
+            $('#input1').removeAttr('disabled');
+            $('#input2').attr('disabled', true);
+            $statusContainer.html(`
+                <div class="d-flex align-items-center p-2 bg-light-danger rounded mb-2"
+                    style="background-color: rgba(167, 40, 40, 0.1);">
+                    <img src="../publisherAssets/assets/icons8-cross.gif" class="rounded-circle mr-2" height="24" alt="Not Verified">
+                    <span class="text-danger font-weight-bold">
+                        Deep Link Not Verified
+                    </span>
+                </div>`);
+        }
+    }
+
+    // Bind change event
+    $dropdown.on('change', updateDeeplinkStatus);
+
+    // Trigger on page load if value is selected
+    if ($dropdown.val()) {
+        updateDeeplinkStatus();
+    }
+});

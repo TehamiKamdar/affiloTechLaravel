@@ -36,6 +36,8 @@ class IndexService extends RootService
         // Fetch categories and active countries
         $categories = Methods::getCategories();
         $countries = Country::where('status', 'active')->get();
+        
+        $clicks = $this->topClicks($request, auth()->user());
 
 
         // Set the SEO title
@@ -178,8 +180,35 @@ class IndexService extends RootService
         ];
 
         // Return the view with the necessary data
-        // return $user;
-        return view('home', compact('publisher_id','topSales','advertisers', 'categories','countries','title', 'headings', 'approvedTotal', 'pendingTotal', 'declinedTotal', 'rejectedTotal', 'Total', 'approvedChange', 'pendingChange', 'declinedChange', 'rejectedChange', 'totalSalesChange', 'transactions'));
+        // return $clicks;
+        return view('home', compact('clicks','publisher_id','topSales','advertisers', 'categories','countries','title', 'headings', 'approvedTotal', 'pendingTotal', 'declinedTotal', 'rejectedTotal', 'Total', 'approvedChange', 'pendingChange', 'declinedChange', 'rejectedChange', 'totalSalesChange', 'transactions'));
+    }
+
+    public function topClicks($request, $user)
+    {
+        $publisherId = $user->publisher_id;
+
+        // Subquery: combine both tables while filtering by publisher_id
+        $subQuery = DB::table('deeplink_tracking_details')
+            ->select('tracking_id', 'country')
+            ->where('publisher_id', $publisherId)
+            ->distinct()
+            ->unionAll(
+                DB::table('tracking_details')
+                    ->select('tracking_id', 'country')
+                    ->where('publisher_id', $publisherId)
+                    ->distinct()
+            );
+
+        // Wrap the subquery and count grouped by country
+        $clicksByCountry = DB::table(DB::raw("({$subQuery->toSql()}) as combined_clicks"))
+            ->mergeBindings($subQuery) // important: keep bindings
+            ->select('country', DB::raw('COUNT(*) as total_clicks'))
+            ->groupBy('country')
+            ->orderByDesc('total_clicks')
+            ->get();
+
+        return $clicksByCountry;
     }
 
     public function getTopFiveSales($user)

@@ -1,7 +1,7 @@
 @extends('layouts.publisher.layout')
 
 @section('styles')
-
+    <link rel="stylesheet" href="{{ asset('publisherAssets/assets/bundles/izitoast/css/iziToast.min.css') }}">
     <style>
         .table-loader {
             position: absolute;
@@ -35,36 +35,37 @@
 @endsection
 
 @section('scripts')
+    <script src="{{ asset('publisherAssets/assets/bundles/izitoast/js/iziToast.min.js') }}"></script>
     <script>
 
         $(document).ready(function () {
-            document.querySelectorAll('.copy-btn').forEach(btn => {
-            btn.addEventListener('click', function (event) {
-                event.preventDefault();
-                event.stopPropagation();
+            $('.copy-link-btn').on('click', function () {
+                const $row = $(this).closest('tr'); // Go to the table row
+                const $link = $row.find('.tracking-link'); // Find the link inside it
+                const url = $link.attr('href');
 
-                const link = this.getAttribute('data-link');
-                navigator.clipboard.writeText(link);
+                if (!url) return;
 
-                // Initialize tooltip if not already
-                const tooltip = bootstrap.Tooltip.getInstance(this) || new bootstrap.Tooltip(this, {
-                title: 'Copied!',
-                trigger: 'manual'
+                navigator.clipboard.writeText(url).then(function () {
+                    iziToast.success({
+                        title: 'Copied!',
+                        message: 'Tracking URL copied to clipboard.',
+                        position: 'topRight'
+                    });
+                }).catch(function () {
+                    iziToast.error({
+                        title: 'Error',
+                        message: 'Failed to copy the URL.',
+                        position: 'topRight'
+                    });
                 });
-
-                tooltip.show();
-
-                setTimeout(() => {
-                tooltip.hide();
-                }, 1000);
-            });
             });
 
 
             // Initialize tooltips
             var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
             var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-            return new bootstrap.Tooltip(tooltipTriggerEl);
+                return new bootstrap.Tooltip(tooltipTriggerEl);
             });
 
 
@@ -209,107 +210,70 @@
 
 @endsection
 
-@section('heading_right_space')
-
+@section('breadcrumb')
+    <ol class="breadcrumb mb-0 bg-white rounded-50 nav-link nav-link-lg collapse-btn">
+        <li class="breadcrumb-item mt-1">
+            <a href="#"><i data-feather="home"></i></a>
+        </li>
+        <li class="breadcrumb-item mt-1">
+            <a href="#" class="text-sm">Promotional</a>
+        </li>
+        <li class="breadcrumb-item mt-1 active">
+            <a href="#" class="text-sm">Deep Links</a>
+        </li>
+    </ol>
 @endsection
 
 @section('content')
+    @include("partial.alert")
 
-            <!-- [ breadcrumb ] start -->
-            <div class="page-header">
-                <div class="page-block">
-                    <div class="row align-items-center">
-                        <div class="col-md-12">
-                            <ul class="breadcrumb">
-                                <li class="breadcrumb-item"><a href="{{ route('publisher.dashboard') }}"><i
-                                            class="ri-home-5-line text-primary"></i></a></li>
-                                <li class="breadcrumb-item"><a href="">Promotions</a></li>
-                                <li class="breadcrumb-item"><a href="">Text Links</a></li>
-                            </ul>
-                        </div>
+    <div class="card card-flush">
+        <div class="card-header border-0 align-items-center pt-4 pb-2 gap-2 gap-md-5">
+            <div class="card-title w-100">
+                <div class="d-flex justify-content-between align-items-center my-1">
+                    <div class="position-relative">
+                        <i class="ki-duotone ki-magnifier fs-2 position-absolute top-50 translate-middle-y ms-4">
+                            <span class="path1"></span>
+                            <span class="path2"></span>
+                        </i>
+                        <input type="text" id="search" data-kt-ecommerce-order-filter="search"
+                            class="form-control form-control-solid ps-12 w-250px" placeholder="Search by id, name etc..." />
                     </div>
+
+                    <div class="text-sm text-end">
+                        Showing {{ $from }} to {{ $to }} of {{ $total }} entries
+                    </div>
+                </div>
+                <div id="kt_ecommerce_report_views_export" class="d-none">
                 </div>
             </div>
-            <!-- [ breadcrumb ] end -->
-            @include("partial.alert")
-
-
-
-            <!--begin::Products-->
-            <div class="card card-flush">
-                <!--begin::Card header-->
-                <div class="card-header align-items-center py-5 gap-2 gap-md-5">
-                    <!--begin::Actions-->
-
-                    <!--end::Actions-->
-                    <!--begin::Card title-->
-                    <div class="card-title">
-                        <!--begin::Search-->
-                        <div class="d-flex justify-content-between align-items-center position-relative my-1">
-                            <div class="d-flex align-items-center position-relative flex-grow-1 me-5" style="max-width: 300px;">
-                                <i class="ri-search-line text-muted position-absolute ms-3"></i>
-                                <input type="text"
-                                    id="search"
-                                    data-kt-ecommerce-order-filter="search"
-                                    class="form-control-sm ps-5"
-                                    placeholder="Search by ID, name, etc..." />
-                            </div>
-                            <div>
-                                Total Results:<span style="font-weight:900">{{$total}}</span>
-                                <!--begin::Secondary button-->
-                                <!--end::Secondary button-->
-                            </div>
-                        </div>
-                        <!--end::Search-->
-                        <!--begin::Export buttons-->
-                        <div id="kt_ecommerce_report_views_export" class="d-none">
-
-                        </div>
-                        <!--end::Export buttons-->
-                    </div>
-                    <!--end::Card title-->
-                    <!--begin::Card toolbar-->
-
-                    <!--end::Card toolbar-->
-
-                </div>
-                <!--end::Card header-->
-                <!--begin::Card body-->
-                <div class="card-body py-4">
-
-                    <div id="transaction-container">
-                        @include("publisher.promote.text-link-ajax", compact('links'))
-                    </div>
-
-                    <div class="row mt-3">
-                        <div
-                            class="col-12 col-md-6 d-flex align-items-center justify-content-between">
-                            <div class="dataTables_length" id="kt_project_users_table_length">
-                                <label>
-                                    <select name="per_page" id="per-page-select"
-                                        class="form-select-sm">
-                                        <option value="10" {{ request('per_page') == 10 ? 'selected' : '' }}>10</option>
-                                        <option value="25" {{ request('per_page') == 25 ? 'selected' : '' }}>25</option>
-                                        <option value="50" {{ empty(request('per_page')) || request('per_page') == 50 ? 'selected' : '' }}>50</option>
-                                        <option value="100" {{ request('per_page') == 100 ? 'selected' : '' }}>100</option>
-                                    </select>
-                                </label>
-                            </div>
-                            <div class="dataTables_info text-sm" id="kt_project_users_table_info" role="status" aria-live="polite">
-                                Showing {{$from}} to {{$to}} of {{ $total }} entries
-                            </div>
-                        </div>
-
-                        <div class="col-12 col-md-6 d-flex align-items-center justify-content-end"
-                            id="pagination-container">
-                            {{ $links->withQueryString()->links('partial.publisher_pagination') }}
-                        </div>
-
-                    </div>
-                </div>
-                <!--end::Card body-->
+        </div>
+        <div class="card-body py-4">
+            <div id="transaction-container">
+                @include("publisher.promote.text-link-ajax", compact('links'))
             </div>
-            <!--end::Products-->
+
+            <div class="row mt-3">
+                <div class="col-12 col-md-6 d-flex align-items-center justify-content-between">
+                    <div class="dataTables_length" id="kt_project_users_table_length">
+                        <label>
+                            <select name="per_page" id="per-page-select" class="form-select-sm">
+                                <option value="10" {{ request('per_page') == 10 ? 'selected' : '' }}>10</option>
+                                <option value="25" {{ request('per_page') == 25 ? 'selected' : '' }}>25</option>
+                                <option value="50" {{ empty(request('per_page')) || request('per_page') == 50 ? 'selected' : '' }}>50</option>
+                                <option value="100" {{ request('per_page') == 100 ? 'selected' : '' }}>100</option>
+                            </select>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="col-12 col-md-6 d-flex align-items-center justify-content-end" id="pagination-container">
+                    {{ $links->withQueryString()->links('partial.publisher_pagination') }}
+                </div>
+
+            </div>
+        </div>
+    </div>
 
 
 @endsection

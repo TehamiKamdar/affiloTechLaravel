@@ -3,7 +3,7 @@
         <i class="fas fa-times p-3 cursor-pointer text-secondary opacity-5 position-absolute end-0 top-0 d-none d-xl-none"
             aria-hidden="true" id="iconSidenav"></i>
         <a class="navbar-brand m-0" href="{{ route("admin.dashboard") }}" style="text-align: center;">
-            <img src="{{asset('adminDashboard/assets/img/logo.webp')}}" class="navbar-brand-img h-100" style="width:60%"
+            <img src="{{asset('publisherAssets/assets/affiloTechLogo.png')}}" class="navbar-brand-img h-100" style="width:60%"
                 alt="main_logo">
         </a>
     </div>
@@ -59,8 +59,8 @@
                                 </path>
                             </g>
                         </svg>
-                        
-                        
+
+
                     </div>
                     <span class="nav-link-text ms-1">Publishers</span>
                 </a>
@@ -127,7 +127,7 @@
                         <li class="nav-item {{ Route::is('admin.advertisers.api.show_on_publisher.duplicate_record') ? 'active' : '' }}">
                             <a href="{{ route("admin.advertisers.api.show_on_publisher.duplicate_record") }}" class="nav-link"><span class="sidenav-normal">Duplicate Advertisers</span></a>
                         </li>
-                       
+
                     </ul>
                 </div>
             </li>

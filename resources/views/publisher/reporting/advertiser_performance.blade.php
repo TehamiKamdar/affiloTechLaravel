@@ -3,20 +3,57 @@
 @section('styles')
 
     <style>
-        .filter-toggle.btn {
-            min-width: 90px;
-            transition: none;
+        .stat-card {
+            border-radius: 10px;
+            border: none;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            margin-bottom: 1.5rem;
+            transition: transform 0.3s;
+            background: white;
         }
 
-        .filter-toggle.btn:focus,
-        .filter-toggle.btn:active,
-        .filter-toggle.btn.show {
-            box-shadow: none !important;
-            outline: none !important;
-            background-color: transparent !important;
-            color: #02c0ce !important;
-            border-color: #02c0ce !important;
-            /* Or whatever your border is */
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-card .card-body {
+            padding: 1.5rem;
+        }
+
+        .stat-card .icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+        }
+
+        .stat-card.income .icon {
+            background-color: rgba(40, 167, 69, 0.1);
+            color: #28a745;
+        }
+
+        .stat-card.expense .icon {
+            background-color: rgba(220, 53, 69, 0.1);
+            color: #dc3545;
+        }
+
+        .stat-card.balance .icon {
+            background-color: rgba(0, 169, 218, 0.1);
+            color: var(--primary);
+        }
+
+        .stat-card .stat-value {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-card .stat-label {
+            color: #6c757d;
+            font-size: 0.9rem;
         }
 
         .table-loader {
@@ -38,24 +75,21 @@
             height: 3rem;
             border-width: .3em;
         }
-
-        .ml-3 {
-            margin-left: 10px;
-        }
-
-        .display-hidden {
-            display: none;
-        }
     </style>
 
 @endsection
 
 @section('scripts')
-<script src="{{ \App\Helper\Methods::staticAsset('assets/js/scripts.bundle.js') }}"></script>
+    <script src="{{asset('publisherAssets/assets/bundles/amcharts4/core.js')}}"></script>
+    <script src="{{asset('publisherAssets/assets/bundles/amcharts4/maps.js')}}"></script>
+    <script src="{{asset('publisherAssets/assets/bundles/amcharts4/charts.js')}}"></script>
+    <script src="{{asset('publisherAssets/assets/bundles/amcharts4/animated.js')}}"></script>
+    <script src="{{asset('publisherAssets/assets/bundles/amcharts4/worldLow.js')}}"></script>
     <script>
         let adChartInstance = null;
 
         window.advertiserperformancegraph = function (type) {
+            showLoader('advertiserPerformance')
             let date = $('input[name="date"]').val();
 
             fetch('/publisher/advertiser-performance-graph', {
@@ -66,96 +100,101 @@
                 },
                 body: JSON.stringify({
                     type: type,
-                    color: "#0081fa",
+                    color: "#00a9da",
                     date: date
                 })
             })
                 .then(response => response.json())
                 .then(data => {
-                    // Update button background colors
-                    $('#transaction, #commission, #sales').css('backgroundColor', 'white');
-                    $('#' + type).css('backgroundColor', '#e4e0e0');
-
-                    // Prepare data
-                    const currentMonthLabels = data.currentMonth.map(item => item.date);
-                    const currentMonthData = data.currentMonth.map(item => item.total);
-
-                    const previousMonthLabels = data.previousMonth.map(item => item.date);
-                    const previousMonthData = data.previousMonth.map(item => item.total);
-
-                    // Destroy previous chart if exists
-                    if (adChartInstance) {
-                        adChartInstance.destroy();
+                    // Reset all stat-card backgrounds
+                    document.querySelectorAll('.stat-card').forEach(card => {
+                        card.style.backgroundColor = 'white';
+                        card.querySelector('.stat-value').style.color = '#000'; // or your default text color
+                        card.querySelector('.stat-label').style.color = '#6c757d'; // or your default label color
+                    });
+                    // Highlight the active card
+                    const targetCard = document.querySelector(`.stat-card.${type}`);
+                    if (targetCard) {
+                        targetCard.style.backgroundColor = '#00a9da';
+                        targetCard.style.transform = 'translateY(-5px)';
+                        targetCard.querySelector('.stat-value').style.color = 'white';
+                        targetCard.querySelector('.stat-label').style.color = 'white';
                     }
 
-                    const options = {
-                        chart: {
-                            type: 'line',
-                            height: 350,
-                            toolbar: {
-                                show: false
-                            },
-                            zoom: {
-                                enabled: false
-                            }
-                        },
-                        series: [
-                            {
-                                name: "Current Month",
-                                data: currentMonthData
-                            },
-                            {
-                                name: "Previous Month",
-                                data: previousMonthData
-                            }
-                        ],
-                        colors: [data.color, '#cccccc'],
-                        stroke: {
-                            width: [3, 2],
-                            dashArray: [0, 5]
-                        },
-                        xaxis: {
-                            categories: currentMonthLabels,
-                            title: {
-                                text: 'Date',
-                                style: {
-                                    color: '#000',
-                                    fontSize: '16px',
-                                    fontWeight: 600
-                                }
-                            }
-                        },
-                        yaxis: {
-                            title: {
-                                text: data.type,
-                                style: {
-                                    color: '#000',
-                                    fontSize: '16px',
-                                    fontWeight: 600
-                                }
-                            },
-                            min: 0
-                        },
-                        legend: {
-                            position: 'top'
-                        },
-                        responsive: [{
-                            breakpoint: 600,
-                            options: {
-                                chart: {
-                                    height: 300
-                                }
-                            }
-                        }]
-                    };
+                    // Prepare chart data
+                    let chartData = [];
 
-                    adChartInstance = new ApexCharts(document.querySelector("#advertiserPerformance"), options);
-                    adChartInstance.render();
+                    data.currentMonth.forEach((item, index) => {
+                        chartData.push({
+                            date: item.date,
+                            current: item.total,
+                            previous: data.previousMonth[index] ? data.previousMonth[index].total : null
+                        });
+                    });
+
+                    // Remove previous chart if exists
+                    if (window.adChartInstance) {
+                        window.adChartInstance.dispose();
+                    }
+
+                    am4core.useTheme(am4themes_animated);
+
+                    // Create chart
+                    let chart = am4core.create("advertiserPerformance", am4charts.XYChart);
+                    chart.data = chartData;
+                    window.adChartInstance = chart;
+
+                    // Create X axis
+                    let categoryAxis = chart.xAxes.push(new am4charts.CategoryAxis());
+                    categoryAxis.dataFields.category = "date";
+                    categoryAxis.title.text = "Date";
+                    categoryAxis.title.fontSize = 16;
+                    categoryAxis.title.fontWeight = "600";
+
+                    // Create Y axis
+                    let valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
+                    valueAxis.title.text = data.type;
+                    valueAxis.title.fontSize = 16;
+                    valueAxis.title.fontWeight = "600";
+                    valueAxis.min = 0;
+
+                    // Current Month series
+                    let currentSeries = chart.series.push(new am4charts.LineSeries());
+                    currentSeries.dataFields.valueY = "current";
+                    currentSeries.dataFields.categoryX = "date";
+                    currentSeries.name = "Current Month";
+                    currentSeries.stroke = am4core.color("#00a9da");
+                    currentSeries.strokeWidth = 3;
+                    currentSeries.fill = am4core.color("#d4f1f8");
+                    currentSeries.fillOpacity = 0.5;
+                    currentSeries.tooltipText = "{name}: [bold]{valueY}[/]";
+
+                    // Previous Month series
+                    let previousSeries = chart.series.push(new am4charts.LineSeries());
+                    previousSeries.dataFields.valueY = "previous";
+                    previousSeries.dataFields.categoryX = "date";
+                    previousSeries.name = "Previous Month";
+                    previousSeries.stroke = am4core.color("#cccccc");
+                    previousSeries.strokeDasharray = "5,5";
+                    previousSeries.strokeWidth = 2;
+                    previousSeries.tooltipText = "{name}: [bold]{valueY}[/]";
+
+                    // Add legend
+                    chart.legend = new am4charts.Legend();
+                    chart.legend.position = "top";
+
+                    // Add cursor
+                    chart.cursor = new am4charts.XYCursor();
+                    chart.cursor.lineY.disabled = true;
                 })
                 .catch(error => {
                     console.error("Error fetching advertiser performance graph:", error);
+                })
+                .finally(() => {
+                    hideLoader('advertiserPerformance')
                 });
         };
+
     </script>
 
     <script>
@@ -345,212 +384,61 @@
 
 @endsection
 
+@section ('breadcrumb')
+    <ol class="breadcrumb mb-0 bg-white rounded-50 nav-link nav-link-lg collapse-btn">
+        <li class="breadcrumb-item mt-1">
+            <a href="#"><i data-feather="home"></i></a>
+        </li>
+        <li class="breadcrumb-item mt-1">
+            <a href="#" class="text-sm">Reporting</a>
+        </li>
+        <li class="breadcrumb-item mt-1 active">
+            <a href="#" class="text-sm">Advertisers Performance</a>
+        </li>
+    </ol>
+@endsection
 @section('content')
 
 
-    <!-- [ breadcrumb ] start -->
-    <div class="page-header">
-        <div class="page-block">
-            <div class="row align-items-center">
-                <div class="col-md-12">
-                    <ul class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="{{ route('publisher.dashboard') }}"><i
-                                    class="ri-home-5-line text-primary"></i></a></li>
-                        <li class="breadcrumb-item"><a href="">Reportings</a></li>
-                        <li class="breadcrumb-item"><a href="">Advertisers Performance</a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- [ breadcrumb ] end -->
     @include("partial.alert")
-    <!--begin::Header Actions Row-->
-    <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4">
 
-        <!-- Left Side: Click Performance -->
-        <div>
-            <a href="{{ route('publisher.click-performance') }}" class="btn btn-sm btn-flex btn-secondary fw-bold"
-                style="font-size:15px;">
-                Click Performance
-            </a>
-        </div>
 
-        <!-- Right Side: Filter + Export -->
-        <div class="card-toolbar d-flex align-items-center gap-3">
-
-            <!--begin::Daterangepicker-->
-            <div class="dropdown">
-                <button class="btn btn-sm btn-outline-primary d-flex align-items-center gap-1 filter-toggle" type="button"
-                    data-bs-toggle="dropdown" aria-expanded="false" style="min-width: 90px; transition: none;">
-                    <i class="ri-filter-3-line"></i>
-                    <span>Filter</span>
-                </button>
-
-                <div class="dropdown-menu p-4 shadow-sm" style="min-width: 320px;">
-                    <div class="mb-3">
-                        <label for="pr_report_datepicker" class="form-label fw-semibold small">Date Range</label>
-                        <input class="form-control form-control-sm h-auto py-1" name="date" id="pr_report_datepicker"
-                            placeholder="Pick date range" />
-                    </div>
-                </div>
-            </div>
-            <!--end::Daterangepicker-->
-
-            <!--begin::Export-->
-            <button type="button" id="exportBttn" class="btn btn-sm btn-outline-success" data-bs-toggle="modal"
-                data-bs-target="#kt_modal_add_auth_app">
-                <i class="ri-upload-2-line"></i>
-                Export
-            </button>
-            <!--end::Export-->
-
-        </div>
-    </div>
-    <!--end::Header Actions Row-->
-
-    <!--begin::Modal - Adjust Balance-->
-            <div class="modal fade" id="kt_modal_add_auth_app" tabindex="-1" aria-hidden="true">
-                <!--begin::Modal dialog-->
-                <div class="modal-lg modal-dialog modal-dialog-centered mw-650px">
-                    <!--begin::Modal content-->
-                    <div class="modal-content">
-                        <!--begin::Modal header-->
-                        <div class="modal-header">
-                            <!--begin::Modal title-->
-                            <h4 class="fw-bold">
-                                Export Transaction Data
-                                <div class="fs-7 fw-semibold text-muted">After your request is completed, the formatted file
-                                    you requested will be available for download in the <b>Tools > Download Export Files</b>
-                                    section.</div>
-                            </h4>
-                            <!--end::Modal title-->
-                            <div class="btn btn-sm btn-close bg-danger" data-bs-dismiss="modal"
-                                data-kt-export-data-modal-action="close">
-                            </div>
-                        </div>
-                        <!--end::Modal header-->
-                        <form class="form w-100" novalidate="novalidate" id="kt_advertiser_export_in_form"
-                            action="{{ route('publisher.generate-export-transaction') }}" method="post">
-                            @csrf
-                        <!--begin::Modal body-->
-                        <div class="modal-body mx-auto w-50 scroll-y">
-                            <!--begin::Form-->
-                                <input type="hidden" id="totalExport" name="total" value="{{ $transactions->total() }}">
-                                <input type="hidden" name="search" id="search_export">
-                                <input type="hidden" name="status" id="status_export">
-                                <input type="hidden" name="region" id="region_export">
-                                <input type="hidden" name="advertiser" id="advertiser_export">
-                                <input type="hidden" name="date" id="date_export">
-
-                                <!--begin::Input group-->
-                                <div class="fv-row mb-10">
-                                    <!--begin::Label-->
-                                    <label class="required fs-6 fw-semibold form-label mb-2">Select Export Format:</label>
-                                    <!--end::Label-->
-                                    <!--begin::Input-->
-                                    <select name="export_format" data-control="select2" data-placeholder="Select a format"
-                                        data-hide-search="true" class="form-select form-select-solid fw-bold">
-                                        <option></option>
-                                        <option value="csv">CSV</option>
-                                    </select>
-                                    <!--end::Input-->
-                                </div>
-                                <!--end::Input group-->
-
-                            </div>
-                            <!--end::Modal body-->
-                            <div class="modal-footer">
-                                <!--begin::Actions-->
-                                <div class="text-center">
-                                    <button type="reset" class="btn btn-light me-3"
-                                        data-kt-users-modal-action="cancel">Discard</button>
-                                    <button type="submit" class="btn btn-outline-success" id="kt_advertiser_export_submit"
-                                        data-kt-users-modal-action="submit">
-                                        <span class="indicator-label">Request to Export Data</span>
-                                    </button>
-                                </div>
-                                <!--end::Actions-->
-                            </div>
-                        </form>
-                        <!--end::Form-->
-                    </div>
-                    <!--end::Modal content-->
-                </div>
-                <!--end::Modal dialog-->
-            </div>
-            <!--end::Modal - New Card-->
     <div class="row mt-4 mt-md-0 mt-sm-0">
-        <div class="col-lg-4 col-sm-6 col-12 mb-md-4 mb-sm-4 mb-xs-4">
-            <div class="card" onclick="advertiserperformancegraph('transaction')">
-                <span class="mask bg-white opacity-10"></span>
-                <div class="card-body p-3 position-relative">
-                    <div class="row">
-                        <div class="col-8 text-start">
-                            <div class="bg-primary-light border-radius-2xl d-flex align-items-center justify-content-center"
-                                style="width: 50px; height: 50px;">
-                                <i class="ri-money-dollar-circle-fill text-primary ri-2x"></i>
-                            </div>
-
-                            <h5 class="text-dark font-weight-bolder mb-0 mt-3" id='totaltransaction'>
-                                {{ \App\Helper\Methods::numberFormatShort($totalTransactions) }}
-                            </h5>
-                            <span class="text-light text-md fw-bold ">Total Transactions</span>
-                        </div>
-                    </div>
+        <div class="col-lg-4 col-md-6 col-sm-12 col-12">
+            <div class="stat-card transaction" onclick="advertiserperformancegraph('transaction')">
+                <div class="card-body">
+                    <div class="stat-value">{{ \App\Helper\Methods::numberFormatShort($totalTransactions) }}</div>
+                    <div class="stat-label">Total Transactions</div>
                 </div>
             </div>
         </div>
-        <div class="col-lg-4 col-sm-6 col-12 mb-md-4 mb-sm-4 mb-xs-4">
-            <div class="card" onclick="advertiserperformancegraph('sales')">
-                <span class="mask bg-white opacity-10"></span>
-                <div class="card-body p-3 position-relative">
-                    <div class="row">
-                        <div class="col-8 text-start">
-                            <div class="bg-green-light border-radius-2xl d-flex align-items-center justify-content-center"
-                                style="width: 50px; height: 50px;">
-                                <i class="ri-money-dollar-circle-fill text-green ri-2x"></i>
-                            </div>
-
-                            <h5 class="text-dark font-weight-bolder mb-0 mt-3" id='totalsales'>
-                                {{ \App\Helper\Methods::numberFormatShort($totalSalesAmount) }}
-                            </h5>
-                            <span class="text-light text-md fw-bold ">Total Sales</span>
-                        </div>
-                    </div>
+        <div class="col-lg-4 col-md-6 col-sm-12 col-12">
+            <div class="stat-card sales" onclick="advertiserperformancegraph('sales')">
+                <div class="card-body">
+                    <div class="stat-value">${{ \App\Helper\Methods::numberFormatShort($totalSalesAmount) }}</div>
+                    <div class="stat-label">Total Sales</div>
                 </div>
             </div>
         </div>
-        <div class="col-lg-4 col-sm-6 col-12 mb-md-4 mb-sm-4 mb-xs-4">
-            <div class="card" onclick="advertiserperformancegraph('commission')">
-                <span class="mask bg-white opacity-10"></span>
-                <div class="card-body p-3 position-relative">
-                    <div class="row">
-                        <div class="col-8 text-start">
-                            <div class="bg-yellow-light border-radius-2xl d-flex align-items-center justify-content-center"
-                                style="width: 50px; height: 50px;">
-                                <i class="ri-money-dollar-circle-fill text-golden ri-2x"></i>
-                            </div>
-
-                            <h5 class="text-dark font-weight-bolder mb-0 mt-3" id='totalcommission'>
-                                {{ \App\Helper\Methods::numberFormatShort($totalCommissionAmount) }}
-                            </h5>
-                            <span class="text-light text-md fw-bold ">Commission Earned</span>
-                        </div>
-                    </div>
+        <div class="col-lg-4 col-md-6 col-sm-12 col-12">
+            <div class="stat-card commission" onclick="advertiserperformancegraph('commission')">
+                <div class="card-body">
+                    <div class="stat-value">${{ \App\Helper\Methods::numberFormatShort($totalCommissionAmount) }}</div>
+                    <div class="stat-label">Total Commission Earned</div>
                 </div>
             </div>
         </div>
+
     </div>
     <!--end::Row-->
 
 
     {{-- Performance Graph Start --}}
-    <div class="col-12 mb-3">
+    <div class="col-12 mb-3 p-0">
         <div class="card">
             <div class="card-body p-3">
                 <div class="chart position-relative" style="overflow: hidden">
-                    <div id="advertiserPerformance" class="chart-canvas" height="300"></div>
+                    <div id="advertiserPerformance" style="height: 400px"></div>
                 </div>
             </div>
         </div>
@@ -559,38 +447,98 @@
 
     <!--begin::Products-->
     <div class="card card-flush">
-        <div class="card-header d-flex justify-content-between align-items-center flex-wrap gap-4">
-            <div class="d-flex align-items-center position-relative flex-grow-1 me-5" style="max-width: 300px;">
-                <i class="ri-search-line text-muted position-absolute ms-3"></i>
-                <input type="text" id="search" data-kt-ecommerce-order-filter="search" class="form-control-sm ps-5"
+        <div class="card-header d-flex justify-content-between align-items-center flex-wrap">
+            <!-- Search Input -->
+            <div class="d-flex align-items-center position-relative flex-grow-1 mb-2 mb-md-0" style="max-width: 300px;">
+                <i class="fas fa-search text-muted position-absolute ml-3" style="z-index: 2;"></i>
+                <input type="text" id="search" class="form-control form-control-sm pl-5"
                     placeholder="Search by ID, name, etc..." />
             </div>
 
-            <div class="d-flex align-items-center gap-3 flex-wrap">
-                <div class="mb-3">
-                    <select class="form-select form-select-sm text-muted" id="status" data-control="select2"
-                        data-hide-search="true" data-placeholder="Status" style="min-width: 100%;">
-                        <option value="" selected disabled>Status</option>
-                        <option value="all">All</option>
-                        <option value="{{ \App\Models\Transaction::STATUS_PENDING }}"
-                            @if(\App\Models\Transaction::STATUS_PENDING == request()->status) selected @endif>Pending
-                        </option>
-                        <option value="{{ \App\Models\Transaction::STATUS_APPROVED }}"
-                            @if(\App\Models\Transaction::STATUS_APPROVED == request()->status) selected @endif>
-                            Approved</option>
-                        <option value="{{ \App\Models\Transaction::STATUS_DECLINED }}"
-                            @if(\App\Models\Transaction::STATUS_DECLINED == request()->status) selected @endif>
-                            Declined</option>
-                        <option value="{{ \App\Models\Transaction::STATUS_PAID }}"
-                            @if(\App\Models\Transaction::STATUS_PAID == request()->status) selected @endif>Paid
-                        </option>
-                        <option value="{{ \App\Models\Transaction::STATUS_PENDING_PAID }}"
-                            @if(\App\Models\Transaction::STATUS_PENDING_PAID == request()->status) selected @endif>
-                            Pending Paid</option>
-                    </select>
+            <!-- Filter Button & Select -->
+            <div class="d-flex align-items-center flex-wrap mb-2 mb-md-0">
+                <div class="dropdown mr-3">
+                    <button class="btn btn-sm btn-outline-primary d-flex align-items-center" type="button"
+                        data-toggle="dropdown">
+                        <i class="fas fa-sort-down mr-1"></i>
+                        <span>Filter</span>
+                    </button>
+                    <div class="dropdown-menu p-4 shadow" style="min-width: 320px;">
+                        <div class="form-group mb-3">
+                            <label for="pr_report_datepicker" class="small font-weight-bold">Date Range</label>
+                            <input type="text" class="form-control form-control-sm" name="date" id="pr_report_datepicker"
+                                placeholder="Pick date range">
+                        </div>
+                        <div class="form-group mb-0">
+                            <select class="form-control form-control-sm" id="status" data-control="select2"
+                                data-hide-search="true" data-placeholder="Status">
+                                <option value="" selected disabled>Status</option>
+                                <option value="all">All</option>
+                                <option value="{{ \App\Models\Transaction::STATUS_PENDING }}"
+                                    @if(\App\Models\Transaction::STATUS_PENDING == request()->status) selected @endif>Pending
+                                </option>
+                                <option value="{{ \App\Models\Transaction::STATUS_APPROVED }}"
+                                    @if(\App\Models\Transaction::STATUS_APPROVED == request()->status) selected @endif>
+                                    Approved</option>
+                                <option value="{{ \App\Models\Transaction::STATUS_DECLINED }}"
+                                    @if(\App\Models\Transaction::STATUS_DECLINED == request()->status) selected @endif>
+                                    Declined</option>
+                                <option value="{{ \App\Models\Transaction::STATUS_PAID }}"
+                                    @if(\App\Models\Transaction::STATUS_PAID == request()->status) selected @endif>Paid
+                                </option>
+                                <option value="{{ \App\Models\Transaction::STATUS_PENDING_PAID }}"
+                                    @if(\App\Models\Transaction::STATUS_PENDING_PAID == request()->status) selected @endif>
+                                    Pending Paid</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Export Button -->
+                <button type="button" id="exportBttn" class="btn btn-sm btn-success" data-toggle="modal"
+                    data-target="#kt_modal_add_auth_app">
+                    <i class="fas fa-file-export mr-1"></i> Export as CSV
+                </button>
+            </div>
+        </div>
+
+        <!-- Export Modal -->
+        <div class="modal fade" id="kt_modal_add_auth_app" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header d-flex justify-content-between">
+                        <h5 class="modal-title font-weight-bold mb-0">Export Transaction Data</h5>
+                        <button type="button" class="close text-white bg-danger btn btn-sm ml-2" data-dismiss="modal"
+                            aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+
+                    <form action="{{ route('publisher.generate-export-transaction') }}" method="post"
+                        id="kt_advertiser_export_in_form">
+                        @csrf
+                        <div class="modal-body">
+                            <p class="text-muted mb-3">
+                                After your request is completed, the formatted file will be available in
+                                <strong>Tools > Download Export Files</strong>.
+                            </p>
+                            <input type="hidden" id="totalExport" name="total" value="{{ $transactions->total() }}">
+                            <input type="hidden" name="search" id="search_export">
+                            <input type="hidden" name="status" id="status_export">
+                            <input type="hidden" name="region" id="region_export">
+                            <input type="hidden" name="advertiser" id="advertiser_export">
+                            <input type="hidden" name="date" id="date_export">
+                            <input type="hidden" name="export_format" id="export_format" value="csv">
+                        </div>
+                        <div class="modal-footer">
+                            <button type="reset" class="btn btn-light">Discard</button>
+                            <button type="submit" class="btn btn-outline-success">Request to Export Data</button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
+
         <!--begin::Card body-->
         <div class="card-body py-4">
 

@@ -4,11 +4,11 @@
             {{-- Previous Page Link --}}
             @if ($paginator->onFirstPage())
                 <li class="paginate_button page-item previous disabled" id="kt_project_users_table_previous">
-                    <a href="#" aria-controls="kt_project_users_table" data-dt-idx="0" tabindex="0" class="page-link"><i class="ri-arrow-left-s-line"></i></a>
+                    <a href="#" aria-controls="kt_project_users_table" data-dt-idx="0" tabindex="0" class="page-link"><i class="fas fa-chevron-left"></i></a>
                 </li>
             @else
                 <li class="paginate_button page-item previous" id="kt_project_users_table_previous">
-                    <a href="{{ $paginator->previousPageUrl() }}" aria-controls="kt_project_users_table" data-dt-idx="0" tabindex="0" class="page-link"><i class="ri-arrow-left-s-line"></i></a>
+                    <a href="{{ $paginator->previousPageUrl() }}" aria-controls="kt_project_users_table" data-dt-idx="0" tabindex="0" class="page-link"><i class="fas fa-chevron-left"></i></a>
                 </li>
             @endif
 
@@ -34,11 +34,11 @@
             {{-- Next Page Link --}}
             @if ($paginator->hasMorePages())
                 <li class="paginate_button page-item next" id="kt_project_users_table_next">
-                    <a href="{{ $paginator->nextPageUrl() }}" aria-controls="kt_project_users_table" data-dt-idx="{{ $paginator->lastPage() }}" tabindex="0" class="page-link"><i class="ri-arrow-right-s-line"></i></a>
+                    <a href="{{ $paginator->nextPageUrl() }}" aria-controls="kt_project_users_table" data-dt-idx="{{ $paginator->lastPage() }}" tabindex="0" class="page-link"><i class="fas fa-chevron-right"></i></a>
                 </li>
             @else
                 <li class="paginate_button page-item next disabled" id="kt_project_users_table_next">
-                    <a href="#" aria-controls="kt_project_users_table" data-dt-idx="{{ $paginator->lastPage() }}" tabindex="0" class="page-link"><i class="ri-arrow-right-s-line"></i></a>
+                    <a href="#" aria-controls="kt_project_users_table" data-dt-idx="{{ $paginator->lastPage() }}" tabindex="0" class="page-link"><i class="fas fa-chevron-right"></i></a>
                 </li>
             @endif
         </ul>

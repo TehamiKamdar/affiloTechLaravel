@@ -180,13 +180,7 @@ $selected_status = $_GET['status'];
 $selected_status = 'active';
 }
 @endphp
-@section ('navbar')
-     <nav class="navbar navbar-expand-lg navbar-light sticky-top">
-        <div class="w-100 d-flex justify-content-between">
-          <ul class="navbar-nav mr-3">
-            <div class="menu-box"><a href="#" data-toggle="sidebar" class="bg-white rounded-circle nav-link nav-link-lg
-									collapse-btn"> <i data-feather="align-justify"></i></a></div>
-          </ul>
+@section('breadcrumb')
           <ol class="breadcrumb mb-0 bg-white rounded-50 nav-link nav-link-lg
 									collapse-btn">
             <li class="breadcrumb-item mt-1">
@@ -199,11 +193,6 @@ $selected_status = 'active';
               <a href="#" class="text-sm">New Advertisers</a>
             </li>
           </ol>
-          <div class="logout-box">
-            <a href="" class="bg-white rounded-circle nav-link nav-link-lg collapse-btn" title="Logout"><i data-feather="power" class="text-danger"></i></a>
-          </div>
-        </div>
-      </nav>
 @endsection
 @section('content')
 

@@ -16,25 +16,46 @@
 <html lang="en">
 
 <head>
-@include('layouts.publisher.components.head')
-@yield('styles')
+    @include('layouts.publisher.components.head')
+    @yield('styles')
 </head>
 
 <body class="">
+    <div class="loader-container" id="chart-loader" style="display: none;">
+        <div class="loading-overlay">
+            <div class="loading-spinner"></div>
+            <div class="loading-text">Loading data...</div>
+        </div>
+    </div>
     <div class="loader"></div>
     <div id="app">
         <div class="main-wrapper main-wrapper-1">
             <div class="navbar-bg"></div>
+            <nav class="navbar navbar-expand-lg navbar-light sticky-top">
+                <div class="w-100 d-flex justify-content-between">
+                    <ul class="navbar-nav mr-3">
+                        <div class="menu-box"><a href="#" data-toggle="sidebar" class="bg-white rounded-circle nav-link nav-link-lg
+                                            collapse-btn"> <i data-feather="align-justify"></i></a></div>
+                    </ul>
+                    {{-- Main Navbar --}}
+                    @yield('breadcrumb')
 
-            {{-- Main Navbar --}}
-            @yield('navbar')
+                    <div class="logout-box">
+                        <form id="logoutform" style="height: 44px" action="{{ route('logout') }}" method="POST" class="display-hidden">
+                            <button type="submit" href="" class="border-0 bg-white rounded-circle nav-link nav-link-lg collapse-btn" title="Logout"><i data-feather="power" class="text-danger"></i>
+                                {{ csrf_field() }}
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </nav>
             {{-- Aside Navbar --}}
             @include('layouts.publisher.components.aside')
 
             {{-- Main Content --}}
             <div class="main-content">
 
-            @yield('content')
+                @yield('content')
 
             </div>
             {{-- Main Content End --}}
@@ -54,4 +75,37 @@
 <script src="{{asset('publisherAssets/assets/js/scripts.js')}}"></script>
 <!-- Custom JS File -->
 <script src="{{asset('publisherAssets/assets/js/custom.js')}}"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/formvalidation/0.6.2-dev/js/formValidation.min.js" integrity="sha512-DlXWqMPKer3hZZMFub5hMTfj9aMQTNDrf0P21WESBefJSwvJguz97HB007VuOEecCApSMf5SY7A7LkQwfGyVfg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-daterangepicker/3.1/daterangepicker.min.js"></script>
+<script>
+function showLoader(targetId) {
+    const target = document.getElementById(targetId);
+    if (!target) return;
+
+    // Clone loader and add to target
+    const existingLoader = document.querySelector('#chart-loader');
+    if (!existingLoader) return;
+
+    // Prevent duplicate loader in same div
+    if (target.querySelector('.loader-container')) return;
+
+    const loaderClone = existingLoader.cloneNode(true);
+    loaderClone.style.display = 'block';
+    target.appendChild(loaderClone);
+}
+
+function hideLoader(targetId) {
+    const target = document.getElementById(targetId);
+    if (!target) return;
+
+    const loader = target.querySelector('.loader-container');
+    if (loader) loader.remove();
+}
+
+</script>
+
 @yield('scripts')

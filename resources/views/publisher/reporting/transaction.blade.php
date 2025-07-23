@@ -2,21 +2,59 @@
 
 @section('styles')
     <style>
-
-        .filter-toggle.btn {
-            min-width: 90px;
-            transition: none;
+        .stat-card {
+            border-radius: 10px;
+            border: none;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            margin-bottom: 1.5rem;
+            transition: transform 0.3s;
+            background: white;
         }
 
-        .filter-toggle.btn:focus,
-        .filter-toggle.btn:active,
-        .filter-toggle.btn.show {
-            box-shadow: none !important;
-            outline: none !important;
-            background-color: transparent !important;
-            color: #02c0ce !important;
-            border-color: #02c0ce !important; /* Or whatever your border is */
+        .stat-card:hover {
+            transform: translateY(-5px);
         }
+
+        .stat-card .card-body {
+            padding: 1.5rem;
+        }
+
+        .stat-card .icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+        }
+
+        .stat-card.income .icon {
+            background-color: rgba(40, 167, 69, 0.1);
+            color: #28a745;
+        }
+
+        .stat-card.expense .icon {
+            background-color: rgba(220, 53, 69, 0.1);
+            color: #dc3545;
+        }
+
+        .stat-card.balance .icon {
+            background-color: rgba(0, 169, 218, 0.1);
+            color: var(--primary);
+        }
+
+        .stat-card .stat-value {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-card .stat-label {
+            color: #6c757d;
+            font-size: 0.9rem;
+        }
+
         .table-loader {
             position: absolute;
             top: 0;
@@ -27,7 +65,8 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            z-index: 1000; /* Ensure loader is above other content */
+            z-index: 1000;
+            /* Ensure loader is above other content */
         }
 
         .table-loader .spinner-border {
@@ -35,30 +74,35 @@
             height: 3rem;
             border-width: .3em;
         }
-
-        .ml-3 {
-            margin-left: 10px;
-        }
-
-        .display-hidden {
-            display: none;
-        }
     </style>
+@endsection
 
+@section('breadcrumb')
+    <ol class="breadcrumb mb-0 bg-white rounded-50 nav-link nav-link-lg collapse-btn">
+        <li class="breadcrumb-item mt-1">
+            <a href="#"><i data-feather="home"></i></a>
+        </li>
+        <li class="breadcrumb-item mt-1">
+            <a href="#" class="text-sm">Reporting</a>
+        </li>
+        <li class="breadcrumb-item mt-1 active">
+            <a href="#" class="text-sm">Transactions</a>
+        </li>
+    </ol>
 @endsection
 
 @section('scripts')
 
     <script>
 
-        $(document).ready(function() {
+        $(document).ready(function () {
 
             const exportFieldSet = () => {
                 $("#search_export").val($('#search').val());
                 $("#status_export").val($("#status").val());
                 $("#region_export").val($("#region").val());
                 $("#advertiser_export").val($("#advertiser").val());
-                $("#date_export").val($('#pr_report_datepicker').val());
+                $("#date_export").val($('#at_report_datepicker').val());
             }
 
             const passURLFields = () => {
@@ -66,7 +110,7 @@
                     per_page: $('#per-page-select').val(),
                     page: 1,
                     search: $('#search').val(),
-                    date: $('#pr_report_datepicker').val(),
+                    date: $('#at_report_datepicker').val(),
                     status: $('#status').val(),
                     region: $('#region').val(),
                     advertiser: $('#advertiser').val(),
@@ -89,7 +133,7 @@
                     page,
                     per_page: $('#per-page-select').val(),
                     search: $('#search').val(),
-                    date: $('#pr_report_datepicker').val(),
+                    date: $('#at_report_datepicker').val(),
                     status: $('#status').val(),
                     region: $('#region').val(),
                     advertiser: $('#advertiser').val(),
@@ -99,7 +143,7 @@
                 $.ajax({
                     url: '{{ route("publisher.transactions") }}',
                     data: data,
-                    success: function(response) {
+                    success: function (response) {
                         console.log(`Showing ${response.from} to ${response.to} of ${response.total} entries`)
                         $('#totaltransaction').html(numberFormatShort(Number(response.total_transactions) || 0));
                         $('#totalsales').html(numberFormatShort(Number(response.total_sales_amount) || 0));
@@ -111,10 +155,10 @@
                         $('#kt_project_users_table_info').html(`Showing ${response.from} to ${response.to} of ${response.total} entries`);
                         // $('#advertiserTotal').val(response.total);
                     },
-                    error: function(xhr) {
+                    error: function (xhr) {
                         alert('Error occurred: ' + xhr.statusText);
                     },
-                    complete: function() {
+                    complete: function () {
                         $('#table-loader').hide();
                     }
                 });
@@ -192,407 +236,231 @@
             });
 
             // Event Bindings
-            $(document).on('click', '.pagination a', function(e) {
+            $(document).on('click', '.pagination a', function (e) {
                 e.preventDefault();
                 $('.pagination li').removeClass('active');
                 $(this).parent('li').addClass('active');
                 updateAndFetch({ page: new URL($(this).attr('href')).searchParams.get('page') });
             });
 
-            $('#per-page-select, #statusFilter, #apply').on('change click', function() {
+            $('#per-page-select, #statusFilter, #apply').on('change click', function () {
                 passURLFields();
             });
 
-            $('#search').on('keyup', function() {
+            $('#search').on('keyup', function () {
                 passURLFields();
             });
 
-            $("#status").change(function() {
+            $("#status").change(function () {
                 passURLFields();
             });
 
-            $("#applyAdvanceFilter").change(function() {
+            $("#applyAdvanceFilter").change(function () {
                 passURLFields();
             });
 
-            // Dismiss handler
-            KTUtil.on(document.body,  '[data-kt-apply-advance-filter-dismiss="true"]', 'click', function(e) {
-                var menu = KTMenu.getInstance(this);
 
-                if ( menu !== null ) {
-                    passURLFields();
-                    return menu.dismiss(this, e);
-                }
-            });
 
-            $("#exportBttn").click(function() {
+            $("#exportBttn").click(function () {
                 exportFieldSet();
             });
         });
-      function numberFormatShort(num, precision = 1) {
-    if (num == null || isNaN(num)) return "0"; // Handle null, undefined, or NaN values
+        function numberFormatShort(num, precision = 1) {
+            if (num == null || isNaN(num)) return "0"; // Handle null, undefined, or NaN values
 
-    const thresholds = {
-        1: '',
-        1000: 'K',
-        1000000: 'M',
-        1000000000: 'B',
-        1000000000000: 'T'
-    };
+            const thresholds = {
+                1: '',
+                1000: 'K',
+                1000000: 'M',
+                1000000000: 'B',
+                1000000000000: 'T'
+            };
 
-    const keys = Object.keys(thresholds).reverse();
-    for (let key of keys) {
-        let divisor = parseInt(key);
-        if (num >= divisor) {
-            let formatted = (num / divisor).toFixed(precision);
-            return formatted.replace(/\.0+$/, '') + thresholds[key]; // Remove unnecessary decimals
+            const keys = Object.keys(thresholds).reverse();
+            for (let key of keys) {
+                let divisor = parseInt(key);
+                if (num >= divisor) {
+                    let formatted = (num / divisor).toFixed(precision);
+                    return formatted.replace(/\.0+$/, '') + thresholds[key]; // Remove unnecessary decimals
+                }
+            }
+            return num.toFixed(precision);
         }
-    }
-    return num.toFixed(precision);
-}
 
     </script>
 @endsection
 
 @section('heading_right_space')
     <!--begin::Actions-->
-    <div class="d-flex align-items-center gap-2 gap-lg-3">
-        <!--begin::Filter menu-->
-        <div class="m-0">
-            <!--begin::Menu toggle-->
-            <a href="#" class="btn btn-sm btn-flex btn-secondary fw-bold" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
-                <i class="ki-duotone ki-filter fs-6 text-muted me-1">
-                    <span class="path1"></span>
-                    <span class="path2"></span>
-                </i>Advance Filter</a>
-            <!--end::Menu toggle-->
-            <!--begin::Menu 1-->
-            <div class="menu menu-sub menu-sub-dropdown w-250px w-md-300px" data-kt-menu="true" id="kt_menu_65a1215280f21">
-                <!--begin::Header-->
-                <div class="px-7 py-5">
-                    <div class="fs-5 text-gray-900 fw-bold">Filter Options</div>
-                </div>
-                <!--end::Header-->
-                <!--begin::Menu separator-->
-                <div class="separator border-gray-200"></div>
-                <!--end::Menu separator-->
-                <!--begin::Form-->
-                <div class="px-7 py-5">
-                    <!--begin::Input group-->
-                    <div class="mb-10">
-                        <!--begin::Label-->
-                        <label class="form-label fw-semibold">Region:</label>
-                        <!--end::Label-->
-                        <!--begin::Input-->
-                        <div>
-                            <select class="form-select form-select-solid" id="region" multiple="multiple" data-kt-select2="true" data-close-on-select="false" data-placeholder="Select Region" data-dropdown-parent="#kt_menu_65a1215280f21" data-allow-clear="true">
-                                @foreach($transactionCountries as $country)
-                                    <option {{ str_contains(request()->region, $country) ? "selected" : "" }} value="{{ $country }}">{{ $country }}</option>
-                                @endforeach
-                                <option {{ str_contains(request()->region, "unknown")  ? "selected" : "" }} value="unknown">Unknown</option>
-                            </select>
-                        </div>
-                        <!--end::Input-->
-                    </div>
-                    <!--end::Input group-->
-                    <!--begin::Input group-->
-                    <div class="mb-10">
-                        <!--begin::Label-->
-                        <label class="form-label fw-semibold">Advertiser:</label>
-                        <!--end::Label-->
-                        <!--begin::Input-->
-                        <div>
-                            <select class="form-select form-select-solid" multiple="multiple" id="advertiser" data-kt-select2="true" data-close-on-select="false" data-placeholder="Select Advertiser" data-dropdown-parent="#kt_menu_65a1215280f21" data-allow-clear="true">
-                                <option></option>
-                                @foreach($transactionAdvertisers as $advertiser)
-                                    <option value="{{ $advertiser }}" {{ str_contains(request()->advertiser, $advertiser) ? "selected" : "" }}>{{ $advertiser }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <!--end::Input-->
-                    </div>
-                    <!--end::Input group-->
-                    <!--begin::Input group-->
-                    <div class="mb-10">
-                        <!--begin::Label-->
-                        <label class="form-label fw-semibold">Sub-ID:</label>
-                        <!--end::Label-->
-                        <!--begin::Switch-->
-                        <div class="form-check form-switch form-switch-sm form-check-custom form-check-solid">
-                            <input class="form-check-input" type="checkbox" value="true" name="notifications" id="sub_id" @if(request()->sub_id == "true" || !request()->has('sub_id'))checked="checked"@endif />
-                            <label class="form-check-label">Show IDs</label>
-                        </div>
-                        <!--end::Switch-->
-                    </div>
-                    <!--end::Input group-->
-                    <!--begin::Actions-->
-                    <div class="d-flex justify-content-end">
-                        <button type="click" class="btn btn-sm btn-primary" data-kt-apply-advance-filter-dismiss="true">Apply</button>
-                    </div>
-                    <!--end::Actions-->
-                </div>
-                <!--end::Form-->
-            </div>
-            <!--end::Menu 1-->
-        </div>
-        <!--end::Filter menu-->
-        <!--begin::Secondary button-->
-        <!--end::Secondary button-->
-    </div>
+
     <!--end::Actions-->
 @endsection
 
 @section('content')
-            <!-- [ breadcrumb ] start -->
-            <div class="page-header">
-                <div class="page-block">
-                    <div class="row align-items-center">
-                        <div class="col-md-12">
-                            <ul class="breadcrumb">
-                                <li class="breadcrumb-item"><a href="{{ route('publisher.dashboard') }}"><i
-                                            class="ri-home-5-line text-primary"></i></a></li>
-                                <li class="breadcrumb-item"><a href="">Reportings</a></li>
-                                <li class="breadcrumb-item"><a href="">Transactions</a></li>
-                            </ul>
-                        </div>
-                    </div>
+    <div class="d-flex justify-content-end align-items-center gap-3 flex-wrap">
+        <div class="col-3 mb-3 pl-0">
+            <input class="form-control py-1" name="date" id="at_report_datepicker" placeholder="Pick date range" />
+        </div>
+
+        <div class="col-3 mb-3 px-0">
+            <select class="form-control text-muted" id="status" data-control="select2" data-hide-search="true"
+                data-placeholder="Status">
+                <option value="" selected disabled>Status</option>
+                <option value="all">All</option>
+                <option value="{{ \App\Models\Transaction::STATUS_PENDING }}"
+                    @if(\App\Models\Transaction::STATUS_PENDING == request()->status) selected @endif>Pending</option>
+                <option value="{{ \App\Models\Transaction::STATUS_APPROVED }}"
+                    @if(\App\Models\Transaction::STATUS_APPROVED == request()->status) selected @endif>Approved</option>
+                <option value="{{ \App\Models\Transaction::STATUS_DECLINED }}"
+                    @if(\App\Models\Transaction::STATUS_DECLINED == request()->status) selected @endif>Declined</option>
+                <option value="{{ \App\Models\Transaction::STATUS_PAID }}"
+                    @if(\App\Models\Transaction::STATUS_PAID == request()->status) selected @endif>Paid</option>
+                <option value="{{ \App\Models\Transaction::STATUS_PENDING_PAID }}"
+                    @if(\App\Models\Transaction::STATUS_PENDING_PAID == request()->status) selected @endif>Pending Paid
+                </option>
+            </select>
+        </div>
+
+
+    </div>
+
+
+
+
+
+
+    @include("partial.alert")
+
+    <div class="row mt-4 mt-md-0 mt-sm-0">
+        <div class="col-lg-4 col-md-6 col-sm-12 col-12">
+            <div class="stat-card income">
+                <div class="card-body">
+                    <div class="stat-value">{{ \App\Helper\Methods::numberFormatShort($totalTransactions) }}</div>
+                    <div class="stat-label">Total Transactions</div>
                 </div>
             </div>
-            <!-- [ breadcrumb ] end -->
-            @include("partial.alert")
-
-            <div class="row mt-4 mt-md-0 mt-sm-0">
-                <div class="col-lg-4 col-sm-6 col-12 mb-md-4 mb-sm-4 mb-xs-4">
-                    <div class="card">
-                        <span class="mask bg-white opacity-10"></span>
-                        <div class="card-body p-3 position-relative">
-                            <div class="row">
-                                <div class="col-8 text-start">
-                                    <div class="bg-primary-light border-radius-2xl d-flex align-items-center justify-content-center"
-                                    style="width: 50px; height: 50px;">
-                                    <i class="ri-money-dollar-circle-fill text-primary ri-2x"></i>
-                                    </div>
-
-                                    <h5 class="text-dark font-weight-bolder mb-0 mt-3" id='totaltransaction'>
-                                    {{ \App\Helper\Methods::numberFormatShort($totalTransactions) }}
-                                    </h5>
-                                    <span class="text-light text-md fw-bold ">Total Transactions</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-sm-6 col-12 mb-md-4 mb-sm-4 mb-xs-4">
-                    <div class="card">
-                        <span class="mask bg-white opacity-10"></span>
-                        <div class="card-body p-3 position-relative">
-                            <div class="row">
-                                <div class="col-8 text-start">
-                                    <div class="bg-green-light border-radius-2xl d-flex align-items-center justify-content-center"
-                                    style="width: 50px; height: 50px;">
-                                    <i class="ri-money-dollar-circle-fill text-green ri-2x"></i>
-                                    </div>
-
-                                    <h5 class="text-dark font-weight-bolder mb-0 mt-3" id="totalsales">
-                                    {{ \App\Helper\Methods::numberFormatShort($totalSalesAmount) }}
-                                    </h5>
-                                    <span class="text-light text-md fw-bold ">Total Sales</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-sm-6 col-12 mb-md-4 mb-sm-4 mb-xs-4">
-                    <div class="card">
-                        <span class="mask bg-white opacity-10"></span>
-                        <div class="card-body p-3 position-relative">
-                            <div class="row">
-                                <div class="col-8 text-start">
-                                    <div class="bg-yellow-light border-radius-2xl d-flex align-items-center justify-content-center"
-                                    style="width: 50px; height: 50px;">
-                                    <i class="ri-money-dollar-circle-fill text-golden ri-2x"></i>
-                                    </div>
-
-                                    <h5 class="text-dark font-weight-bolder mb-0 mt-3" id="totalcommission">
-                                    {{ \App\Helper\Methods::numberFormatShort($totalCommissionAmount) }}
-                                    </h5>
-                                    <span class="text-light text-md fw-bold ">Total Commission Earned</span>
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
+        </div>
+        <div class="col-lg-4 col-md-6 col-sm-12 col-12">
+            <div class="stat-card expense">
+                <div class="card-body">
+                    <div class="stat-value">${{ \App\Helper\Methods::numberFormatShort($totalSalesAmount) }}</div>
+                    <div class="stat-label">Total Sales</div>
                 </div>
             </div>
+        </div>
+        <div class="col-lg-4 col-md-6 col-sm-12 col-12">
+            <div class="stat-card balance">
+                <div class="card-body">
+                    <div class="stat-value">${{ \App\Helper\Methods::numberFormatShort($totalCommissionAmount) }}</div>
+                    <div class="stat-label">Total Commission Earned</div>
+                </div>
+            </div>
+        </div>
 
-            <!--begin::Products-->
-            <div class="card card-flush">
-                <!--begin::Card header-->
-                <div class="card-header d-flex justify-content-between align-items-center flex-wrap gap-4">
-                    <div class="d-flex align-items-center position-relative flex-grow-1 me-5" style="max-width: 300px;">
-                        <i class="ri-search-line text-muted position-absolute ms-3"></i>
-                        <input type="text"
-                            id="search"
-                            data-kt-ecommerce-order-filter="search"
-                            class="form-control-sm ps-5"
-                            placeholder="Search by ID, name, etc..." />
-                    </div>
+    </div>
 
-                    <div class="d-flex align-items-center gap-3 flex-wrap">
-                        <div class="dropdown">
-                            <button class="btn btn-sm btn-outline-primary d-flex align-items-center gap-1 filter-toggle"
-                                    type="button"
-                                    data-bs-toggle="dropdown"
-                                    aria-expanded="false"
-                                    style="min-width: 90px; transition: none;">
-                                <i class="ri-filter-3-line"></i>
-                                <span>Filter</span>
+    <!--begin::Products-->
+    <div class="card card-flush">
+        <!--begin::Card header-->
+        <div class="card-header d-flex justify-content-between align-items-center flex-wrap gap-4">
+            <div class="d-flex align-items-center position-relative flex-grow-1 mr-3" style="max-width: 300px;">
+                <i class="fas fa-search text-muted position-absolute ml-3" style="z-index: 1;"></i>
+                <input type="text" id="search" class="form-control form-control-sm pl-5"
+                    placeholder="Search by ID, name, etc..." />
+            </div>
+
+            <div class="mb-3 d-flex align-items-end">
+                <button type="button" id="exportBttn" data-toggle="modal" data-target="#kt_modal_add_auth_app"
+                    class="btn btn-outline-success w-100">
+                    <i class="fas fa-upload"></i> Export
+                </button>
+            </div>
+            <div class="modal fade" id="kt_modal_add_auth_app" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header d-flex justify-content-between align-items-start">
+                            <div>
+                                <h5 class="modal-title font-weight-bold mb-1">Export Transaction Data</h5>
+                                <small class="text-muted">
+                                    After your request is completed, the formatted file you requested will be available for
+                                    download in the
+                                    <b>Tools > Download Export Files</b> section.
+                                </small>
+                            </div>
+                            <button type="button" class="close btn btn-sm bg-danger ml-3" data-dismiss="modal"
+                                aria-label="Close">
+                                <span aria-hidden="true" class="text-lg text-white">&times;</span>
                             </button>
+                        </div>
 
-                            <div class="dropdown-menu p-4 shadow-sm" style="min-width: 320px;">
-                                <div class="mb-3">
-                                    <label for="pr_report_datepicker" class="form-label fw-semibold small">Date Range</label>
-                                    <input class="form-control form-control-sm h-auto py-1"
-                                        name="date"
-                                        id="pr_report_datepicker"
-                                        placeholder="Pick date range"
-                                        style="min-width: 100%;" />
-                                </div>
+                        <form class="w-100" id="kt_advertiser_export_in_form"
+                            action="{{ route('publisher.generate-export-transaction') }}" method="post" novalidate>
+                            @csrf
 
-                                <div class="mb-2">
-                                    <label for="status" class="form-label fw-semibold small">Status</label>
-                                    <select class="form-select form-select-sm text-muted"
-                                            id="status"
-                                            data-control="select2"
-                                            data-hide-search="true"
-                                            data-placeholder="Status"
-                                            style="min-width: 100%;">
-                                        <option value="" selected disabled>Status</option>
-                                        <option value="all">All</option>
-                                        <option value="{{ \App\Models\Transaction::STATUS_PENDING }}" @if(\App\Models\Transaction::STATUS_PENDING == request()->status) selected @endif>Pending</option>
-                                        <option value="{{ \App\Models\Transaction::STATUS_APPROVED }}" @if(\App\Models\Transaction::STATUS_APPROVED == request()->status) selected @endif>Approved</option>
-                                        <option value="{{ \App\Models\Transaction::STATUS_DECLINED }}" @if(\App\Models\Transaction::STATUS_DECLINED == request()->status) selected @endif>Declined</option>
-                                        <option value="{{ \App\Models\Transaction::STATUS_PAID }}" @if(\App\Models\Transaction::STATUS_PAID == request()->status) selected @endif>Paid</option>
-                                        <option value="{{ \App\Models\Transaction::STATUS_PENDING_PAID }}" @if(\App\Models\Transaction::STATUS_PENDING_PAID == request()->status) selected @endif>Pending Paid</option>
+                            <div class="modal-body mx-auto w-100" style="max-width: 500px;">
+                                <input type="hidden" id="totalExport" name="total" value="{{ $transactions->total() }}">
+                                <input type="hidden" name="search" id="search_export">
+                                <input type="hidden" name="status" id="status_export">
+                                <input type="hidden" name="region" id="region_export">
+                                <input type="hidden" name="advertiser" id="advertiser_export">
+                                <input type="hidden" name="date" id="date_export">
+
+                                <div class="form-group">
+                                    <label for="export_format" class="small font-weight-bold">Select Export Format:</label>
+                                    <select name="export_format" id="export_format" class="form-control select2"
+                                        data-placeholder="Select a format" data-hide-search="true">
+                                        <option></option>
+                                        <option value="csv">CSV</option>
                                     </select>
                                 </div>
                             </div>
-                        </div>
 
-
-                        <button type="button"
-                                id="exportBttn"
-                                class="btn btn-sm btn-outline-success"
-                                data-bs-toggle="modal"
-                                data-bs-target="#kt_modal_add_auth_app">
-                            <i class="ri-upload-2-line"></i>
-                            Export
-                        </button>
-                    </div>
-
-
-                    <!--begin::Modal - Adjust Balance-->
-                    <div class="modal fade" id="kt_modal_add_auth_app" tabindex="-1" aria-hidden="true">
-                        <!--begin::Modal dialog-->
-                        <div class="modal-lg modal-dialog modal-dialog-centered">
-                            <!--begin::Modal content-->
-                            <div class="modal-content">
-                                <!--begin::Modal header-->
-                                <div class="modal-header">
-                                    <!--begin::Modal title-->
-                                    <h4 class="fw-bold">
-                                        Export Transaction Data
-                                        <div class="fs-7 fw-semibold text-muted">After your request is completed, the formatted file you requested will be available for download in the <b>Tools > Download Export Files</b> section.</div>
-                                    </h4>
-                                    <!--end::Modal title-->
-                                    <!--begin::Close-->
-                                    <div class="btn btn-sm btn-close bg-danger" data-bs-dismiss="modal"
-                                        data-kt-export-data-modal-action="close">
-                                    </div>
-                                    <!--end::Close-->
-                                </div>
-                                <!--end::Modal header-->
-                                <!--begin::Modal body-->
-                                <form class="form w-100" novalidate="novalidate" id="kt_advertiser_export_in_form" action="{{ route('publisher.generate-export-transaction') }}" method="post" >
-                                    @csrf
-                                    <div class="modal-body mx-auto w-50 scroll-y">
-                                    <!--begin::Form-->
-                                        <input type="hidden" id="totalExport" name="total" value="{{ $transactions->total() }}">
-                                        <input type="hidden" name="search" id="search_export">
-                                        <input type="hidden" name="status" id="status_export">
-                                        <input type="hidden" name="region" id="region_export">
-                                        <input type="hidden" name="advertiser" id="advertiser_export">
-                                        <input type="hidden" name="date" id="date_export">
-
-                                        <!--begin::Input group-->
-                                        <div class="fv-row mb-10">
-                                            <!--begin::Label-->
-                                            <label class="required fs-6 fw-semibold form-label mb-2">Select Export Format:</label>
-                                            <!--end::Label-->
-                                            <!--begin::Input-->
-                                            <select name="export_format" data-control="select2" data-placeholder="Select a format" data-hide-search="true" class="form-select form-select-solid fw-bold">
-                                                <option></option>
-                                                <option value="csv">CSV</option>
-                                            </select>
-                                            <!--end::Input-->
-                                        </div>
-                                        <!--end::Input group-->
-
-                                    </div>
-                                    <!--end::Modal body-->
-                                    <div class="modal-footer">
-                                        <!--begin::Actions-->
-                                        <div class="text-center">
-                                            <button type="reset" class="btn btn-light me-3" data-kt-users-modal-action="cancel">Discard</button>
-                                            <button type="submit" class="btn btn-outline-success" id="kt_advertiser_export_submit" data-kt-users-modal-action="submit">
-                                                <span class="indicator-label">Request to Export Data</span>
-                                            </button>
-                                        </div>
-                                        <!--end::Actions-->
-                                    </div>
-                                </form>
-                                <!--end::Form-->
+                            <div class="modal-footer">
+                                <button type="reset" class="btn btn-light mr-2">Discard</button>
+                                <button type="submit" class="btn btn-outline-success">
+                                    Request to Export Data
+                                </button>
                             </div>
-                            <!--end::Modal content-->
-                        </div>
-                        <!--end::Modal dialog-->
-                    </div>
-                    <!--end::Modal - New Card-->
-                </div>
-                <!--end::Card header-->
-                <!--begin::Card body-->
-                <div class="card-body py-4">
-
-                    <div id="transaction-container">
-                        @include("publisher.reporting.ajax", compact('transactions'))
-                    </div>
-
-                    <div class="row mt-3">
-                        <div class="col-12 col-md-6 d-flex align-items-center justify-content-between">
-                            <div class="dataTables_length" id="kt_project_users_table_length">
-                                <label>
-                                    <select name="per_page" id="per-page-select" class="form-select-sm">
-                                        <option value="10" {{ request('per_page') == 10 ? 'selected' : '' }}>10</option>
-                                        <option value="25" {{ request('per_page') == 25 ? 'selected' : '' }}>25</option>
-                                        <option value="50" {{ empty(request('per_page')) || request('per_page') == 50 ? 'selected' : '' }}>50</option>
-                                        <option value="100" {{ request('per_page') == 100 ? 'selected' : '' }}>100</option>
-                                    </select>
-                                </label>
-                            </div>
-                            <div class="dataTables_info text-sm" id="kt_project_users_table_info" role="status" aria-live="polite">
-                                Showing {{ $from }} to {{ $to }} of {{ $total }} entries
-                            </div>
-                        </div>
-
-                        <div class="col-12 col-md-6 d-flex align-items-center justify-content-end" id="pagination-container">
-                            {{ $transactions->withQueryString()->links('partial.publisher_pagination') }}
-                        </div>
-
+                        </form>
                     </div>
                 </div>
-                <!--end::Card body-->
             </div>
-            <!--end::Products-->
+
+        </div>
+        <!--end::Card header-->
+        <!--begin::Card body-->
+        <div class="card-body py-4">
+
+            <div id="transaction-container">
+                @include("publisher.reporting.ajax", compact('transactions'))
+            </div>
+
+            <div class="row mt-3">
+                <div class="col-12 col-md-6 d-flex align-items-center justify-content-between">
+                    <div class="dataTables_length" id="kt_project_users_table_length">
+                        <label>
+                            <select name="per_page" id="per-page-select" class="form-select-sm">
+                                <option value="10" {{ request('per_page') == 10 ? 'selected' : '' }}>10</option>
+                                <option value="25" {{ request('per_page') == 25 ? 'selected' : '' }}>25</option>
+                                <option value="50" {{ empty(request('per_page')) || request('per_page') == 50 ? 'selected' : '' }}>50</option>
+                                <option value="100" {{ request('per_page') == 100 ? 'selected' : '' }}>100</option>
+                            </select>
+                        </label>
+                    </div>
+                    <div class="dataTables_info text-sm" id="kt_project_users_table_info" role="status" aria-live="polite">
+                        Showing {{ $from }} to {{ $to }} of {{ $total }} entries
+                    </div>
+                </div>
+
+                <div class="col-12 col-md-6 d-flex align-items-center justify-content-end" id="pagination-container">
+                    {{ $transactions->withQueryString()->links('partial.publisher_pagination') }}
+                </div>
+
+            </div>
+        </div>
+        <!--end::Card body-->
+    </div>
+    <!--end::Products-->
 
 
 @endsection

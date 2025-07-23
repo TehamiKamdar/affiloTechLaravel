@@ -12,18 +12,35 @@
     <table class="table nowrap w-100" id="myTable">
     <thead>
         <tr>
-            <th><small class="text-muted d-block text-xs fw-bold">Advertiser</small></th>
-            <th><small class="text-muted d-block text-xs fw-bold">Website Url</small></th>
-            <th><small class="text-muted d-block text-xs fw-bold">Tracking Link</small></th>
-            <th><small class="text-muted d-block text-xs fw-bold">Short Link</small></th>
-            <th><small class="text-muted d-block text-xs fw-bold">Sub Id</small></th>
-
+            <th scope="col">Advertiser</th>
+            <th scope="col">Tracking Short URL</th>
+            <th scope="col">Tracking URL</th>
+            <th scope="col">Actions</th>
         </tr>
     </thead>
     <tbody>
         @if(count($links))
             @foreach($links as $link)
-                <tr>
+            <tr>
+                    <td title="Visit Website"><a href="{{ $link->url }}" class="nav-link px-0">{{ \Illuminate\Support\Str::limit(blank($link->name) ? '-' : $link->name, 20, '....') }}</a></td>
+                    <td>
+                        <a href="{{ $link->tracking_url_short }}" class="nav-link px-0" target="_blank">
+                                {{ $link->tracking_url_short }}
+                        </a>
+                    </td>
+                    <td>
+                        <a href="{{ $link->tracking_url_long}}" class="nav-link px-0 tracking-link" target="_blank">
+                                {{ \Illuminate\Support\Str::limit($link->tracking_url_long ?? "-", 30, '...') }}
+                        </a>
+                    </td>
+                    <td>
+                        <button class="btn btn-sm btn-primary copy-link-btn">
+                            <i class="fas fa-copy"></i>
+                        </button>
+                    </td>
+                </tr>
+
+                {{-- <tr>
                     <td>
                         <div class="d-flex align-items-center">
 
@@ -51,7 +68,7 @@
                     <td class="link-cell">
                         <p class="text-muted text-sm">{{ $link->sub_id ?? "-" }}</p>
                     </td>
-                </tr>
+                </tr> --}}
             @endforeach
         @else
             <tr>

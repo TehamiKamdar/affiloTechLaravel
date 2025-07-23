@@ -49,7 +49,7 @@
 
                 </span>
               </div>
-              <div class="card-body">
+              <div class="card-body pb-0">
 
                 <div class="advertiser-attributes">
                   <div class="attribute-item">
@@ -144,7 +144,7 @@
                   </div>
                 </div>
               </div>
-              <div class="card-footer">
+              <div class="card-footer pt-0">
                 <div class="row justify-content-around">
                 <a href="{{ route("publisher.view-advertiser", ['advertiser' => $advertiser->id]) }}" class="btn btn-sm" style="background-color: #00a9da; color: white;">View Details</a>
                 {{-- <button class="btn btn-sm btn-success" style="color: white;">Active</button> --}}
