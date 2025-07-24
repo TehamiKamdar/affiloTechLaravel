@@ -2003,6 +2003,7 @@ pre code {
 .form-control[readonly] {
     background-color: #e9ecef;
     opacity: 1;
+    cursor: not-allowed;
 }
 select.form-control:focus::-ms-value {
     color: #495057;

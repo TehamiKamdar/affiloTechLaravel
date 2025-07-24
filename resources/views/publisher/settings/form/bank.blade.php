@@ -1,5 +1,4 @@
 
-    <div class="card-body bg-white">
 
         <!-- Alert -->
         <div class="alert alert-warning d-flex align-items-center" role="alert">
@@ -10,7 +9,7 @@
         <!-- Bank Country -->
         <div class="mb-3">
             <label for="bank_location" class="form-label fw-semibold">Bank Country</label>
-            <select class="form-select js-example-basic-single" id="bank_location" name="bank_location" >
+            <select class="form-control js-example-basic-single" id="bank_location" name="bank_location" >
                 <option value="">Select Bank Location</option>
                 @foreach($countries as $country)
                     <option value="{{ $country['id'] }}" {{ isset($payment->bank_location) && $payment->bank_location == $country['id'] ? 'selected' : '' }}>
@@ -47,8 +46,8 @@
 
             <!-- Account Type -->
             <div class="mb-3" id="bankAccountTypeContent">
-                <label for="account_type" class="form-label fw-semibold">Bank Account Type</label> 
-                <select class="form-select js-example-basic-single" id="account_type" name="account_type" >
+                <label for="account_type" class="form-label fw-semibold">Bank Account Type</label>
+                <select class="form-control js-example-basic-single" id="account_type" name="account_type" >
                     <option value="">Select Account Type</option>
                     <option value="checking" {{ isset($payment->account_type) && $payment->account_type == 'checking' ? 'selected' : '' }}>Checking</option>
                     <option value="saving" {{ isset($payment->account_type) && $payment->account_type == 'saving' ? 'selected' : '' }}>Saving</option>
@@ -62,4 +61,3 @@
             2% processing fee will be charged, capped to AUD 30.00.
         </div>
 
-    </div>

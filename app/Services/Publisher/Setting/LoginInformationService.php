@@ -22,7 +22,7 @@ class LoginInformationService
             $title
         ];
 
-        return view("publisher.settings.login-information", compact('title', 'headings', 'publisher'));
+        return view("publisher.settings.login-information", compact('user','title', 'headings', 'publisher'));
     }
 
     public function changeUpdateEmail(Request $request)

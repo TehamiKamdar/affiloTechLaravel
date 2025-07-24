@@ -911,7 +911,7 @@
             <div class="col-5">
                 <div class="card mb-4">
                     <div class="card-header">
-                        <h6 class="mb-0 text-center">Advertisers Record</h6>
+                        <h4 class="mb-0 text-center">Advertisers Record</h4>
                     </div>
                     <div class="card-body d-flex justify-content-center">
                         <div id="advertisersChart" style="width: 100%; height: 300px;"></div>
@@ -922,7 +922,7 @@
             <div class="col-7">
                 <div class="card mb-4">
                     <div class="card-header">
-                        <h6 class="mb-0 text-center">Top 5 Advertisers Sales</h6>
+                        <h4 class="mb-0 text-center">Top 5 Advertisers Sales</h4>
                     </div>
                     <div class="card-body d-flex justify-content-center">
                         <div id="topAdvertiserBar" style="height:400px; width: 100%;"></div>
@@ -945,64 +945,7 @@
         </div>
     </div>
 </div>
-
-<div class="row">
-            <div class="col-12">
-              <div class="card">
-                <div class="card-header">
-                  <h4>
-                    Link Generator
-                  </h4>
-                </div>
-                <div class="card-body">
-                  <form>
-                    <div class="form-group">
-                        <label for="dropdownSelect" class="text-primary"><i class="fas fa-list-ul mr-2"></i>Select Any
-                            Advertiser</label>
-                        <select class="custom-select" id="dropdownSelect" required>
-                            <option selected disabled>Choose an option...</option>
-                            @foreach(\App\Helper\PublisherData::getAdvertiserList() as $advertiserList)
-                                <option value="{{ $advertiserList['sid'] }}" @if(isset($advertiser->sid) && $advertiser->sid === $advertiserList['sid']) selected @endif data-dd="{{ $advertiserList['deeplink_enabled'] }}">{{ $advertiserList['name'] }}</option>
-                            @endforeach
-                        </select>
-                        <div class="mt-2" id="deeplinkStatusContainer">
-
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                      <label for="input1" class="text-primary"><i class="fas fa-tag mr-2"></i>Enter Landing Page
-                        URL</label>
-                      <div class="input-group mb-3">
-                        <div class="input-group-prepend">
-                          <span class="input-group-text"><i class="fas fa-keyboard"></i></span>
-                        </div>
-                        <input type="text" disabled class="form-control text-black" id="input1" placeholder="Enter Landing Page URL..." required>
-                      </div>
-                    </div>
-
-                    <div class="form-group">
-                      <label for="input2" class="text-primary"><i class="fas fa-barcode mr-2"></i>Enter Sub ID <span
-                          class="text-danger">(Optional)</span></label>
-                      <div class="input-group mb-3">
-                        <div class="input-group-prepend">
-                          <span class="input-group-text"><i class="fas fa-keyboard"></i></span>
-                        </div>
-                        <input type="text" disabled class="form-control text-black" id="input2"
-                          placeholder="Enter Sub ID...">
-                      </div>
-                    </div>
-
-                    <div class="form-group text-center mt-5">
-                      <button type="submit" class="btn btn-primary btn-lg px-5">
-                        <i class="fas fa-check mr-2"></i> Create
-                      </button>
-                    </div>
-                  </form>
-                </div>
-              </div>
-            </div>
-          </div>
+@include('publisher.widgets.deeplink')
 @endsection
 @section('scripts')
     <!-- JS Libraies -->

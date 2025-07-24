@@ -7,8 +7,7 @@
         <!-- Header with gradient background -->
         <div class="d-flex justify-content-between align-items-center p-3" style="background: linear-gradient(90deg, #f5f7fa 0%, #e8f0f8 100%);">
             <div class="d-flex align-items-center gap-2">
-                <img src="{{ \App\Helper\Static\Methods::staticAsset('img/paypal.png') }}" alt="PayPal" style="height: 24px;">
-                <span class="text-muted small">Default Payment</span>
+                <img src="{{ asset('img/paypal.png') }}" alt="PayPal" style="height: 24px;">
             </div>
             <span class="badge rounded-pill" style="background-color: #009cde; color: white; font-size: 0.65rem;">ACTIVE</span>
         </div>

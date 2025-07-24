@@ -1,0 +1,239 @@
+
+  :root {
+    --primary-color: #00a9da;
+    --primary-light: #8594f4;
+    --primary-dark: #5666d6;
+    --text-light: #fff;
+    --text-dark: #343a40;
+  }
+
+  .profile-header {
+    /* background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-light) 100%); */
+    background: var(--primary-color);
+    border-radius: 0 0 20px 20px;
+    box-shadow: 0 10px 30px rgba(103, 119, 239, 0.3);
+    padding: 2rem 0;
+    margin-bottom: 2rem;
+    color: var(--text-light);
+  }
+
+  .profile-avatar {
+    width: 150px;
+    height: 150px;
+    border: 5px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+  }
+
+  .profile-avatar:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+  }
+
+  .profile-card {
+    border-radius: 15px;
+    border: none;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+    margin-bottom: 1.5rem;
+    overflow: hidden;
+  }
+
+  .profile-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  }
+
+  .profile-card-header {
+    background-color: var(--primary-color);
+    color: var(--text-light);
+    padding: 1rem 1.5rem;
+    font-weight: 600;
+    border-radius: 15px 0 0 !important;
+  }
+
+  .stat-item {
+    text-align: center;
+    padding: 1.5rem;
+    border-radius: 10px;
+    background-color: #fff;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.03);
+    transition: all 0.3s ease;
+  }
+
+  .stat-item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(103, 119, 239, 0.1);
+  }
+
+  .stat-icon {
+    font-size: 2rem;
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+  }
+
+  .skill-badge {
+    background-color: #f1f5fe;
+    color: var(--primary-dark);
+    padding: 0.5rem 1rem;
+    margin: 0.3rem;
+    border-radius: 50px;
+    font-weight: 500;
+    display: inline-block;
+  }
+
+  .progress {
+    height: 10px;
+    border-radius: 5px;
+  }
+
+  .progress-bar {
+    background-color: var(--primary-color);
+  }
+
+  .social-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: rgba(103, 119, 239, 0.1);
+    color: var(--primary-color);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 0.3rem;
+    transition: all 0.3s ease;
+  }
+
+  .social-icon:hover {
+    background-color: var(--primary-color);
+    color: white;
+    transform: scale(1.1);
+  }
+
+  .btn-edit {
+    background-color: white;
+    color: var(--primary-color);
+    border: 2px solid var(--primary-color);
+    font-weight: 600;
+    padding: 0.5rem 1.5rem;
+    border-radius: 50px;
+    transition: all 0.3s ease;
+  }
+
+  .btn-edit:hover {
+    color: var(--primary-color);
+    transform: translateY(-2px) scale(1.002);
+  }
+
+  .tab-content {
+    padding: 1.5rem 0;
+  }
+
+  .nav-pills .nav-link.active {
+    background-color: var(--primary-color);
+    border-radius: 50px;
+  }
+
+  .nav-pills .nav-link {
+    color: var(--text-dark);
+    font-weight: 500;
+  }
+
+  /* Previous styles remain the same */
+
+  /* Add these new styles for timeline */
+  .timeline {
+    position: relative;
+    padding-left: 50px;
+  }
+
+  .timeline:before {
+    content: '';
+    position: absolute;
+    left: 20px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: #e9ecef;
+  }
+
+  .timeline-item {
+    position: relative;
+    margin-bottom: 30px;
+  }
+
+  .timeline-badge {
+    position: absolute;
+    left: -50px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+  }
+
+  .timeline-content {
+    padding: 15px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  }
+
+  .timeline-item:last-child {
+    margin-bottom: 0;
+  }
+
+
+  select option {
+    padding: 12px 16px;
+    background-color: white;
+    color: var(--primary-color);
+    font-weight: 500;
+    border-bottom: 1px solid #f0f2fc;
+  }
+
+  option:hover {
+    background-color: var(--primary-very-light) !important;
+  }
+
+  select option:checked,
+  select option:active {
+    background-color: var(--primary-very-light) !important;
+    color: var(--primary-color);
+  }
+
+
+  .form-control {
+    height: 42px;
+    border: 2px solid #e0e3ed;
+    padding: 0.75rem;
+    color: var(--primary-color);
+    font-weight: 500;
+    transition: all 0.3s ease;
+  }
+
+  .form-control:focus {
+    box-shadow: none;
+    border-color: var(--primary-color);
+  }
+.payment-option {
+    margin-bottom: 1rem;
+  }
+
+  .payment-label {
+    display: flex;
+    padding: 1.5rem;
+    border: 2px solid #ccc;
+    border-radius: 0.75rem;
+    cursor: pointer;
+    transition: 0.3s;
+    background-color: #f9f9f9;
+  }
+
+  .payment-option input:checked+.payment-label {
+    border-color: #007bff;
+    background-color: #e7f1ff;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, .25);
+  }

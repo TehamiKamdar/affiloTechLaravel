@@ -8,14 +8,13 @@
 
 <div class="table-responsive">
     <!--begin::Table-->
-<table class="table align-middle table-row-dashed fs-6 gy-5" id="kt_table_users">
+<table class="table table-hover fs-6 gy-5" id="kt_table_users">
     <thead>
-        <tr class="text-start text-muted fw-bold fs-7 text-uppercase gs-0">
-            <th><small class="text-muted d-block text-xs fw-bold">Advertiser</small></th>
-            <th><small class="text-muted d-block text-xs fw-bold">Date</small></th>
-            <th><small class="text-muted d-block text-xs fw-bold">Sales Amount</small></th>
-            <th><small class="text-muted d-block text-xs fw-bold">Comm. Amount</small></th>
-            
+        <tr>
+            <th>Advertiser</th>
+            <th>Date</th>
+            <th>Sales Amount</th>
+            <th>Comm. Amount</th>
         </tr>
     </thead>
     <tbody class="text-gray-600 fw-semibold">
@@ -43,7 +42,7 @@
                             <h6 class="fw-semibold text-dark mt-2">{{ $transaction->transaction_date }}</h6>
                         </div>
                     </td>
-                    
+
                     <td class="pe-0">
                         <div>
                             <h6 class="fw-semibold text-dark mt-2">${{ number_format($transaction->sale_amount ?? 0, 2) }}</h6>
@@ -55,13 +54,13 @@
                         </div>
                     </td>
 
-                    
+
                 </tr>
             @endforeach
         @else
             <tr>
                 <td colspan="6" class="text-center">
-                    <small>No Transactions Exist</small>
+                    <small>No Transactions Record</small>
                 </td>
             </tr>
         @endif

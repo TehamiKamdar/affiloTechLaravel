@@ -1,6 +1,8 @@
 @extends('layouts.publisher.layout')
 
 @section('styles')
+    <link rel="stylesheet" href="{{ asset('publisherAssets/assets/css/profile.css') }}">
+
     <style>
         .modal-footer {
             justify-content: center;
@@ -12,7 +14,19 @@
         }
     </style>
 @endsection
-
+@section('breadcrumb')
+<ol class="breadcrumb mb-0 bg-white rounded-50 nav-link nav-link-lg collapse-btn">
+    <li class="breadcrumb-item mt-1">
+        <a href="#"><i data-feather="home"></i></a>
+    </li>
+    <li class="breadcrumb-item mt-1">
+        <a href="#" class="text-sm">Profile</a>
+    </li>
+    <li class="breadcrumb-item mt-1 active">
+        <a href="#" class="text-sm">Websites</a>
+    </li>
+</ol>
+@endsection
 @section('scripts')
     <script
         src="{{ \App\Helper\Methods::staticAsset('panel/assets/plugins/jquery-validation/js/jquery.validate.min.js') }}"></script>
@@ -44,27 +58,63 @@
                     <div class="card-header d-flex justify-content-between align-items-center bg-white">
                         <h5 class="mb-0">Websites</h5>
                         <button type="button" class="btn btn-sm btn-primary" onclick="openWebsiteModal()"
-                            data-bs-toggle="modal" data-bs-target="#website-modal" title="Click to add a website">
+                            data-toggle="modal" data-target="#website-modal" title="Click to add a website">
                             <i class="bi bi-plus-circle me-1"></i> Add Website
                         </button>
                     </div>
 
                     <div class="table-responsive p-4">
-                        <table class="table align-middle">
+                        <table class="table">
                             <thead>
                                 <tr>
-                                    <th><small class="text-muted d-block text-xs fw-bold">Name</small></th>
-                                    <th><small class="text-muted d-block text-xs fw-bold">Type</small></th>
-                                    <th><small class="text-muted d-block text-xs fw-bold">Category</small></th>
-                                    <th><small class="text-muted d-block text-xs fw-bold">Last Updated</small></th>
-                                    <th><small class="text-muted d-block text-xs fw-bold">Status</small></th>
-                                    <th><small class="text-muted d-block text-xs fw-bold">Action</small></th>
+                                    <th>Name</th>
+                                    <th>Type</th>
+                                    <th>Category</th>
+                                    <th>Last Updated</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody id="websiteContent">
-                                
+
                                 @foreach($websites as $website)
-                                    <tr class="border-bottom" id="website-row-{{ $website->id }}">
+                                <tr class="border-bottom">
+                                    <td>
+                                        <a href="{{ url($website->url) }}" target="_blank" class="text-primary">{{ $website->name }}</a>
+                                    </td>
+                                    <td title="{{ $website->partner_types }}">
+                                        {{ $website->trim_partner_types }}
+                                    </td>
+                                    <td title="{{ $website->categories }}">
+                                        {{ $website->trim_categories }}
+                                    </td>
+                                    <td>
+                                        {{ \Carbon\Carbon::parse($website->updated_at)->format('d M Y') }}
+                                    </td>
+                                    <td>
+                                        @if($website->status == \App\Models\Website::ACTIVE)
+                                            <span class="badge badge-success">Active</span>
+                                        @elseif($website->status == \App\Models\Website::PENDING)
+                                            <span class="badge badge-warning text-dark">Pending</span>
+                                        @elseif($website->status == \App\Models\Website::REJECTED)
+                                            <span class="badge badge-danger">Rejected</span>
+                                        @endif
+                                    </td>
+                                    <td>
+                                        <a href="javascript:void(0)" class="badge badge-info pr-2"
+                                                data-toggle="modal" data-target="#website-modal-edit_{{$website->id}}">
+                                                <i class="fas fa-pen"></i>
+                                            </a>
+                                        @if($website->status == \App\Models\Website::PENDING)
+                                            <div class="badge badge-success cursor-pointer" id="verify-btn-{{ $website->id }}"
+                                                onclick="openVerifyModal('{{ $website->id }}', '{{ $website->url }}')"
+                                                data-toggle="modal" data-target="#verify-modal" class="me-2">
+                                                Verify
+                                            </div>
+                                        @endif
+                                    </td>
+                                </tr>
+                                    {{-- <tr class="border-bottom" id="website-row-{{ $website->id }}">
                                         <td>
                                             <h6>
                                                 <a href="{{ url($website->url) }}" target="_blank" class="nav-link">
@@ -100,17 +150,17 @@
                                             <!--@if($website->status == \App\Models\Website::PENDING)-->
                                             <!--    <a href="javascript:void(0)" class="badge bg-success" id="verify-btn-{{ $website->id }}"-->
                                             <!--        onclick="openVerifyModal('{{ $website->id }}', '{{ $website->url }}')"-->
-                                            <!--        data-bs-toggle="modal" data-bs-target="#verify-modal" class="me-2">-->
+                                            <!--        data-toggle="modal" data-target="#verify-modal" class="me-2">-->
                                             <!--        Verify-->
                                             <!--    </a>-->
                                             <!--@endif-->
-                                            <a href="javascript:void(0)" class="badge bg-info"
-                                                data-bs-toggle="modal" data-bs-target="#website-modal-edit_{{$website->id}}">
-                                                Edit
+                                            <a href="javascript:void(0)" class="badge bg-info pr-2"
+                                                data-toggle="modal" data-target="#website-modal-edit_{{$website->id}}">
+                                                <i class="fas fa-pen text-white"></i>
                                             </a>
                                         </td>
-                                    </tr>
-                                    
+                                    </tr> --}}
+
                                     <div class="modal fade" id="website-modal-edit_{{$website->id}}" tabindex="-1" aria-labelledby="websiteHeading" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered modal-xl">
                     <div class="modal-content">
@@ -308,8 +358,8 @@
                     </div>
                 </div>
             </div>
-            
-              
+
+
 
             <!-- Modal: Verify Website -->
             <div class="modal fade" id="verify-modal" tabindex="-1" aria-labelledby="verifyHeading" aria-hidden="true">

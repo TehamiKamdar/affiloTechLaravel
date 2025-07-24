@@ -1,8 +1,21 @@
 @extends('layouts.publisher.layout')
 
 @section('styles')
+<link rel="stylesheet" href="{{ asset('publisherAssets/assets/css/profile.css') }}">
 @endsection
-
+@section('breadcrumb')
+<ol class="breadcrumb mb-0 bg-white rounded-50 nav-link nav-link-lg collapse-btn">
+    <li class="breadcrumb-item mt-1">
+        <a href="#"><i data-feather="home"></i></a>
+    </li>
+    <li class="breadcrumb-item mt-1">
+        <a href="#" class="text-sm">Profile</a>
+    </li>
+    <li class="breadcrumb-item mt-1 active">
+        <a href="#" class="text-sm">Company</a>
+    </li>
+</ol>
+@endsection
 @section('scripts')
     <script>
         $('#location_country').change(function () {
@@ -60,22 +73,6 @@
 @endsection
 
 @section('content')
-            <!-- [ breadcrumb ] start -->
-            <div class="page-header">
-                <div class="page-block">
-                    <div class="row align-items-center">
-                        <div class="col-md-12">
-                            <ul class="breadcrumb">
-                                <li class="breadcrumb-item"><a href="{{ route('publisher.dashboard') }}"><i
-                                            class="ri-home-5-line text-primary"></i></a></li>
-                                <li class="breadcrumb-item"><a href="">Profile</a></li>
-                                <li class="breadcrumb-item"><a href="">Company Information</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- [ breadcrumb ] end -->
             @include("partial.alert")
 
             <!--begin::Navbar-->
@@ -98,7 +95,7 @@
                             <div class="mb-3">
                                 <label for="legal_entity_type" class="form-label">Legal Entity Type <span
                                         class="text-danger">*</span></label>
-                                <select name="legal_entity_type" id="legal_entity_type" class="form-select" required>
+                                <select name="legal_entity_type" id="legal_entity_type" class="form-control" required>
                                     <option value="">Select a Legal Entity Type...</option>
                                     @foreach(\App\Models\Publisher::getLegalEntity() as $entity)
                                         <option value="{{ $entity['value'] }}" {{ isset($company->legal_entity_type) && $company->legal_entity_type == $entity['value'] ? 'selected' : '' }}>
@@ -112,7 +109,7 @@
                                 <div class="col-md-4">
                                     <label for="location_country" class="form-label">Country <span
                                             class="text-danger">*</span></label>
-                                    <select name="country" id="location_country" class="form-select" required>
+                                    <select name="country" id="location_country" class="form-control" required>
                                         <option value="">Select a Country...</option>
                                         @foreach($countries as $country)
                                             <option value="{{ $country['id'] }}" {{ isset($company->country) && $company->country == $country['id'] ? 'selected' : '' }}>
@@ -125,7 +122,7 @@
                                 <div class="col-md-4">
                                     <label for="location_state" class="form-label">State <span
                                             class="text-danger">*</span></label>
-                                    <select name="state" id="location_state" class="form-select" required>
+                                    <select name="state" id="location_state" class="form-control" required>
                                         <option value="">Select a State...</option>
                                         @foreach($states as $state)
                                             <option value="{{ $state['id'] }}" {{ isset($company->state) && $company->state == $state['id'] ? 'selected' : '' }}>
@@ -138,7 +135,7 @@
                                 <div class="col-md-4">
                                     <label for="location_city" class="form-label">City <span
                                             class="text-danger">*</span></label>
-                                    <select name="city" id="location_city" class="form-select" required>
+                                    <select name="city" id="location_city" class="form-control" required>
                                         <option value="">Select a City...</option>
                                         @foreach($cities as $city)
                                             <option value="{{ $city['id'] }}" {{ isset($company->city) && $company->city == $city['id'] ? 'selected' : '' }}>

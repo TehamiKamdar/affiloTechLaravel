@@ -9,9 +9,8 @@
         <div class="d-flex justify-content-between align-items-center p-3"
              style="background: linear-gradient(90deg, #e9f7ec 0%, #d9f2e4 100%);">
             <div class="d-flex align-items-center gap-2">
-                <img src="{{ \App\Helper\Static\Methods::staticAsset('img/bank.png') }}" alt="Bank"
+                <img src="{{ asset('img/bank.png') }}" alt="Bank"
                      style="height: 24px;">
-                <span class="text-muted small">Default Payment</span>
             </div>
             <span class="badge rounded-pill bg-success" style="font-size: 0.65rem;">ACTIVE</span>
         </div>

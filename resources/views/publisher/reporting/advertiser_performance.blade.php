@@ -109,6 +109,7 @@
                     // Reset all stat-card backgrounds
                     document.querySelectorAll('.stat-card').forEach(card => {
                         card.style.backgroundColor = 'white';
+                        card.style.transform = 'translateY(0px)';
                         card.querySelector('.stat-value').style.color = '#000'; // or your default text color
                         card.querySelector('.stat-label').style.color = '#6c757d'; // or your default label color
                     });

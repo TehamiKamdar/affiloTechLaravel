@@ -21,7 +21,7 @@
 </style>
 
 <div class="mb-4" id="paymentContent">
-    <div class="row g-3">
+    <div class="row justify-content-around g-3">
 
         <!-- Payment Option -->
         @php
@@ -33,29 +33,26 @@
         @endphp
 
         @foreach($methods as $method => $label)
-            <div class="col-md-4">
-                <label class="border border-2 rounded-3 p-4 text-center d-flex flex-column align-items-center justify-content-center h-100 transition-all position-relative payment-option w-100"
-                    style="cursor: pointer;"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#collapse-{{ $method }}"
-                    aria-expanded="{{ isset($payment->payment_method) && $payment->payment_method == $method ? 'true' : 'false' }}">
+            @php
+                $id = 'payment_' . $method;
+            @endphp
 
-                    <!-- Hidden radio input -->
-                    <input type="radio" name="payment_method" class="d-none payment-radio"
-                        value="{{ $method }}"
-                        {{ isset($payment->payment_method) && $payment->payment_method == $method ? 'checked' : '' }} required>
+            <div class="payment-option" data-toggle="collapse" data-target="#collapse-{{ $method }}"
+                aria-expanded="{{ isset($payment->payment_method) && $payment->payment_method == $method ? 'true' : 'false' }}">
 
-                    <!-- Option Icon -->
-                    <img src="{{ \App\Helper\Static\Methods::staticAsset("img/{$method}.png") }}"
-                        alt="{{ $label }}"
-                        class="mb-3" style="height: 36px;">
+                <input type="radio" id="{{ $id }}" name="payment_method" class="payment-radio"
+                    value="{{ $method }}"
+                    {{ isset($payment->payment_method) && $payment->payment_method == $method ? 'checked' : '' }} hidden>
 
-                    <!-- Option Label -->
-                    <h6 class="mb-0 fw-semibold text-capitalize">{{ $label }}</h6>
+                <label for="{{ $id }}" class="payment-label d-flex align-items-center">
+                    <div>
+                        <strong>{{ $label }}</strong>
+                        <div class="text-muted">Transfer via your bank account</div>
+                    </div>
                 </label>
             </div>
-
         @endforeach
+
 
     </div>
 
@@ -64,30 +61,24 @@
         <!-- Bank -->
         <div class="accordion-item border-0">
             <div class="collapse {{ isset($payment->payment_method) && $payment->payment_method == 'bank' ? 'show' : '' }}"
-                id="collapse-bank" data-bs-parent="#paymentAccordion"  data-method-form>
-                <div class="card card-body">
+                id="collapse-bank" data-parent="#paymentAccordion" datamethod-form>
                     @include("publisher.settings.form.bank", compact('payment', 'countries'))
-                </div>
             </div>
         </div>
 
         <!-- PayPal -->
         <div class="accordion-item border-0">
             <div class="collapse {{ isset($payment->payment_method) && $payment->payment_method == 'paypal' ? 'show' : '' }}"
-                id="collapse-paypal" data-bs-parent="#paymentAccordion"  data-method-form>
-                <div class="card card-body">
+                id="collapse-paypal" data-parent="#paymentAccordion" datamethod-form>
                     @include("publisher.settings.form.paypal", compact('payment'))
-                </div>
             </div>
         </div>
 
         <!-- Payoneer -->
         <div class="accordion-item border-0">
             <div class="collapse {{ isset($payment->payment_method) && $payment->payment_method == 'payoneer' ? 'show' : '' }}"
-                id="collapse-payoneer" data-bs-parent="#paymentAccordion"  data-method-form>
-                <div class="card card-body">
+                id="collapse-payoneer" data-parent="#paymentAccordion" datamethod-form>
                     @include("publisher.settings.form.payoneer", compact('payment'))
-                </div>
             </div>
         </div>
 
@@ -104,23 +95,30 @@
 
 <!-- Script to handle border highlighting -->
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        
-        const radios = document.querySelectorAll('.payment-radio');
+document.addEventListener('DOMContentLoaded', function () {
+    const radios = document.querySelectorAll('.payment-radio');
 
-        // Highlight selected card and show the relevant collapse
-        document.querySelectorAll('.payment-option').forEach(option => {
-            option.addEventListener('click', function () {
-                radios.forEach(radio => radio.removeAttribute('required'));
-                document.querySelectorAll('.payment-option').forEach(opt => opt.classList.remove('selected'));
-                option.classList.add('selected');
-                const radio = option.querySelector('.payment-radio');
-                radio.checked = true;
-                radio.setAttribute('required', true);
-            });
-        });
-
-       
+    // Initially highlight the pre-selected payment option
+    radios.forEach(radio => {
+        if (radio.checked) {
+            const option = radio.closest('.payment-option');
+            option.classList.add('selected');
+        }
     });
-</script>
 
+    // Add click behavior for payment option selection
+    document.querySelectorAll('.payment-option').forEach(option => {
+        option.addEventListener('click', function () {
+            // Remove 'required' from all radios and remove previous selection
+            radios.forEach(radio => radio.removeAttribute('required'));
+            document.querySelectorAll('.payment-option').forEach(opt => opt.classList.remove('selected'));
+
+            // Apply new selection
+            const radio = option.querySelector('.payment-radio');
+            radio.checked = true;
+            radio.setAttribute('required', true);
+            option.classList.add('selected');
+        });
+    });
+});
+</script>

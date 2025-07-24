@@ -30,6 +30,6 @@ class PaymentNBillingService
         $states = State::all();
         $cities = City::all();
 
-        return view("publisher.settings.payment_n_billing", compact('title', 'headings', 'payment','billing','countries','states','cities', 'publisher'));
+        return view("publisher.settings.payment_n_billing", compact('user','title', 'headings', 'payment','billing','countries','states','cities', 'publisher'));
     }
 }

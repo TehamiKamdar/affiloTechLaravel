@@ -99,7 +99,7 @@
                 <div class="card-body p-3 position-relative">
                     <div class="row">
                         <div class="col-8 text-start">
-                            <div class="bg-primary-light border-radius-2xl d-flex align-items-center justify-content-center"
+                            <div class="bg-light border-radius-2xl d-flex align-items-center justify-content-center"
                                 style="width: 50px; height: 50px;">
                                 <i class="ri-money-dollar-circle-fill text-primary ri-2x"></i>
                             </div>

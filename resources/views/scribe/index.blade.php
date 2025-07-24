@@ -46,7 +46,7 @@
     left: 0;
     bottom: 0;
     width: 230px;
-    background-color: #f36e33 !important;
+    background-color: #00a9da !important;
     font-size: 13px;
     font-weight: 700;
 }
@@ -63,7 +63,7 @@
 </a>
 <div class="tocify-wrapper">
     <a>
-            <img src="https://app.profitrefer.com/assets/media/logos/logo.webp" alt="logo" class="logo" style="text-align:center;width:95%;margin:5px 0px"/>
+            <img src="{{ asset('publisherAssets/assets/affiloTechLogo.png') }}" alt="logo" class="logo" style="text-align:center;width:95%;margin:5px 0px"/>
 </a>
             <div class="lang-selector">
                                             <button type="button" class="lang-button" data-language-name="bash">bash</button>

@@ -1,8 +1,21 @@
 @extends('layouts.publisher.layout')
 
 @section('styles')
+<link rel="stylesheet" href="{{ asset('publisherAssets/assets/css/profile.css') }}">
 @endsection
-
+@section('breadcrumb')
+<ol class="breadcrumb mb-0 bg-white rounded-50 nav-link nav-link-lg collapse-btn">
+    <li class="breadcrumb-item mt-1">
+        <a href="#"><i data-feather="home"></i></a>
+    </li>
+    <li class="breadcrumb-item mt-1">
+        <a href="#" class="text-sm">Profile</a>
+    </li>
+    <li class="breadcrumb-item mt-1 active">
+        <a href="#" class="text-sm">Information</a>
+    </li>
+</ol>
+@endsection
 @section('scripts')
     <script>
         $(document).ready(function () {
@@ -115,7 +128,7 @@
                             <div class="col-md-8">
                                 <div class="row g-2">
                                     <div class="col-md-4">
-                                        <select name="country" id="countrySelect" class="form-select">
+                                        <select name="country" id="countrySelect" class="form-control">
                                             <option value="">Select Country</option>
                                             @foreach($countries as $country)
                                                 <option value="{{ $country['id'] }}" {{ isset($company->country) && $company->country == $country['id'] ? 'selected' : '' }}>
@@ -126,13 +139,13 @@
                                     </div>
 
                                     <div class="col-md-4">
-                                        <select name="state" id="stateSelect" class="form-select">
+                                        <select name="state" id="stateSelect" class="form-control">
                                             <option value="">Select State</option>
                                         </select>
                                     </div>
 
                                     <div class="col-md-4">
-                                        <select name="city" id="citySelect" class="form-select">
+                                        <select name="city" id="citySelect" class="form-control">
                                             <option value="">Select City</option>
                                         </select>
                                     </div>
@@ -185,7 +198,7 @@
                             <div class="col-md-6">
                                 <label for="payment_frequency" class="form-label">Payment Frequency <span
                                         class="text-danger">*</span></label>
-                                <select class="form-select" id="payment_frequency" name="payment_frequency" required>
+                                <select class="form-control" id="payment_frequency" name="payment_frequency" required>
                                     <option disabled selected>Please Select</option>
                                     <option value="every_month" {{ isset($payment->payment_frequency) && $payment->payment_frequency == "every_month" ? "selected" : "" }}>Every Month</option>
                                     <option value="after_45_days" {{ isset($payment->payment_frequency) && $payment->payment_frequency == "after_45_days" ? "selected" : "" }}>After 45 Days
@@ -195,7 +208,7 @@
                             <div class="col-md-6">
                                 <label for="payment_threshold" class="form-label">Payment Threshold <span
                                         class="text-danger">*</span></label>
-                                <select class="form-select" id="payment_threshold" name="payment_threshold" required>
+                                <select class="form-control" id="payment_threshold" name="payment_threshold" required>
                                     <option disabled selected>Please Select</option>
                                     @foreach([100, 500, 1000, 2500, 5000, 10000] as $threshold)
                                         <option value="{{ $threshold }}" {{ isset($payment->payment_threshold) && $payment->payment_threshold == $threshold ? 'selected' : '' }}>${{ $threshold }}
@@ -234,15 +247,11 @@
                         <div id="settingOptions">
                             @include("publisher.settings.form.options", compact('payment', 'countries'))
                         </div>
-
-                        <div class="text-end mt-4">
-                            <button type="submit" class="btn btn-primary">Update Payment Settings</button>
-                        </div>
                     </form>
                 </div>
             </div>
-            
-            
+
+
             <script>
 
   const form = document.getElementById('paymentForm');
@@ -262,7 +271,7 @@
         // Validate only visible section
         const selected = form.querySelector('.payment-radio:checked')?.value;
         const activeForm = document.querySelector(`#collapse-${selected}`);
-        
+
         if (activeForm) {
             activeForm.querySelectorAll('input, select, textarea').forEach(field => {
                 if (!field.disabled && field.offsetParent !== null) {
@@ -278,7 +287,7 @@
         if (!valid) {
             e.preventDefault();
         }
-   
+
 });
 </script>
 @endsection

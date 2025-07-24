@@ -1,4 +1,3 @@
-<div class="card-body bg-white p-4 rounded shadow-sm">
 
     <!-- Alert -->
     <div class="alert alert-warning d-flex align-items-center" role="alert">
@@ -9,7 +8,7 @@
     <!-- PayPal Country -->
     <div class="mb-3">
         <label for="paypal_country" class="form-label fw-semibold">PayPal Country</label>
-        <select class="form-select js-example-basic-single" id="paypal_country" name="paypal_country" >
+        <select class="form-control js-example-basic-single" id="paypal_country" name="paypal_country" >
             <option value="">Select PayPal Account Location</option>
             @foreach($countries as $country)
                 <option value="{{ $country['id'] }}" {{ isset($payment->paypal_country) && $payment->paypal_country == $country['id'] ? 'selected' : '' }}>
@@ -39,4 +38,3 @@
         2% processing fee will be charged, capped to AUD 30.00.
     </div>
 
-</div>

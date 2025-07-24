@@ -2,12 +2,13 @@
 namespace App\Services\Publisher\Setting;
 
 use App\Models\City;
+use App\Models\User;
+use App\Models\State;
 use App\Models\Country;
 use App\Models\Mediakit;
 use App\Models\Publisher;
-use App\Models\State;
-use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class BasicInformationService
 {
@@ -27,6 +28,8 @@ class BasicInformationService
         $user = auth()->user();
         $user->load('publisher');
         $publisher = $user->publisher;
+
+
 
         $states = $cities = [];
         if (isset($publisher->location_country) && $publisher->location_country) {
@@ -122,7 +125,7 @@ class BasicInformationService
         }
 
         $redirectURL = $request->server('HTTP_REFERER');
-        
+
         return redirect($redirectURL)->with('success', 'Basic Information Successfully Updated.');
     }
 

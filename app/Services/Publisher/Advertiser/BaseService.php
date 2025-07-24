@@ -136,7 +136,7 @@ class BaseService extends RootService
                     'advertiser_publishers.status',
                     'advertiser_publishers.locked_status',
                 ])
-                ->leftJoin(env("RDS_DB_NAME") . ".advertiser_publishers", function ($join) use ($user) {
+                ->leftJoin("advertiser_publishers", function ($join) use ($user) {
                     $join->on("advertiser_publishers.advertiser_id", "=", "advertisers.id")
                         ->where("advertiser_publishers.publisher_id", "=", $user->publisher_id)
                         ->where("advertiser_publishers.website_id", "=", $user->active_website_id);
@@ -163,7 +163,7 @@ class BaseService extends RootService
                     'advertiser_publishers.status',
                     'advertiser_publishers.locked_status',
                 ])
-                ->leftJoin(env('RDS_DB_NAME') . '.advertiser_publishers', function ($join) use ($user) {
+                ->leftJoin('advertiser_publishers', function ($join) use ($user) {
                     $join->on('advertiser_publishers.advertiser_id', '=', 'advertisers.id')
                         ->where('advertiser_publishers.publisher_id', '=', $user->publisher_id)
                         ->where('advertiser_publishers.website_id', '=', $user->active_website_id);

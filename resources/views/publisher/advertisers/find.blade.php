@@ -1,7 +1,8 @@
 @extends('layouts.publisher.layout')
 
 @section('styles')
-
+<link rel="stylesheet" href="{{ asset('publisherAssets/assets/bundles/izitoast/css/iziToast.min.css') }}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/formvalidation/0.6.2-dev/css/formValidation.min.css" />
     <style>
         .table-loader {
             position: absolute;
@@ -67,6 +68,9 @@
 @endsection
 
 @section('scripts')
+    <script src="{{ asset('publisherAssets/assets/bundles/izitoast/js/iziToast.min.js') }}"></script>
+
+<!-- Bootstrap 4 JS Bundle (includes Popper.js) -->
 
     <script>
         let advertiserCheckboxArr = @json($advertisersCheckboxValues);

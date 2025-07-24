@@ -54,7 +54,7 @@
                 <a href="#" class="menu-toggle nav-link has-dropdown"><i
                         data-feather="paperclip"></i><span>Tools</span></a>
                 <ul class="dropdown-menu">
-                    <li><a class="nav-link" href="{{route('publisher.link-generator')}}">Link Generator</a></li>
+                    <li><a class="nav-link" href="{{route('publisher.link-generator')}}">Link Builder</a></li>
                     <li><a class="nav-link" href="{{route('publisher.api')}}">API Integration</a></li>
                     <li><a class="nav-link" href="{{route('publisher.download-export-files')}}">Download Export Files</a></li>
                 </ul>
@@ -64,15 +64,16 @@
                 <a href="#" class="menu-toggle nav-link has-dropdown"><i
                         data-feather="settings"></i><span>Settings</span></a>
                 <ul class="dropdown-menu">
-                    <li><a class="nav-link" href="./my-profile.html">Profile</a></li>
-                    <li><a class="nav-link" href="./webs.html">Websites</a></li>
+                    <li><a class="nav-link" href="{{ route('publisher.profile.basic-information') }}">Profile</a></li>
+                    <li><a class="nav-link" href="{{ route('publisher.profile.company-information') }}">Company</a></li>
+                    <li><a class="nav-link" href="{{ route('publisher.profile.website') }}">Websites</a></li>
                     <li class="dropdown">
                         <a href="#" class="has-dropdown">Payment Info</a>
                         <ul class="dropdown-menu">
-                            <li><a href="./billing.html">Billing</a></li>
+                            <li><a href="{{ route('publisher.profile.payment-billing') }}">Billing</a></li>
                         </ul>
                     </li>
-                    <li><a class="nav-link" href="./settings.html">Settings</a></li>
+                    <li><a class="nav-link" href="{{ route('publisher.profile.login-information.change-email') }}">Settings</a></li>
                 </ul>
             </li>
 

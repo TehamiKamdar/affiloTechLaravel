@@ -40,7 +40,7 @@ class WebsiteInformationService
         $methods = Methods::getWebsiteType();
         $countries = Country::where('status', 'active')->get();
 
-        return view("publisher.settings.website", compact('title', 'headings', 'websites', 'categories', 'methods', 'countries', 'publisher'));
+        return view("publisher.settings.website", compact('user','title', 'headings', 'websites', 'categories', 'methods', 'countries', 'publisher'));
     }
 
     public function getWebsiteById(Website $website)
