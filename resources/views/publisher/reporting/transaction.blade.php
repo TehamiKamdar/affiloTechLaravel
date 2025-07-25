@@ -2,57 +2,127 @@
 
 @section('styles')
     <style>
-        .stat-card {
-            border-radius: 10px;
+        label {
+            color: var(--primary-color);
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        /* Modern Select Dropdown */
+        .custom-select {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            height: 50px;
+            padding: 0.75rem 1.25rem;
+            border: 2px solid #e0e3ed;
+            border-radius: 8px;
+            background-color: white;
+            color: var(--primary-color);
+            font-weight: 500;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%2300a9da' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 1.25rem center;
+            background-size: 12px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .custom-select:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(103, 119, 227, 0.2);
+            outline: none;
+        }
+
+        select option {
+            padding: 12px 16px;
+            background-color: white;
+            color: var(--primary-color);
+            font-weight: 500;
+            border-bottom: 1px solid #f0f2fc;
+        }
+
+        option:hover {
+            background-color: var(--primary-very-light) !important;
+        }
+
+        select option:checked,
+        select option:active {
+            background-color: var(--primary-very-light) !important;
+            color: var(--primary-color);
+        }
+.form-control {
+            height: 50px;
+            border: 2px solid #e0e3ed;
+            padding: 0.75rem 1.25rem;
+            color: var(--primary-color);
+            font-weight: 500;
+            border-radius: 8px  !important;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            box-shadow: none;
+            border-color: var(--primary-color);
+        }
+        .metric-card {
             border: none;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            overflow: hidden;
             margin-bottom: 1.5rem;
-            transition: transform 0.3s;
-            background: white;
         }
 
-        .stat-card:hover {
+        .metric-card:hover {
             transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
         }
 
-        .stat-card .card-body {
+        .metric-card .card-header {
+            background-color: white;
+            border-bottom: none;
+            padding: 1rem 1.5rem;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .metric-card .card-body {
             padding: 1.5rem;
         }
 
-        .stat-card .icon {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 1rem;
+        .metric-value {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
         }
 
-        .stat-card.income .icon {
+        .metric-label {
+            color: #7f8c8d;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .metric-change {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-top: 0.5rem;
+        }
+
+        .metric-change.up {
             background-color: rgba(40, 167, 69, 0.1);
             color: #28a745;
         }
 
-        .stat-card.expense .icon {
+        .metric-change.down {
             background-color: rgba(220, 53, 69, 0.1);
             color: #dc3545;
-        }
-
-        .stat-card.balance .icon {
-            background-color: rgba(0, 169, 218, 0.1);
-            color: var(--primary);
-        }
-
-        .stat-card .stat-value {
-            font-size: 1.5rem;
-            font-weight: 600;
-            margin-bottom: 0.25rem;
-        }
-
-        .stat-card .stat-label {
-            color: #6c757d;
-            font-size: 0.9rem;
         }
 
         .table-loader {
@@ -297,29 +367,43 @@
 @endsection
 
 @section('content')
-    <div class="d-flex justify-content-end align-items-center gap-3 flex-wrap">
-        <div class="col-3 mb-3 pl-0">
-            <input class="form-control py-1" name="date" id="at_report_datepicker" placeholder="Pick date range" />
+
+    <div class="card border-0 shadow-sm mb-4">
+        <div class="card-header">
+            <h4>Advanced Filters</h4>
+        </div>
+        <div class="card-body">
+            <div class="row align-items-center">
+                <div class="col-12 col-lg-6 mb-3">
+                    <label for="at_report_datepicker">Select Date</label>
+                    <input class="form-control py-1" name="date" id="at_report_datepicker" placeholder="Pick date range" />
+                </div>
+
+                <div class="col-12 col-lg-6 mb-3">
+                    <label for="status">Select Status</label>
+                    <select class="form-control text-muted" id="status" data-control="select2" data-hide-search="true"
+                        data-placeholder="Status">
+                        <option value="" selected disabled>Status</option>
+                        <option value="all">All</option>
+                        <option value="{{ \App\Models\Transaction::STATUS_PENDING }}"
+                            @if(\App\Models\Transaction::STATUS_PENDING == request()->status) selected @endif>Pending</option>
+                        <option value="{{ \App\Models\Transaction::STATUS_APPROVED }}"
+                            @if(\App\Models\Transaction::STATUS_APPROVED == request()->status) selected @endif>Approved
+                        </option>
+                        <option value="{{ \App\Models\Transaction::STATUS_DECLINED }}"
+                            @if(\App\Models\Transaction::STATUS_DECLINED == request()->status) selected @endif>Declined
+                        </option>
+                        <option value="{{ \App\Models\Transaction::STATUS_PAID }}"
+                            @if(\App\Models\Transaction::STATUS_PAID == request()->status) selected @endif>Paid</option>
+                        <option value="{{ \App\Models\Transaction::STATUS_PENDING_PAID }}"
+                            @if(\App\Models\Transaction::STATUS_PENDING_PAID == request()->status) selected @endif>Pending
+                            Paid
+                        </option>
+                    </select>
+                </div>
+            </div>
         </div>
 
-        <div class="col-3 mb-3 px-0">
-            <select class="form-control text-muted" id="status" data-control="select2" data-hide-search="true"
-                data-placeholder="Status">
-                <option value="" selected disabled>Status</option>
-                <option value="all">All</option>
-                <option value="{{ \App\Models\Transaction::STATUS_PENDING }}"
-                    @if(\App\Models\Transaction::STATUS_PENDING == request()->status) selected @endif>Pending</option>
-                <option value="{{ \App\Models\Transaction::STATUS_APPROVED }}"
-                    @if(\App\Models\Transaction::STATUS_APPROVED == request()->status) selected @endif>Approved</option>
-                <option value="{{ \App\Models\Transaction::STATUS_DECLINED }}"
-                    @if(\App\Models\Transaction::STATUS_DECLINED == request()->status) selected @endif>Declined</option>
-                <option value="{{ \App\Models\Transaction::STATUS_PAID }}"
-                    @if(\App\Models\Transaction::STATUS_PAID == request()->status) selected @endif>Paid</option>
-                <option value="{{ \App\Models\Transaction::STATUS_PENDING_PAID }}"
-                    @if(\App\Models\Transaction::STATUS_PENDING_PAID == request()->status) selected @endif>Pending Paid
-                </option>
-            </select>
-        </div>
 
 
     </div>
@@ -332,31 +416,48 @@
     @include("partial.alert")
 
     <div class="row mt-4 mt-md-0 mt-sm-0">
-        <div class="col-lg-4 col-md-6 col-sm-12 col-12">
-            <div class="stat-card income">
-                <div class="card-body">
-                    <div class="stat-value">{{ \App\Helper\Methods::numberFormatShort($totalTransactions) }}</div>
-                    <div class="stat-label">Total Transactions</div>
+        <!-- Total Transactions -->
+        <div class="col-12 col-md-6 col-lg-4">
+            <div class="metric-card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <span>Transactions</span>
+                    <i class="fas fa-exchange-alt text-primary"></i>
                 </div>
-            </div>
-        </div>
-        <div class="col-lg-4 col-md-6 col-sm-12 col-12">
-            <div class="stat-card expense">
                 <div class="card-body">
-                    <div class="stat-value">${{ \App\Helper\Methods::numberFormatShort($totalSalesAmount) }}</div>
-                    <div class="stat-label">Total Sales</div>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-4 col-md-6 col-sm-12 col-12">
-            <div class="stat-card balance">
-                <div class="card-body">
-                    <div class="stat-value">${{ \App\Helper\Methods::numberFormatShort($totalCommissionAmount) }}</div>
-                    <div class="stat-label">Total Commission Earned</div>
+                    <div class="metric-value">{{ \App\Helper\Methods::numberFormatShort($totalTransactions) }}</div>
+                    <div class="metric-label">Total Transactions</div>
                 </div>
             </div>
         </div>
 
+        <!-- Total Sales -->
+        <div class="col-12 col-md-6 col-lg-4">
+            <div class="metric-card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <span>Sales</span>
+                    <i class="fas fa-shopping-cart text-primary"></i>
+                </div>
+                <div class="card-body">
+                    <div class="metric-value">${{ \App\Helper\Methods::numberFormatShort($totalSalesAmount) }}</div>
+                    <div class="metric-label">Total Sales</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Total Commission -->
+        <div class="col-12 col-md-6 col-lg-4">
+            <div class="metric-card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <span>Commission</span>
+                    <i class="fas fa-hand-holding-usd text-primary"></i>
+                </div>
+                <div class="card-body">
+                    <div class="metric-value">${{ \App\Helper\Methods::numberFormatShort($totalCommissionAmount) }}
+                    </div>
+                    <div class="metric-label">Total Commission</div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!--begin::Products-->
@@ -365,14 +466,14 @@
         <div class="card-header d-flex justify-content-between align-items-center flex-wrap gap-4">
             <div class="d-flex align-items-center position-relative flex-grow-1 mr-3" style="max-width: 300px;">
                 <i class="fas fa-search text-muted position-absolute ml-3" style="z-index: 1;"></i>
-                <input type="text" id="search" class="form-control form-control-sm pl-5"
+                <input type="text" id="search" class="form-control pl-5"
                     placeholder="Search by ID, name, etc..." />
             </div>
 
             <div class="mb-3 d-flex align-items-end">
                 <button type="button" id="exportBttn" data-toggle="modal" data-target="#kt_modal_add_auth_app"
-                    class="btn btn-outline-success w-100">
-                    <i class="fas fa-upload"></i> Export
+                    class="btn btn-success">
+                    <i class="fas fa-file-export mr-1"></i> Export as CSV
                 </button>
             </div>
             <div class="modal fade" id="kt_modal_add_auth_app" tabindex="-1" role="dialog" aria-hidden="true">
@@ -436,10 +537,10 @@
             </div>
 
             <div class="row mt-3">
-                <div class="col-12 col-md-6 d-flex align-items-center justify-content-between">
+                <div class="col-12 col-md-6 d-flex align-items-center justify-content-start">
                     <div class="dataTables_length" id="kt_project_users_table_length">
                         <label>
-                            <select name="per_page" id="per-page-select" class="form-select-sm">
+                            <select name="per_page" id="per-page-select" class="form-control">
                                 <option value="10" {{ request('per_page') == 10 ? 'selected' : '' }}>10</option>
                                 <option value="25" {{ request('per_page') == 25 ? 'selected' : '' }}>25</option>
                                 <option value="50" {{ empty(request('per_page')) || request('per_page') == 50 ? 'selected' : '' }}>50</option>
@@ -447,7 +548,7 @@
                             </select>
                         </label>
                     </div>
-                    <div class="dataTables_info text-sm" id="kt_project_users_table_info" role="status" aria-live="polite">
+                    <div class="dataTables_info text-sm ml-2" id="kt_project_users_table_info" role="status" aria-live="polite">
                         Showing {{ $from }} to {{ $to }} of {{ $total }} entries
                     </div>
                 </div>

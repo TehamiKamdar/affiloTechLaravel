@@ -32,27 +32,27 @@ class OverviewService extends BaseService
         if (auth()->user()->status != User::STATUS_ACTIVE || !auth()->user()->is_completed) {
             return $this->userInactiveMsg($user);
         } elseif (empty($user->active_website_id) || $user->active_website_status != Website::ACTIVE) {
-          
-             $this->websiteInactiveMsg($user);
-             $startDate = now()->startOfYear()->toDateTimeString();
+
+            $this->websiteInactiveMsg($user);
+            $startDate = now()->startOfYear()->toDateTimeString();
             $endDate = now()->endOfYear()->toDateTimeString();
             $data = [];
-             $totalTransactions =0;
-        $totalSalesAmount = 0;
-        $totalCommissionAmount = 0;
-        $count = 0;
-            
+            $totalTransactions = 0;
+            $totalSalesAmount = 0;
+            $totalCommissionAmount = 0;
+            $count = 0;
+
             return view("publisher.payments.overview", compact(
-            'title',
-            'headings',
-            'data',
-            'count',
-            'startDate',
-            'endDate',
-            'totalTransactions',
-            'totalSalesAmount',
-            'totalCommissionAmount'
-        ));
+                'title',
+                'headings',
+                'data',
+                'count',
+                'startDate',
+                'endDate',
+                'totalTransactions',
+                'totalSalesAmount',
+                'totalCommissionAmount'
+            ));
         }
 
         if ($request->filled('date')) {
@@ -93,7 +93,6 @@ class OverviewService extends BaseService
                     'total_received_sale_amount' => $transactions->sum('sale_amount'),
                     'total_clicks' => $trackingClicks->sum('total_clicks'),
                     'transactions' => $startDate,
-
                 ];
             });
 
@@ -106,6 +105,7 @@ class OverviewService extends BaseService
         $totalTransactions = $data->sum('total_transactions');
         $totalSalesAmount = $data->sum('total_received_sale_amount');
         $totalCommissionAmount = $data->sum('total_commissions_amount');
+        $totalClicks = $data->sum('total_clicks');
         $count = $data->count();
 
         return view("publisher.payments.overview", compact(
@@ -117,7 +117,8 @@ class OverviewService extends BaseService
             'endDate',
             'totalTransactions',
             'totalSalesAmount',
-            'totalCommissionAmount'
+            'totalCommissionAmount',
+            'totalClicks'
         ));
     }
 }

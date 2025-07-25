@@ -9,13 +9,13 @@
 <!--begin::Table-->
 <table class="table align-middle table-row-dashed fs-6 gy-5" id="kt_table_users">
     <thead>
-        <tr>
-            <th><small class="text-muted d-block text-xs fw-bold">Advertiser</small></th>
-            <th><small class="text-muted d-block text-xs fw-bold">Date</small></th>
-            <th><small class="text-muted d-block text-xs fw-bold">Tracking Link Clicks</small></th>
-            <th><small class="text-muted d-block text-xs fw-bold">Deeplink Clicks</small></th>
-            <th><small class="text-muted d-block text-xs fw-bold">Coupon Clicks</small></th>
-            <th><small class="text-muted d-block text-xs fw-bold">Total Clicks</small></th>
+        <tr class="text-uppercase">
+            <th>Advertise</th>
+            <th>Dat</th>
+            <th>Tracking Link Click</th>
+            <th>Deeplink Click</th>
+            <th>Coupon Click</th>
+            <th>Total Click</th>
         </tr>
     </thead>
     <tbody class="text-gray-600 fw-semibold">

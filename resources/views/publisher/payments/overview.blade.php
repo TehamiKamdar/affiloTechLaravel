@@ -3,6 +3,129 @@
 @section('styles')
 
     <style>
+        label {
+            color: var(--primary-color);
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        /* Modern Select Dropdown */
+        .custom-select {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            height: 50px;
+            padding: 0.75rem 1.25rem;
+            border: 2px solid #e0e3ed;
+            border-radius: 8px;
+            background-color: white;
+            color: var(--primary-color);
+            font-weight: 500;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%2300a9da' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 1.25rem center;
+            background-size: 12px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .custom-select:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(103, 119, 227, 0.2);
+            outline: none;
+        }
+
+        select option {
+            padding: 12px 16px;
+            background-color: white;
+            color: var(--primary-color);
+            font-weight: 500;
+            border-bottom: 1px solid #f0f2fc;
+        }
+
+        option:hover {
+            background-color: var(--primary-very-light) !important;
+        }
+
+        select option:checked,
+        select option:active {
+            background-color: var(--primary-very-light) !important;
+            color: var(--primary-color);
+        }
+        .form-control {
+            height: 50px;
+            border: 2px solid #e0e3ed;
+            padding: 0.75rem 1.25rem;
+            color: var(--primary-color);
+            font-weight: 500;
+            border-radius: 8px !important;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            box-shadow: none;
+            border-color: var(--primary-color);
+        }
+        .metric-card {
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            overflow: hidden;
+            margin-bottom: 1.5rem;
+        }
+
+        .metric-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .metric-card .card-header {
+            background-color: white;
+            border-bottom: none;
+            padding: 1rem 1.5rem;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .metric-card .card-body {
+            padding: 1.5rem;
+        }
+
+        .metric-value {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+        }
+
+        .metric-label {
+            color: #7f8c8d;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .metric-change {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-top: 0.5rem;
+        }
+
+        .metric-change.up {
+            background-color: rgba(40, 167, 69, 0.1);
+            color: #28a745;
+        }
+
+        .metric-change.down {
+            background-color: rgba(220, 53, 69, 0.1);
+            color: #dc3545;
+        }
+
         .table-loader {
             position: absolute;
             top: 0;
@@ -34,15 +157,21 @@
 
 @endsection
 
+@section('breadcrumb')
+    <ol class="breadcrumb mb-0 bg-white rounded-50 nav-link nav-link-lg collapse-btn">
+        <li class="breadcrumb-item mt-1">
+            <a href="#"><i data-feather="home"></i></a>
+        </li>
+        <li class="breadcrumb-item mt-1">
+            <a href="#" class="text-sm">Finance</a>
+        </li>
+        <li class="breadcrumb-item mt-1 active">
+            <a href="#" class="text-sm">Overview</a>
+        </li>
+    </ol>
+@endsection
+
 @section('scripts')
-   <!-- 1. Load required plugins/utilities first -->
-<script src="{{ \App\Helper\Methods::staticAsset('assets/plugins/global/plugins.bundle.js') }}"></script>
-<script src="{{ \App\Helper\Methods::staticAsset('assets/plugins/custom/fullcalendar/fullcalendar.bundle.js') }}"></script>
-
-<!-- 2. Then load custom scripts that depend on KTUtil or others -->
-<script src="{{ \App\Helper\Methods::staticAsset("admin/assets/js/custom/apps/ecommerce/customers/details/add-auth-app.js") }}"></script>
-<script src="{{ \App\Helper\Methods::staticAsset("src/js/custom/publisher/export.js") }}"></script>
-
     <script>
 
         $(document).ready(function () {
@@ -61,7 +190,7 @@
                     page: 1,
                     search: $('#search').val(),
                     date: $('#pr_report_datepicker').val(),
-                  
+
                     sub_id: $('#sub_id').is(":checked")
                 });
                 exportFieldSet();
@@ -82,7 +211,7 @@
                     per_page: $('#per-page-select').val(),
                     search: $('#search').val(),
                     date: $('#pr_report_datepicker').val(),
-                   
+
                     sub_id: $('#sub_id').is(":checked")
                 };
 
@@ -207,248 +336,178 @@
     </script>
 @endsection
 
-@section('heading_right_space')
-
-@endsection
-
 @section('content')
+    @include("partial.alert")
+    <div class="d-flex justify-content-end align-items-center flex-wrap gap-3 mb-4">
+        <div class="card-toolbar d-flex align-items-center gap-3">
+            <div class="dropdown">
+                <button class="btn btn-sm btn-outline-primary d-flex align-items-center gap-1 filter-toggle" type="button"
+                    data-toggle="dropdown" aria-expanded="false" style="min-width: 90px; transition: none;">
+                    <i class="ri-filter-3-line"></i>
+                    <span>Filter</span>
+                </button>
 
-            <!-- [ breadcrumb ] start -->
-            <div class="page-header">
-                <div class="page-block">
-                    <div class="row align-items-center">
-                        <div class="col-md-12">
-                            <ul class="breadcrumb">
-                                <li class="breadcrumb-item"><a href="{{ route('publisher.dashboard') }}"><i
-                                            class="ri-home-5-line text-primary"></i></a></li>
-                                <li class="breadcrumb-item"><a href="">Finance</a></li>
-                                <li class="breadcrumb-item"><a href="">Overview</a></li>
-                            </ul>
-                        </div>
+                <div class="dropdown-menu p-4 shadow-sm" style="min-width: 320px;">
+                    <div class="mb-3">
+                        <label for="pr_report_datepicker" class="form-label fw-semibold small">Date Range</label>
+                        <input class="form-control form-control h-auto py-1" name="date" id="pr_report_datepicker"
+                            placeholder="Pick date range" />
                     </div>
                 </div>
             </div>
-            <!-- [ breadcrumb ] end -->
-            @include("partial.alert")
-            <div class="d-flex justify-content-end align-items-center flex-wrap gap-3 mb-4">
-                <!-- Right Side: Filter + Export -->
-                <div class="card-toolbar d-flex align-items-center gap-3">
 
-                    <!--begin::Daterangepicker-->
-                    <div class="dropdown">
-                        <button class="btn btn-sm btn-outline-primary d-flex align-items-center gap-1 filter-toggle"
-                            type="button" data-bs-toggle="dropdown" aria-expanded="false"
-                            style="min-width: 90px; transition: none;">
-                            <i class="ri-filter-3-line"></i>
-                            <span>Filter</span>
+            <button type="button" id="exportBttn" class="btn btn-sm btn-outline-success" data-toggle="modal"
+                data-target="#kt_modal_add_auth_app">
+                <i class="ri-upload-2-line"></i>
+                Export
+            </button>
+
+        </div>
+    </div>
+    <div class="modal fade" id="kt_modal_add_auth_app" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered mw-650px">
+            <div class="modal-header">
+                <h2 class="fw-bold">
+                    Export Transaction Data
+                    <div class="fs-7 fw-semibold text-muted">After your request is completed, the formatted file
+                        you requested will be available for download in the <b>Tools > Download Export Files</b>
+                        section.</div>
+                </h2>
+                <div class="btn btn-icon btn-sm btn-active-icon-primary" data-kt-users-modal-action="close">
+                    <i class="ki-duotone ki-cross fs-1">
+                        <span class="path1"></span>
+                        <span class="path2"></span>
+                    </i>
+                </div>
+            </div>
+            <div class="modal-body scroll-y mx-5 mx-xl-15 my-7">
+                <form class="form w-100" novalidate="novalidate" id="kt_advertiser_export_in_form"
+                    action="{{ route('publisher.generate-export-transaction') }}" method="post">
+                    @csrf
+                    <input type="hidden" id="totalExport" name="total" value="{{ $count }}">
+                    <input type="hidden" name="search" id="search_export">
+                    <input type="hidden" name="status" id="status_export">
+                    <input type="hidden" name="region" id="region_export">
+                    <input type="hidden" name="advertiser" id="advertiser_export">
+                    <input type="hidden" name="date" id="date_export">
+
+                    <div class="fv-row mb-10">
+                        <label class="required fs-6 fw-semibold form-label mb-2">Select Export Format:</label>
+                        <select name="export_format" data-control="select2" data-placeholder="Select a format"
+                            data-hide-search="true" class="form-select form-select-solid fw-bold">
+                            <option></option>
+                            <option value="csv">CSV</option>
+                        </select>
+                    </div>
+                    <div class="text-center">
+                        <button type="reset" class="btn btn-light me-3" data-kt-users-modal-action="cancel">Discard</button>
+                        <button type="submit" class="btn btn-light-primary" id="kt_advertiser_export_submit"
+                            data-kt-users-modal-action="submit">
+                            <span class="indicator-label">Request to Export Data</span>
+                            <span class="indicator-progress">Please wait...
+                                <span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
                         </button>
-
-                        <div class="dropdown-menu p-4 shadow-sm" style="min-width: 320px;">
-                            <div class="mb-3">
-                                <label for="pr_report_datepicker" class="form-label fw-semibold small">Date Range</label>
-                                <input class="form-control form-control-sm h-auto py-1" name="date"
-                                    id="pr_report_datepicker" placeholder="Pick date range" />
-                            </div>
-                        </div>
                     </div>
-                    <!--end::Daterangepicker-->
-
-                    <!--begin::Export-->
-                    <button type="button" id="exportBttn" class="btn btn-sm btn-outline-success" data-bs-toggle="modal"
-                        data-bs-target="#kt_modal_add_auth_app">
-                        <i class="ri-upload-2-line"></i>
-                        Export
-                    </button>
-                    <!--end::Export-->
-
-                </div>
+                </form>
             </div>
-            <!--begin::Modal - Adjust Balance-->
-            <div class="modal fade" id="kt_modal_add_auth_app" tabindex="-1" aria-hidden="true">
-                <!--begin::Modal dialog-->
-                <div class="modal-dialog modal-dialog-centered mw-650px">
-                    <!--begin::Modal content-->
-                    <div class="modal-content">
-                        <!--begin::Modal header-->
-                        <div class="modal-header">
-                            <!--begin::Modal title-->
-                            <h2 class="fw-bold">
-                                Export Transaction Data
-                                <div class="fs-7 fw-semibold text-muted">After your request is completed, the formatted file
-                                    you requested will be available for download in the <b>Tools > Download Export Files</b>
-                                    section.</div>
-                            </h2>
-                            <!--end::Modal title-->
-                            <!--begin::Close-->
-                            <div class="btn btn-icon btn-sm btn-active-icon-primary" data-kt-users-modal-action="close">
-                                <i class="ki-duotone ki-cross fs-1">
-                                    <span class="path1"></span>
-                                    <span class="path2"></span>
-                                </i>
-                            </div>
-                            <!--end::Close-->
-                        </div>
-                        <!--end::Modal header-->
-                        <!--begin::Modal body-->
-                        <div class="modal-body scroll-y mx-5 mx-xl-15 my-7">
-                            <!--begin::Form-->
-                            <form class="form w-100" novalidate="novalidate" id="kt_advertiser_export_in_form"
-                                action="{{ route('publisher.generate-export-transaction') }}" method="post">
-                                @csrf
-                                <input type="hidden" id="totalExport" name="total" value="{{ $count }}">
-                                <input type="hidden" name="search" id="search_export">
-                                <input type="hidden" name="status" id="status_export">
-                                <input type="hidden" name="region" id="region_export">
-                                <input type="hidden" name="advertiser" id="advertiser_export">
-                                <input type="hidden" name="date" id="date_export">
-
-                                <!--begin::Input group-->
-                                <div class="fv-row mb-10">
-                                    <!--begin::Label-->
-                                    <label class="required fs-6 fw-semibold form-label mb-2">Select Export Format:</label>
-                                    <!--end::Label-->
-                                    <!--begin::Input-->
-                                    <select name="export_format" data-control="select2" data-placeholder="Select a format"
-                                        data-hide-search="true" class="form-select form-select-solid fw-bold">
-                                        <option></option>
-                                        <option value="csv">CSV</option>
-                                    </select>
-                                    <!--end::Input-->
-                                </div>
-                                <!--end::Input group-->
-                                <!--begin::Actions-->
-                                <div class="text-center">
-                                    <button type="reset" class="btn btn-light me-3"
-                                        data-kt-users-modal-action="cancel">Discard</button>
-                                    <button type="submit" class="btn btn-light-primary" id="kt_advertiser_export_submit"
-                                        data-kt-users-modal-action="submit">
-                                        <span class="indicator-label">Request to Export Data</span>
-                                        <span class="indicator-progress">Please wait...
-                                            <span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
-                                    </button>
-                                </div>
-                                <!--end::Actions-->
-                            </form>
-                            <!--end::Form-->
-                        </div>
-                        <!--end::Modal body-->
+        </div>
+    </div>
+    <section class="section">
+        <div class="row mt-4 mt-md-0 mt-sm-0">
+            <!-- Total Transactions -->
+            <div class="col-md-6 col-lg-3">
+                <div class="metric-card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <span>Transactions</span>
+                        <i class="fas fa-exchange-alt text-primary"></i>
                     </div>
-                    <!--end::Modal content-->
-                </div>
-                <!--end::Modal dialog-->
-            </div>
-            <div class="row mt-4 mt-md-0 mt-sm-0">
-                <div class="col-lg-4 col-4 mb-md-4 mb-sm-4 mb-xs-4">
-                    <div class="card">
-                        <span class="mask bg-white opacity-10"></span>
-                        <div class="card-body p-3 position-relative">
-                            <div class="row">
-                                <div class="col-8 text-start">
-                                    <div class="bg-primary-light border-radius-2xl d-flex align-items-center justify-content-center"
-                                        style="width: 50px; height: 50px;">
-                                        <i class="ri-money-dollar-circle-fill text-primary ri-2x"></i>
-                                    </div>
-
-                                    <h5 class="text-dark font-weight-bolder mb-0 mt-3">
-                                        {{ \App\Helper\Methods::numberFormatShort($totalTransactions) }}
-                                    </h5>
-                                    <span class="text-light text-md fw-bold ">Total Transactions</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-4 mb-md-4 mb-sm-4 mb-xs-4">
-                    <div class="card">
-                        <span class="mask bg-white opacity-10"></span>
-                        <div class="card-body p-3 position-relative">
-                            <div class="row">
-                                <div class="col-8 text-start">
-                                    <div class="bg-green-light border-radius-2xl d-flex align-items-center justify-content-center"
-                                        style="width: 50px; height: 50px;">
-                                        <i class="ri-money-dollar-circle-fill text-green ri-2x"></i>
-                                    </div>
-
-                                    <h5 class="text-dark font-weight-bolder mb-0 mt-3">
-                                        ${{ \App\Helper\Methods::numberFormatShort($totalSalesAmount) }}
-                                    </h5>
-                                    <span class="text-light text-md fw-bold ">Total Sales</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-4 mb-md-4 mb-sm-4 mb-xs-4">
-                    <div class="card">
-                        <span class="mask bg-white opacity-10"></span>
-                        <div class="card-body p-3 position-relative">
-                            <div class="row">
-                                <div class="col-8 text-start">
-                                    <div class="bg-yellow-light border-radius-2xl d-flex align-items-center justify-content-center"
-                                        style="width: 50px; height: 50px;">
-                                        <i class="ri-money-dollar-circle-fill text-golden ri-2x"></i>
-                                    </div>
-
-                                    <h5 class="text-dark font-weight-bolder mb-0 mt-3">
-                                        ${{ \App\Helper\Methods::numberFormatShort($totalCommissionAmount) }}
-                                    </h5>
-                                    <span class="text-light text-md fw-bold ">Commission Earned</span>
-                                </div>
-                            </div>
-                        </div>
+                    <div class="card-body">
+                        <div class="metric-value">{{ \App\Helper\Methods::numberFormatShort($totalTransactions) }}</div>
+                        <div class="metric-label">Total Transactions</div>
                     </div>
                 </div>
             </div>
 
-
-            <!--begin::Products-->
-            <div class="card card-flush">
-                <!--begin::Card header-->
-                <div class="card-header align-items-center py-5 gap-2 gap-md-5">
-                    <!--begin::Card title-->
-                    <div class="card-title">
-                        <div class="d-flex align-items-center position-relative flex-grow-1 me-5" style="max-width: 300px;">
-                            <i class="ri-search-line text-muted position-absolute ms-3"></i>
-                            <input type="text"
-                                id="search"
-                                data-kt-ecommerce-order-filter="search"
-                                class="form-control-sm ps-5"
-                                placeholder="Search by ID, name, etc..." />
-                        </div>
-
-                        <!--begin::Export buttons-->
-                        <div id="kt_ecommerce_report_views_export" class="d-none"></div>
-                        <!--end::Export buttons-->
+            <!-- Total Sales -->
+            <div class="col-md-6 col-lg-3">
+                <div class="metric-card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <span>Sales</span>
+                        <i class="fas fa-shopping-cart text-primary"></i>
                     </div>
-                    <!--end::Card title-->
-
-                </div>
-                <!--end::Card header-->
-                <!--begin::Card body-->
-                <div class="card-body py-4">
-
-                    <div id="transaction-container">
-                        @include("publisher.payments.ajax", compact('data'))
-                    </div>
-
-                    <div class="row mt-3">
-                        <div class="col-12 col-md-6 d-flex align-items-center justify-content-between">
-                            <div class="dataTables_length" id="kt_project_users_table_length">
-                                <label>
-                                    <select name="per_page" id="per-page-select"
-                                        class="form-select-sm">
-                                        <option value="10" {{ request('per_page') == 10 ? 'selected' : '' }}>10</option>
-                                        <option value="25" {{ request('per_page') == 25 ? 'selected' : '' }}>25</option>
-                                        <option value="50" {{ empty(request('per_page')) || request('per_page') == 50 ? 'selected' : '' }}>50</option>
-                                        <option value="100" {{ request('per_page') == 100 ? 'selected' : '' }}>100</option>
-                                    </select>
-                                </label>
-                            </div>
-                        </div>
+                    <div class="card-body">
+                        <div class="metric-value">${{ \App\Helper\Methods::numberFormatShort($totalSalesAmount) }}</div>
+                        <div class="metric-label">Total Sales</div>
                     </div>
                 </div>
-                <!--end::Card body-->
             </div>
-            <!--end::Products-->
+
+            <!-- Total Commission -->
+            <div class="col-md-6 col-lg-3">
+                <div class="metric-card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <span>Commission</span>
+                        <i class="fas fa-hand-holding-usd text-primary"></i>
+                    </div>
+                    <div class="card-body">
+                        <div class="metric-value">${{ \App\Helper\Methods::numberFormatShort($totalCommissionAmount) }}
+                        </div>
+                        <div class="metric-label">Total Commission</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Total Clicks -->
+            <div class="col-md-6 col-lg-3">
+                <div class="metric-card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <span>Clicks</span>
+                        <i class="fas fa-mouse-pointer text-primary"></i>
+                    </div>
+                    <div class="card-body">
+                        <div class="metric-value">{{ \App\Helper\Methods::numberFormatShort($totalClicks) }}</div>
+                        <div class="metric-label">Total Clicks</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <div class="card card-flush">
+        <div class="card-header border-0 pt-4">
+            <div class="card-title">
+                <div class="d-flex align-items-center position-relative flex-grow-1 me-5" style="max-width: 300px;">
+                    <i class="ri-search-line text-muted position-absolute ms-3"></i>
+                    <input type="text" id="search" data-kt-ecommerce-order-filter="search" class="form-control ps-5"
+                        placeholder="Search by ID, name, etc..." />
+                </div>
+
+                <div id="kt_ecommerce_report_views_export" class="d-none"></div>
+            </div>
+
+        </div>
+        <div class="card-body py-4">
+
+            <div id="transaction-container">
+                @include("publisher.payments.ajax", compact('data'))
+            </div>
+
+            <div class="row mt-3">
+                <div class="col-12 col-md-6 d-flex align-items-center justify-content-between">
+                    <div class="dataTables_length" id="kt_project_users_table_length">
+                        <label>
+                            <select name="per_page" id="per-page-select" class="form-control">
+                                <option value="10" {{ request('per_page') == 10 ? 'selected' : '' }}>10</option>
+                                <option value="25" {{ request('per_page') == 25 ? 'selected' : '' }}>25</option>
+                                <option value="50" {{ empty(request('per_page')) || request('per_page') == 50 ? 'selected' : '' }}>50</option>
+                                <option value="100" {{ request('per_page') == 100 ? 'selected' : '' }}>100</option>
+                            </select>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
 @endsection

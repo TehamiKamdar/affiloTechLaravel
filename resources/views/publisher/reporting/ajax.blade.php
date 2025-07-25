@@ -10,7 +10,7 @@
     <!--begin::Table-->
 <table class="table table-hover fs-6 gy-5" id="kt_table_users">
     <thead>
-        <tr>
+        <tr class="text-uppercase">
             <th>Advertiser</th>
             <th>Date</th>
             <th>Sales Amount</th>

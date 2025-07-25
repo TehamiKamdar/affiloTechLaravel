@@ -9,7 +9,7 @@
 <!--begin::Table-->
 <table class="table table-hover" id="kt_table_users">
     <thead>
-        <tr>
+        <tr class="text-uppercase">
             <th scope="col">Advertiser</th>
             <th scope="col">Tracking URL</th>
             <th scope="col">Deep URL</th>

@@ -2,57 +2,127 @@
 
 @section('styles')
     <style>
-        .stat-card {
-            border-radius: 10px;
+        label {
+            color: var(--primary-color);
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        /* Modern Select Dropdown */
+        .custom-select {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            height: 50px;
+            padding: 0.75rem 1.25rem;
+            border: 2px solid #e0e3ed;
+            border-radius: 8px;
+            background-color: white;
+            color: var(--primary-color);
+            font-weight: 500;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%2300a9da' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 1.25rem center;
+            background-size: 12px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .custom-select:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(103, 119, 227, 0.2);
+            outline: none;
+        }
+
+        select option {
+            padding: 12px 16px;
+            background-color: white;
+            color: var(--primary-color);
+            font-weight: 500;
+            border-bottom: 1px solid #f0f2fc;
+        }
+
+        option:hover {
+            background-color: var(--primary-very-light) !important;
+        }
+
+        select option:checked,
+        select option:active {
+            background-color: var(--primary-very-light) !important;
+            color: var(--primary-color);
+        }
+.form-control {
+            height: 50px;
+            border: 2px solid #e0e3ed;
+            padding: 0.75rem 1.25rem;
+            color: var(--primary-color);
+            font-weight: 500;
+            border-radius: 8px  !important;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            box-shadow: none;
+            border-color: var(--primary-color);
+        }
+        .metric-card {
             border: none;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            overflow: hidden;
             margin-bottom: 1.5rem;
-            transition: transform 0.3s;
-            background: white;
         }
 
-        .stat-card:hover {
+        .metric-card:hover {
             transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
         }
 
-        .stat-card .card-body {
+        .metric-card .card-header {
+            background-color: white;
+            border-bottom: none;
+            padding: 1rem 1.5rem;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .metric-card .card-body {
             padding: 1.5rem;
         }
 
-        .stat-card .icon {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 1rem;
+        .metric-value {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
         }
 
-        .stat-card.income .icon {
+        .metric-label {
+            color: #7f8c8d;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .metric-change {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-top: 0.5rem;
+        }
+
+        .metric-change.up {
             background-color: rgba(40, 167, 69, 0.1);
             color: #28a745;
         }
 
-        .stat-card.expense .icon {
+        .metric-change.down {
             background-color: rgba(220, 53, 69, 0.1);
             color: #dc3545;
-        }
-
-        .stat-card.balance .icon {
-            background-color: rgba(0, 169, 218, 0.1);
-            color: var(--primary);
-        }
-
-        .stat-card .stat-value {
-            font-size: 1.5rem;
-            font-weight: 600;
-            margin-bottom: 0.25rem;
-        }
-
-        .stat-card .stat-label {
-            color: #6c757d;
-            font-size: 0.9rem;
         }
 
         .table-loader {
@@ -390,7 +460,7 @@
                 <div class="dropdown-menu p-4 shadow-sm" style="min-width: 320px;">
                     <div class="mb-3">
                         <label for="pr_report_datepicker" class="form-label fw-semibold small">Date Range</label>
-                        <input class="form-control form-control-sm h-auto py-1" name="date" id="pr_report_datepicker"
+                        <input class="form-control form-control h-auto py-1" name="date" id="pr_report_datepicker"
                             placeholder="Pick date range" />
                     </div>
                 </div>
@@ -478,18 +548,24 @@
         <!--end::Modal dialog-->
     </div> --}}
     <!--end::Modal - New Card-->
-    <div class="row mt-4 mt-md-0 mt-sm-0">
-        <div class="col-lg-4 col-md-6 col-sm-12 col-12">
-            <div class="stat-card transaction">
-                <div class="card-body">
-                    <div class="stat-value">{{ \App\Helper\Methods::numberFormatShort($total_clicks) }}</div>
-                    <div class="stat-label">Total Clicks</div>
+    <!-- Total Clicks -->
+            <div class="col-12 col-md-6 col-lg-4 px-0">
+                <div class="metric-card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <span>Clicks</span>
+                        <i class="fas fa-mouse-pointer text-primary"></i>
+                    </div>
+                    <div class="card-body">
+                        <div class="metric-value">{{ \App\Helper\Methods::numberFormatShort($total_clicks) }}</div>
+                        <div class="metric-label">Total Clicks</div>
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
 
-    <div class="card pt-5 px-3 mb-3">
+    <div class="card mb-3">
+        <div class="card-header justify-content-center">
+            <h4>Clicks Statistics</h4>
+        </div>
         <div class="col-12">
             <div class="clickContainer">
                 <div id="clicksGraph" style="height:400px !important"></div>
@@ -502,7 +578,7 @@
             <!-- Search Input -->
             <div class="d-flex align-items-center position-relative flex-grow-1 mb-2 mb-md-0" style="max-width: 300px;">
                 <i class="fas fa-search text-muted position-absolute ml-3" style="z-index: 2;"></i>
-                <input type="text" id="search" class="form-control form-control-sm pl-5"
+                <input type="text" id="search" class="form-control form-control pl-5"
                     placeholder="Search by ID, name, etc..." />
             </div>
 
@@ -517,11 +593,11 @@
                     <div class="dropdown-menu p-4 shadow" style="min-width: 320px;">
                         <div class="form-group mb-3">
                             <label for="pr_report_datepicker" class="small font-weight-bold">Date Range</label>
-                            <input type="text" class="form-control form-control-sm" name="date" id="pr_report_datepicker"
+                            <input type="text" class="form-control form-control" name="date" id="pr_report_datepicker"
                                 placeholder="Pick date range">
                         </div>
                         <div class="form-group mb-0">
-                            <select class="form-control form-control-sm" id="status" data-control="select2"
+                            <select class="form-control form-control" id="status" data-control="select2"
                                 data-hide-search="true" data-placeholder="Status">
                                 <option value="" selected disabled>Status</option>
                                 <option value="all">All</option>
@@ -596,10 +672,10 @@
             </div>
 
             <div class="row mt-3">
-                <div class="col-12 col-md-6 d-flex align-items-center justify-content-between">
+                <div class="col-12 col-md-6 d-flex align-items-center justify-content-start">
                     <div class="dataTables_length" id="kt_project_users_table_length">
                         <label>
-                            <select name="per_page" id="per-page-select" class="form-select-sm">
+                            <select name="per_page" id="per-page-select" class="form-control">
                                 <option value="10" {{ request('per_page') == 10 ? 'selected' : '' }}>10</option>
                                 <option value="25" {{ request('per_page') == 25 ? 'selected' : '' }}>25</option>
                                 <option value="50" {{ empty(request('per_page')) || request('per_page') == 50 ? 'selected' : '' }}>50</option>
@@ -607,7 +683,7 @@
                             </select>
                         </label>
                     </div>
-                    <div class="dataTables_info text-sm" id="kt_project_users_table_info" role="status" aria-live="polite">
+                    <div class="dataTables_info text-sm ml-2" id="kt_project_users_table_info" role="status" aria-live="polite">
                         Showing {{ $from }} to {{ $to }} of {{ $total }} entries
                     </div>
                 </div>

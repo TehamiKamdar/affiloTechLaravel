@@ -3,57 +3,127 @@
 @section('styles')
 
     <style>
-        .stat-card {
-            border-radius: 10px;
+        label {
+            color: var(--primary-color);
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        /* Modern Select Dropdown */
+        .custom-select {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            height: 50px;
+            padding: 0.75rem 1.25rem;
+            border: 2px solid #e0e3ed;
+            border-radius: 8px;
+            background-color: white;
+            color: var(--primary-color);
+            font-weight: 500;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%2300a9da' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 1.25rem center;
+            background-size: 12px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .custom-select:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(103, 119, 227, 0.2);
+            outline: none;
+        }
+
+        select option {
+            padding: 12px 16px;
+            background-color: white;
+            color: var(--primary-color);
+            font-weight: 500;
+            border-bottom: 1px solid #f0f2fc;
+        }
+
+        option:hover {
+            background-color: var(--primary-very-light) !important;
+        }
+
+        select option:checked,
+        select option:active {
+            background-color: var(--primary-very-light) !important;
+            color: var(--primary-color);
+        }
+.form-control {
+            height: 50px;
+            border: 2px solid #e0e3ed;
+            padding: 0.75rem 1.25rem;
+            color: var(--primary-color);
+            font-weight: 500;
+            border-radius: 8px  !important;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            box-shadow: none;
+            border-color: var(--primary-color);
+        }
+        .metric-card {
             border: none;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            overflow: hidden;
             margin-bottom: 1.5rem;
-            transition: transform 0.3s;
-            background: white;
         }
 
-        .stat-card:hover {
+        .metric-card:hover {
             transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
         }
 
-        .stat-card .card-body {
+        .metric-card .card-header {
+            background-color: white;
+            border-bottom: none;
+            padding: 1rem 1.5rem;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .metric-card .card-body {
             padding: 1.5rem;
         }
 
-        .stat-card .icon {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 1rem;
+        .metric-value {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
         }
 
-        .stat-card.income .icon {
+        .metric-label {
+            color: #7f8c8d;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .metric-change {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-top: 0.5rem;
+        }
+
+        .metric-change.up {
             background-color: rgba(40, 167, 69, 0.1);
             color: #28a745;
         }
 
-        .stat-card.expense .icon {
+        .metric-change.down {
             background-color: rgba(220, 53, 69, 0.1);
             color: #dc3545;
-        }
-
-        .stat-card.balance .icon {
-            background-color: rgba(0, 169, 218, 0.1);
-            color: var(--primary);
-        }
-
-        .stat-card .stat-value {
-            font-size: 1.5rem;
-            font-weight: 600;
-            margin-bottom: 0.25rem;
-        }
-
-        .stat-card .stat-label {
-            color: #6c757d;
-            font-size: 0.9rem;
         }
 
         .table-loader {
@@ -88,8 +158,14 @@
     <script>
         let adChartInstance = null;
 
+        function capitalize(string){
+            if (!string) return ''; // Handle empty or undefined strings
+            return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
+        }
+
         window.advertiserperformancegraph = function (type) {
             showLoader('advertiserPerformance')
+            document.getElementById('card-header').innerText = 'Loading Statistics';
             let date = $('input[name="date"]').val();
 
             fetch('/publisher/advertiser-performance-graph', {
@@ -107,19 +183,19 @@
                 .then(response => response.json())
                 .then(data => {
                     // Reset all stat-card backgrounds
-                    document.querySelectorAll('.stat-card').forEach(card => {
-                        card.style.backgroundColor = 'white';
+                    document.querySelectorAll('.metric-card').forEach(card => {
+                        card.style.backgroundColor = 'transparent';
+                        card.style.boxShadow = '0 5px 15px rgba(0, 0, 0, 0.05);';
                         card.style.transform = 'translateY(0px)';
-                        card.querySelector('.stat-value').style.color = '#000'; // or your default text color
-                        card.querySelector('.stat-label').style.color = '#6c757d'; // or your default label color
+                        card.querySelector('.metric-value').style.color = '#2c3e50'; // or your default text color
+                        card.querySelector('.metric-label').style.color = '#7f8c8d'; // or your default label color
                     });
                     // Highlight the active card
-                    const targetCard = document.querySelector(`.stat-card.${type}`);
+                    const targetCard = document.querySelector(`.metric-card.${type}`);
                     if (targetCard) {
-                        targetCard.style.backgroundColor = '#00a9da';
+                        targetCard.style.backgroundColor = '#f0f3ff';
                         targetCard.style.transform = 'translateY(-5px)';
-                        targetCard.querySelector('.stat-value').style.color = 'white';
-                        targetCard.querySelector('.stat-label').style.color = 'white';
+                        document.getElementById('card-header').innerText = capitalize(type) + ' Statistics';
                     }
 
                     // Prepare chart data
@@ -400,32 +476,92 @@
 @endsection
 @section('content')
 
+    <div class="card border-0 shadow-sm mb-4">
+        <div class="card-header">
+            <h4>Advanced Filters</h4>
+        </div>
+        <div class="card-body">
+            <div class="row align-items-center">
+                <div class="col-12 col-lg-6 mb-3">
+                    <label for="at_report_datepicker">Select Date</label>
+                    <input class="form-control py-1" name="date" id="at_report_datepicker" placeholder="Pick date range" />
+                </div>
+
+                <div class="col-12 col-lg-6 mb-3">
+                    <label for="status">Select Status</label>
+                    <select class="form-control text-muted" id="status" data-control="select2" data-hide-search="true"
+                        data-placeholder="Status">
+                        <option value="" selected disabled>Status</option>
+                        <option value="all">All</option>
+                        <option value="{{ \App\Models\Transaction::STATUS_PENDING }}"
+                            @if(\App\Models\Transaction::STATUS_PENDING == request()->status) selected @endif>Pending</option>
+                        <option value="{{ \App\Models\Transaction::STATUS_APPROVED }}"
+                            @if(\App\Models\Transaction::STATUS_APPROVED == request()->status) selected @endif>Approved
+                        </option>
+                        <option value="{{ \App\Models\Transaction::STATUS_DECLINED }}"
+                            @if(\App\Models\Transaction::STATUS_DECLINED == request()->status) selected @endif>Declined
+                        </option>
+                        <option value="{{ \App\Models\Transaction::STATUS_PAID }}"
+                            @if(\App\Models\Transaction::STATUS_PAID == request()->status) selected @endif>Paid</option>
+                        <option value="{{ \App\Models\Transaction::STATUS_PENDING_PAID }}"
+                            @if(\App\Models\Transaction::STATUS_PENDING_PAID == request()->status) selected @endif>Pending
+                            Paid
+                        </option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+
+
+    </div>
+
+
+
 
     @include("partial.alert")
 
 
     <div class="row mt-4 mt-md-0 mt-sm-0">
-        <div class="col-lg-4 col-md-6 col-sm-12 col-12">
-            <div class="stat-card transaction" onclick="advertiserperformancegraph('transaction')">
+        <!-- Total Transactions -->
+        <div class="col-12 col-md-6 col-lg-4">
+            <div class="metric-card transaction" onclick="advertiserperformancegraph('transaction')">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <span>Transactions</span>
+                    <i class="fas fa-exchange-alt text-primary"></i>
+                </div>
                 <div class="card-body">
-                    <div class="stat-value">{{ \App\Helper\Methods::numberFormatShort($totalTransactions) }}</div>
-                    <div class="stat-label">Total Transactions</div>
+                    <div class="metric-value">{{ \App\Helper\Methods::numberFormatShort($totalTransactions) }}</div>
+                    <div class="metric-label">Total Transactions</div>
                 </div>
             </div>
         </div>
-        <div class="col-lg-4 col-md-6 col-sm-12 col-12">
-            <div class="stat-card sales" onclick="advertiserperformancegraph('sales')">
+
+        <!-- Total Sales -->
+        <div class="col-12 col-md-6 col-lg-4">
+            <div class="metric-card sales" onclick="advertiserperformancegraph('sales')">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <span>Sales</span>
+                    <i class="fas fa-shopping-cart text-primary"></i>
+                </div>
                 <div class="card-body">
-                    <div class="stat-value">${{ \App\Helper\Methods::numberFormatShort($totalSalesAmount) }}</div>
-                    <div class="stat-label">Total Sales</div>
+                    <div class="metric-value">${{ \App\Helper\Methods::numberFormatShort($totalSalesAmount) }}</div>
+                    <div class="metric-label">Total Sales</div>
                 </div>
             </div>
         </div>
-        <div class="col-lg-4 col-md-6 col-sm-12 col-12">
-            <div class="stat-card commission" onclick="advertiserperformancegraph('commission')">
+
+        <!-- Total Commission -->
+        <div class="col-12 col-md-6 col-lg-4">
+            <div class="metric-card commission" onclick="advertiserperformancegraph('commission')">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <span>Commission</span>
+                    <i class="fas fa-hand-holding-usd text-primary"></i>
+                </div>
                 <div class="card-body">
-                    <div class="stat-value">${{ \App\Helper\Methods::numberFormatShort($totalCommissionAmount) }}</div>
-                    <div class="stat-label">Total Commission Earned</div>
+                    <div class="metric-value">${{ \App\Helper\Methods::numberFormatShort($totalCommissionAmount) }}
+                    </div>
+                    <div class="metric-label">Total Commission</div>
                 </div>
             </div>
         </div>
@@ -437,6 +573,9 @@
     {{-- Performance Graph Start --}}
     <div class="col-12 mb-3 p-0">
         <div class="card">
+            <div class="card-header justify-content-center">
+                <h4><span id="card-header"></span></h4>
+            </div>
             <div class="card-body p-3">
                 <div class="chart position-relative" style="overflow: hidden">
                     <div id="advertiserPerformance" style="height: 400px"></div>
@@ -452,49 +591,12 @@
             <!-- Search Input -->
             <div class="d-flex align-items-center position-relative flex-grow-1 mb-2 mb-md-0" style="max-width: 300px;">
                 <i class="fas fa-search text-muted position-absolute ml-3" style="z-index: 2;"></i>
-                <input type="text" id="search" class="form-control form-control-sm pl-5"
+                <input type="text" id="search" class="form-control form-control pl-5"
                     placeholder="Search by ID, name, etc..." />
             </div>
 
             <!-- Filter Button & Select -->
             <div class="d-flex align-items-center flex-wrap mb-2 mb-md-0">
-                <div class="dropdown mr-3">
-                    <button class="btn btn-sm btn-outline-primary d-flex align-items-center" type="button"
-                        data-toggle="dropdown">
-                        <i class="fas fa-sort-down mr-1"></i>
-                        <span>Filter</span>
-                    </button>
-                    <div class="dropdown-menu p-4 shadow" style="min-width: 320px;">
-                        <div class="form-group mb-3">
-                            <label for="pr_report_datepicker" class="small font-weight-bold">Date Range</label>
-                            <input type="text" class="form-control form-control-sm" name="date" id="pr_report_datepicker"
-                                placeholder="Pick date range">
-                        </div>
-                        <div class="form-group mb-0">
-                            <select class="form-control form-control-sm" id="status" data-control="select2"
-                                data-hide-search="true" data-placeholder="Status">
-                                <option value="" selected disabled>Status</option>
-                                <option value="all">All</option>
-                                <option value="{{ \App\Models\Transaction::STATUS_PENDING }}"
-                                    @if(\App\Models\Transaction::STATUS_PENDING == request()->status) selected @endif>Pending
-                                </option>
-                                <option value="{{ \App\Models\Transaction::STATUS_APPROVED }}"
-                                    @if(\App\Models\Transaction::STATUS_APPROVED == request()->status) selected @endif>
-                                    Approved</option>
-                                <option value="{{ \App\Models\Transaction::STATUS_DECLINED }}"
-                                    @if(\App\Models\Transaction::STATUS_DECLINED == request()->status) selected @endif>
-                                    Declined</option>
-                                <option value="{{ \App\Models\Transaction::STATUS_PAID }}"
-                                    @if(\App\Models\Transaction::STATUS_PAID == request()->status) selected @endif>Paid
-                                </option>
-                                <option value="{{ \App\Models\Transaction::STATUS_PENDING_PAID }}"
-                                    @if(\App\Models\Transaction::STATUS_PENDING_PAID == request()->status) selected @endif>
-                                    Pending Paid</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-
                 <!-- Export Button -->
                 <button type="button" id="exportBttn" class="btn btn-sm btn-success" data-toggle="modal"
                     data-target="#kt_modal_add_auth_app">
@@ -552,7 +654,7 @@
                     <div class="dataTables_length" id="kt_project_users_table_length">
                         <label>
                             <select name="per_page" id="per-page-select"
-                                class="form-select form-select-sm form-select-solid">
+                                class="form-select form-control form-select-solid">
                                 <option value="10" {{ request('per_page') == 10 ? 'selected' : '' }}>10</option>
                                 <option value="25" {{ request('per_page') == 25 ? 'selected' : '' }}>25</option>
                                 <option value="50" {{ empty(request('per_page')) || request('per_page') == 50 ? 'selected' : '' }}>50</option>
@@ -560,7 +662,7 @@
                             </select>
                         </label>
                     </div>
-                    <div class="dataTables_info" id="kt_project_users_table_info" role="status" aria-live="polite">
+                    <div class="dataTables_info ml-2" id="kt_project_users_table_info" role="status" aria-live="polite">
                         Showing {{ $from }} to {{ $to }} of {{ $total }} entries
                     </div>
                 </div>

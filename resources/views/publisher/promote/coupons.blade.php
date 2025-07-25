@@ -3,6 +3,70 @@
 @section('styles')
     <link rel="stylesheet" href="{{ asset('publisherAssets/assets/bundles/izitoast/css/iziToast.min.css') }}">
     <style>
+        label {
+            color: var(--primary-color);
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        /* Modern Select Dropdown */
+        .custom-select {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            height: 50px;
+            padding: 0.75rem 1.25rem;
+            border: 2px solid #e0e3ed;
+            border-radius: 8px;
+            background-color: white;
+            color: var(--primary-color);
+            font-weight: 500;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%2300a9da' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 1.25rem center;
+            background-size: 12px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .custom-select:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(103, 119, 227, 0.2);
+            outline: none;
+        }
+
+        select option {
+            padding: 12px 16px;
+            background-color: white;
+            color: var(--primary-color);
+            font-weight: 500;
+            border-bottom: 1px solid #f0f2fc;
+        }
+
+        option:hover {
+            background-color: var(--primary-very-light) !important;
+        }
+
+        select option:checked,
+        select option:active {
+            background-color: var(--primary-very-light) !important;
+            color: var(--primary-color);
+        }
+.form-control {
+            height: 50px;
+            border: 2px solid #e0e3ed;
+            padding: 0.75rem 1.25rem;
+            color: var(--primary-color);
+            font-weight: 500;
+            border-radius: 8px !important;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            box-shadow: none;
+            border-color: var(--primary-color);
+        }
         .coupon-tearaway {
             border-radius: 12px;
             overflow: hidden;
@@ -436,9 +500,7 @@
                             class="form-control form-control-solid ps-12 w-250px" placeholder="Search by id, name etc..." />
                     </div>
 
-                    <div class="text-sm text-end">
-                        Showing {{ $from }} to {{ $to }} of {{ $total }} entries
-                    </div>
+
                 </div>
 
                 <div id="kt_ecommerce_report_views_export" class="d-none">
@@ -455,16 +517,19 @@
             </div>
 
             <div class="row mt-3">
-                <div class="col-12 col-md-6 d-flex align-items-center justify-content-between">
+                <div class="col-12 col-md-6 d-flex align-items-center justify-content-start">
                     <div class="dataTables_length" id="kt_project_users_table_length">
                         <label>
-                            <select name="per_page" id="per-page-select" class="form-select-sm">
+                            <select name="per_page" id="per-page-select" class="form-control">
                                 <option value="10" {{ request('per_page') == 10 ? 'selected' : '' }}>10</option>
                                 <option value="25" {{ request('per_page') == 25 ? 'selected' : '' }}>25</option>
                                 <option value="50" {{ empty(request('per_page')) || request('per_page') == 50 ? 'selected' : '' }}>50</option>
                                 <option value="100" {{ request('per_page') == 100 ? 'selected' : '' }}>100</option>
                             </select>
                         </label>
+                    </div>
+                    <div class="text-sm text-end ml-2">
+                        Showing {{ $from }} to {{ $to }} of {{ $total }} entries
                     </div>
 
                 </div>

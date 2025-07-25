@@ -2520,6 +2520,10 @@ textarea.form-control.is-invalid {
         transition: none;
     }
 }
+.btn-close{
+    height: 30px;
+    width: 30px;
+}
 .btn:hover {
     color: #212529;
     text-decoration: none;

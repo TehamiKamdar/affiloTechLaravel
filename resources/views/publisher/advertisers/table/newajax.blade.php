@@ -31,7 +31,7 @@
                             $isNoStatus = empty($advertiser->status);
 
                             $class = $isPending ? "badge-warning" : ($isHold ? "badge-info" : ($isRejected ? "badge-danger"
-                                : ($isJoined ? "badge-success" : "badge-primary")));
+                                : ($isJoined ? "badge-success" : "badge-warning")));
                         @endphp
                         <span class="badge badge-sm {{$class}} text-white text-xs cursor-pointer" @if($isNoStatus)
                                             data-toggle="modal" data-target="#kt_modal_apply_data_{{ $advertiser->id }}"
@@ -43,9 +43,9 @@
                                             @elseif($isRejected)
                                                 Rejected
                                             @elseif($isJoined)
-                                                Joined
+                                                Active
                                             @else
-                                                Apply
+                                                Not Joined
                                             @endif
                                         </span>
                                     </div>
@@ -187,7 +187,27 @@
                                         <div class="row justify-content-around">
                                             <a href="{{ route("publisher.view-advertiser", ['advertiser' => $advertiser->id]) }}"
                                                 class="btn btn-sm" style="background-color: #00a9da; color: white;">View Details</a>
-                                            {{-- <button class="btn btn-sm btn-success" style="color: white;">Active</button> --}}
+                                            @php
+                                                $class = $isPending ? "btn-warning" : ($isHold ? "btn-info" : ($isRejected ? "btn-danger"
+                                                    : ($isJoined ? "btn-success" : "btn-primary")));
+                                            @endphp
+                                            @if($isNoStatus)
+                                            <button class="btn btn-sm {{$class}}"  data-bs-toggle="modal" data-bs-target="#kt_modal_apply_data_{{ $advertiser->id }}"
+                                                title="Status">
+                                                @if($isPending)
+                                                    Pending
+                                                @elseif($isHold)
+                                                    Hold
+                                                @elseif($isRejected)
+                                                    Rejected
+                                                @elseif($isJoined)
+                                                    Joined
+                                                @else
+                                                    Apply
+                                                @endif
+
+                                            </button>
+                                            @endif
                                         </div>
                                     </div>
                                 </div>
