@@ -3,7 +3,7 @@
 @section("styles")
 
     <!-- data tables css -->
-    <link rel="stylesheet" href="{{ \App\Helper\Methods::staticAsset('panel/assets/plugins/data-tables/css/datatables.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('adminDashboard/assets/plugins/data-tables/css/datatables.min.css') }}">
 
     <style>
         table td:last-child{
@@ -104,7 +104,7 @@
 @section("scripts")
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="{{ \App\Helper\Methods::staticAsset('panel/assets/plugins/data-tables/js/datatables.min.js') }}"></script>
+    <script src="{{ asset('adminDashboard/assets/plugins/data-tables/js/datatables.min.js') }}"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script type="text/javascript">

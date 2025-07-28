@@ -4,7 +4,7 @@
 
     <!-- data tables css -->
     <link rel="stylesheet"
-        href="{{ \App\Helper\Methods::staticAsset('panel/assets/plugins/data-tables/css/datatables.min.css') }}">
+        href="{{ asset('adminDashboard/assets/plugins/data-tables/css/datatables.min.css') }}">
 
     <style>
         table td:last-child {
@@ -63,7 +63,7 @@
 </div>
 
 @pushonce('scripts')
-<script src="{{ \App\Helper\Static\Methods::staticAsset("vendor_assets/js/jquery.validate.min.js") }}"></script>
+<script src="{{ asset("adminDashboard/assets/js/plugins/jquery.validate.min.js") }}"></script>
 <script>
 
     $(document).ready(function () {

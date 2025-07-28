@@ -3,10 +3,9 @@
 @section("styles")
 
     <!-- data tables css -->
-    <link rel="stylesheet"
-        href="{{ asset('panel/assets/plugins/data-tables/css/datatables.min.css') }}">
-    <link href="https://cdn.datatables.net/buttons/1.2.4/css/buttons.dataTables.min.css" rel="stylesheet" />
-    <link href="https://cdn.datatables.net/select/1.3.0/css/select.dataTables.min.css" rel="stylesheet" />
+    <link href="{{ asset('adminDashboard/assets/plugins/data-tables/css/datatables.min.css') }}">
+    <link href="{{ asset('adminDashboard/assets/plugins/data-tables/css/buttons.dataTables.min.css') }}" />
+    <link href="{{ asset('adminDashboard/assets/plugins/data-tables/css/select.dataTables.min.css') }}" />
 
     <style>
         .dataTables_wrapper .dataTables_paginate .paginate_button.current,
@@ -22,6 +21,12 @@
             background-color: #ffe5b4 !important;
             color: #000;
         }
+        .length-wrapper label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
     </style>
 
 @endsection
@@ -63,27 +68,27 @@
 
                     <div class="card-body">
                         <div class="dt-responsive table-responsive">
-                            <table id="publisherListing" class="table table-hover table-bordered nowrap">
+                            <table id="publisherListing" class="table table-hover nowrap mb-0">
                                 <thead>
                                     <tr>
                                         <th
-                                            class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                            class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                             Created At</th>
                                         <th
-                                            class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                            class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                             Name</th>
                                         <th
-                                            class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                            class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                             Active Website</th>
                                         <th
-                                            class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                            class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                             Email</th>
                                         <th
-                                            class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                            class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                             Status</th>
 
                                         <th
-                                            class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                            class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                             Action</th>
                                     </tr>
                                 </thead>
@@ -92,23 +97,23 @@
                                 <tfoot>
                                     <tr>
                                         <th
-                                            class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                            class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                             Created At</th>
                                         <th
-                                            class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                            class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                             Name</th>
                                         <th
-                                            class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                            class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                             Active Website</th>
                                         <th
-                                            class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                            class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                             Email</th>
                                         <th
-                                            class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                            class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                             Status</th>
 
                                         <th
-                                            class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                            class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                             Action</th>
                                     </tr>
                                 </tfoot>
@@ -126,17 +131,8 @@
 
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-        <script
-            src="{{ \App\Helper\Methods::staticAsset('panel/assets/plugins/data-tables/js/datatables.min.js') }}"></script>
-
+        <script src="{{ asset('adminDashboard/assets/plugins/data-tables/js/datatables.min.js') }}"></script>
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-        <script src="//cdn.datatables.net/buttons/1.2.4/js/dataTables.buttons.min.js"></script>
-        <script src="//cdn.datatables.net/buttons/1.2.4/js/buttons.flash.min.js"></script>
-        <script src="https://cdn.datatables.net/buttons/1.2.4/js/buttons.html5.min.js"></script>
-        <script src="https://cdn.datatables.net/buttons/1.2.4/js/buttons.print.min.js"></script>
-        <script src="https://cdn.datatables.net/buttons/1.2.4/js/buttons.colVis.min.js"></script>
-        <script src="https://cdn.datatables.net/select/1.3.0/js/dataTables.select.min.js"></script>
 
         <script type="text/javascript">
             $(document).ready(function () {
@@ -149,7 +145,7 @@
                     responsive: false,
                     ordering: true,
                     pageLength: 50,
-                    dom: '<"d-flex justify-content-between mb-3"<\'length-wrapper\'l><\'filter-wrapper\'f>>t<"d-flex justify-content-between mt-2"<\'info-wrapper text-sm\'i><\'pagination-wrapper\'p>>',
+                    dom: '<"d-flex justify-content-between"<\'length-wrapper\'l><\'filter-wrapper\'f>>t<"d-flex justify-content-between mt-2"<\'info-wrapper text-sm\'i><\'pagination-wrapper\'p>>',
                     language: {
                         paginate: {
                             previous: '<i class="ri-arrow-left-s-line"></i>',
@@ -169,7 +165,7 @@
                             name: 'created_at',
                             render: function (data, type, row) {
                                 return `
-                                            <td class="equal-width align-middle text-center text-sm">
+                                            <td class="text-center text-sm">
                                             <span class="text-sm fw-bold">${data}</span>
                                             </td>
                                         `;
@@ -180,7 +176,7 @@
                             name: 'name',
                             render: function (data, type, row) {
                                 return `
-                                            <td class="equal-width align-middle text-center text-sm">
+                                            <td class="text-center text-sm">
                                             <span class="text-sm fw-bold">${data}</span>
                                             </td>
                                         `;
@@ -191,7 +187,7 @@
                             name: 'active_website',
                             render: function (data, type, row) {
                                 return `
-                                            <td class="equal-width align-middle text-center text-sm">
+                                            <td class="text-center text-sm">
                                             <span class="text-sm fw-bold">${data}</span>
                                             </td>
                                         `;
@@ -202,7 +198,7 @@
                             name: 'email',
                             render: function (data, type, row) {
                                 return `
-                                            <td class="equal-width align-middle text-center text-sm">
+                                            <td class="text-center text-sm">
                                             <span class="text-sm fw-bold">${data}</span>
                                             </td>
                                         `;
@@ -213,7 +209,7 @@
                             name: 'status',
                             render: function (data, type, row) {
                                 return `
-                                            <td class="equal-width align-middle text-center text-sm">
+                                            <td class="text-center text-sm">
                                             <span class="text-sm fw-bold">${data}</span>
                                             </td>
                                         `;
@@ -225,7 +221,7 @@
                             name: 'action',
                             render: function (data, type, row) {
                                 return `
-                                            <td class="equal-width align-middle text-center text-sm">
+                                            <td class="text-center text-sm">
                                             <span class="text-sm fw-bold">${data}</span>
                                             </td>
                                         `;
@@ -302,10 +298,10 @@
                     text: approveButtonTrans,
                     className: `btn-${color} btn-sm mt-2 ml-2`,
                     action: function (e, dt, node, config) {
-                        console.log(`"${approveButtonTrans}" button clicked!`);
+                        // console.log(`"${approveButtonTrans}" button clicked!`);
 
                         let ids = $.map(dt.rows({ selected: true }).data(), function (entry) {
-                            console.log("Row Data:", entry);  // Debug: Log full row data
+                            // console.log("Row Data:", entry);  // Debug: Log full row data
                             return entry.id; // Ensure 'id' is correctly accessed
                         });
 
@@ -315,7 +311,7 @@
                             return;
                         }
 
-                        console.log("Selected IDs:", ids);
+                        // console.log("Selected IDs:", ids);
 
 
                         Swal.fire({
@@ -341,11 +337,11 @@
             }
 
             $('#delete').click(function () {
-                console.log("Delete button clicked!");  // Debugging log
+                // console.log("Delete button clicked!");  // Debugging log
 
                 let table = $('#publisherListing').DataTable();
                 let ids = $.map(table.rows({ selected: true }).data(), function (entry) {
-                    console.log("Row Data:", entry);  // Log row data
+                    // console.log("Row Data:", entry);  // Log row data
                     return entry.id;
                 });
 
@@ -355,7 +351,7 @@
                     return;
                 }
 
-                console.log("Selected IDs for deletion:", ids);
+                // console.log("Selected IDs for deletion:", ids);
 
                 Swal.fire({
                     title: "Are you sure?",

@@ -11,7 +11,7 @@
     <thead>
         <tr class="text-uppercase">
             <th>Advertise</th>
-            <th>Dat</th>
+            <th>Date</th>
             <th>Tracking Link Click</th>
             <th>Deeplink Click</th>
             <th>Coupon Click</th>
@@ -22,16 +22,25 @@
         @if(count($clicks))
 
             @foreach($clicks as $click)
-                <tr class="align-middle border-bottom">
+                @php
+                    $initials = \App\Helper\Methods::getInitials($click->advertiser_name);
+                    $colorCode = \App\Helper\Methods::getColorFromName($click->advertiser_name);
+                    $imageUrl = "https://placehold.co/32/{$colorCode}/FFFFFF?text={$initials}";
+                @endphp
+                <tr class="border-bottom">
                     <td>
-                        <div class="d-flex flex-column">
-                            <h6 class="fw-semibold text-dark mt-2">
+                        <a href="{{ route("publisher.view-advertiser", ['advertiser' => $click->advertiser_id]) }}"class="nav-link px-0 d-flex align-items-center" style="gap: 8px;">
+                            <img src="{{ $imageUrl }}" alt="{{ $initials }}" class="rounded-circle" width="32" height="32">
+                            <div>
+                                <h6 class="fw-semibold mb-0">{{ \Illuminate\Support\Str::limit( $click->advertiser_name , 50, '....') }}</h6>
+                                <span class="text-muted">{{ $click->sid }}</span>
+                            </div>
+                        </a>
+                            {{-- <h6 class="fw-semibold text-dark mt-2">
                                 {{ $click->advertiser_name }}
                             </h6>
-                            <a class="fw-semibold nav-link text-xs mt-2" href="{{ route("publisher.view-advertiser", ['advertiser' => $click->advertiser_id]) }}"><i class="ri-link-m"></i>Visit Website</a>
+                            <a class="fw-semibold nav-link text-xs mt-2" href="{{ route("publisher.view-advertiser", ['advertiser' => $click->advertiser_id]) }}"><i class="ri-link-m"></i>Visit Website</a> --}}
 
-                        </div>
-                        <!--end::User details-->
                     </td>
                     <td>
                         <div>

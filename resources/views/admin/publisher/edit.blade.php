@@ -88,7 +88,7 @@
 @section("scripts")
 
     <!-- jquery-validation Js -->
-    <script src="{{ \App\Helper\Methods::staticAsset('panel/assets/plugins/jquery-validation/js/jquery.validate.min.js') }}"></script>
-    <script src="{{ \App\Helper\Methods::staticAsset('admin/assets/js/validation/edit-publisher.js') }}"></script>
+    <script src="{{ asset('adminDashboard/assets/js/plugins/jquery.validate.min.js') }}"></script>
+    <script src="{{ asset('adminDashboard/assets/js/edit-publisher.js') }}"></script>
 
 @endsection

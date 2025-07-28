@@ -11,7 +11,7 @@
                 <div class="text-center mb-4">
                     @if(env("APP_ENV") != "local")
                         <a href="{{ url('/') }}" class="d-inline-block mb-4">
-                            <img src="{{ \App\Helper\Methods::staticAsset('assets/media/logos/logo.png') }}" alt="Logo" style="height: 50px;">
+                            <img src="{{ asset('publisherAssets/assets/affiloTechLogo.png') }}" alt="Logo" style="height: 50px;">
                         </a>
                     @endif
                 </div>

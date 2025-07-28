@@ -464,7 +464,7 @@
 @section ('breadcrumb')
     <ol class="breadcrumb mb-0 bg-white rounded-50 nav-link nav-link-lg collapse-btn">
         <li class="breadcrumb-item mt-1">
-            <a href="#"><i data-feather="home"></i></a>
+            <a href="{{ route('publisher.dashboard') }}"><i data-feather="home"></i></a>
         </li>
         <li class="breadcrumb-item mt-1">
             <a href="#" class="text-sm">Reporting</a>
@@ -610,10 +610,10 @@
             <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header d-flex justify-content-between">
-                        <h5 class="modal-title font-weight-bold mb-0">Export Transaction Data</h5>
-                        <button type="button" class="close text-white bg-danger btn btn-sm ml-2" data-dismiss="modal"
+                        <h4 class="text-dark">Export Transaction Data</h4>
+                        <button type="button" class="btn-close text-white btn-danger btn btn-sm" data-dismiss="modal"
                             aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
+                            <span aria-hidden="true" class="text-white text-lg">&times;</span>
                         </button>
                     </div>
 
@@ -621,10 +621,11 @@
                         id="kt_advertiser_export_in_form">
                         @csrf
                         <div class="modal-body">
-                            <p class="text-muted mb-3">
-                                After your request is completed, the formatted file will be available in
-                                <strong>Tools > Download Export Files</strong>.
-                            </p>
+                            <div class="text-muted fw-semibold">
+                                After your request is completed, the formatted file you requested will be available for
+                                download in the
+                                <b>Tools > Download Export Files</b> section.
+                            </div>
                             <input type="hidden" id="totalExport" name="total" value="{{ $transactions->total() }}">
                             <input type="hidden" name="search" id="search_export">
                             <input type="hidden" name="status" id="status_export">
@@ -634,7 +635,7 @@
                             <input type="hidden" name="export_format" id="export_format" value="csv">
                         </div>
                         <div class="modal-footer">
-                            <button type="reset" class="btn btn-light">Discard</button>
+                            <button type="reset" class="btn btn-light" data-dismiss="modal">Discard</button>
                             <button type="submit" class="btn btn-outline-success">Request to Export Data</button>
                         </div>
                     </form>

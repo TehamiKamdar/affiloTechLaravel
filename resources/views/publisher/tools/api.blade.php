@@ -51,7 +51,7 @@
 @section('breadcrumb')
     <ol class="breadcrumb mb-0 bg-white rounded-50 nav-link nav-link-lg collapse-btn">
         <li class="breadcrumb-item mt-1">
-            <a href="#"><i data-feather="home"></i></a>
+            <a href="{{ route('publisher.dashboard') }}"><i data-feather="home"></i></a>
         </li>
         <li class="breadcrumb-item mt-1">
             <a href="#" class="text-sm">Tools</a>

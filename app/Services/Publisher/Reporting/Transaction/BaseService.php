@@ -264,10 +264,11 @@ class BaseService extends RootService
         tracking_clicks.link_id,
         tracking_clicks.created_year,
         tracking_clicks.date,
-                advertisers.name AS advertiser_name,
-                advertisers.logo,
-                advertisers.fetch_logo_url,
-                advertisers.is_fetchable_logo,
+        advertisers.name AS advertiser_name,
+        advertisers.logo,
+        advertisers.fetch_logo_url,
+        advertisers.is_fetchable_logo,
+        advertisers.sid,
         SUM(tracking_clicks.total_clicks) AS total_clicks
     ")
     ->leftJoin(DB::raw("advertisers"), function ($join) use ($user) {

@@ -247,101 +247,146 @@ $selected_status = 'active';
           <ol class="breadcrumb mb-0 bg-white rounded-50 nav-link nav-link-lg
 									collapse-btn">
             <li class="breadcrumb-item mt-1">
-              <a href="#"><i data-feather="home"></i></a>
+              <a href="{{ route('publisher.dashboard') }}"><i data-feather="home"></i></a>
             </li>
             <li class="breadcrumb-item mt-1">
               <a href="#" class="text-sm">Advertisers</a>
             </li>
             <li class="breadcrumb-item mt-1 active">
-              <a href="#" class="text-sm">New Advertisers</a>
+              <a href="{{ route('publisher.new-advertisers') }}" class="text-sm">New Advertisers</a>
             </li>
           </ol>
 @endsection
 @section('content')
 
             @include("partial.alert")
-<div class="card border-0 shadow-sm">
-        <div class="card-header">
-            <h4>Advanced Filters</h4>
-        </div>
-    <div class="card-body p-3">
-        <div class="row align-items-center">
-            <!-- Field 1 -->
-            <div class="col-md-5 col-sm-6 col-6 mb-2 mb-md-0">
-                <div class="form-group mb-0">
-                    <label for="countryFilter" class="form-label mb-1">Select Country</label>
-                    <select class="form-control" id="country">
-                        <option selected disabled>Choose Country</option>
-                        @foreach($countries as $country)
-                            <option value="{{ $country->iso2 }}" @if($country->iso2 == request('country')) selected @endif>
-                                {{ $country->name }}
-                            </option>
-                        @endforeach
-                    </select>
+            <div class="card border-0 shadow-sm">
+                    <div class="card-header">
+                        <h4>Advanced Filters</h4>
+                    </div>
+                <div class="card-body p-3">
+                    <div class="row align-items-center">
+                        <!-- Field 1 -->
+                        <div class="col-md-5 col-sm-6 col-6 mb-2 mb-md-0">
+                            <div class="form-group mb-0">
+                                <label for="countryFilter" class="form-label mb-1">Select Country</label>
+                                <select class="form-control" id="country">
+                                    <option selected disabled>Choose Country</option>
+                                    @foreach($countries as $country)
+                                        <option value="{{ $country->iso2 }}" @if($country->iso2 == request('country')) selected @endif>
+                                            {{ $country->name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Field 2 -->
+                        <div class="col-md-5 col-sm-6 col-6 mb-2 mb-md-0">
+                            <div class="form-group mb-0">
+                                <label for="advertiserType" class="form-label mb-1">Advertiser Type</label>
+                                <select class="form-control" id="advertiserType">
+                                    <option></option>
+                                    <option value="{{ \App\Models\Advertiser::THIRD_PARTY }}"
+                                        {{ request()->advertiser_type == \App\Models\Advertiser::THIRD_PARTY ? 'selected' : '' }}>
+                                        {{ \App\Models\Advertiser::THIRD_PARTY_TEXT }}
+                                    </option>
+                                    <option value="{{ \App\Models\Advertiser::MANAGED_BY }}"
+                                        {{ request()->advertiser_type == \App\Models\Advertiser::MANAGED_BY ? 'selected' : '' }}>
+                                        {{ \App\Models\Advertiser::MANAGED_BY_TEXT }}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Apply Button -->
+                        <div class="col-md-2 col-sm-12 col-12">
+                            <button class="btn btn-primary btn-block mt-4" type="button" id="apply">
+                                <i class="fas fa-filter mr-1"></i> Apply Filter
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
-
-            <!-- Field 2 -->
-            <div class="col-md-5 col-sm-6 col-6 mb-2 mb-md-0">
-                <div class="form-group mb-0">
-                    <label for="advertiserType" class="form-label mb-1">Advertiser Type</label>
-                    <select class="form-control" id="advertiserType">
-                        <option></option>
-                        <option value="{{ \App\Models\Advertiser::THIRD_PARTY }}"
-                            {{ request()->advertiser_type == \App\Models\Advertiser::THIRD_PARTY ? 'selected' : '' }}>
-                            {{ \App\Models\Advertiser::THIRD_PARTY_TEXT }}
-                        </option>
-                        <option value="{{ \App\Models\Advertiser::MANAGED_BY }}"
-                            {{ request()->advertiser_type == \App\Models\Advertiser::MANAGED_BY ? 'selected' : '' }}>
-                            {{ \App\Models\Advertiser::MANAGED_BY_TEXT }}
-                        </option>
-                    </select>
-                </div>
-            </div>
-
-            <!-- Apply Button -->
-            <div class="col-md-2 col-sm-12 col-12">
-                <button class="btn btn-primary btn-block mt-4" type="button" id="apply">
-                    <i class="fas fa-filter mr-1"></i> Apply Filter
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
             <div class="card">
                 <div class="card-header border-0 pt-6">
-    <div class="card-title w-100">
-        <div class="d-flex justify-content-between align-items-center flex-wrap">
+                    <div class="card-title w-100">
+                        <div class="d-flex justify-content-between align-items-center flex-wrap">
 
-            {{-- Left Side: Search + Status Filter --}}
-            <div class="d-flex align-items-center flex-wrap" style="gap: 10px;">
-                <div>
-                    <input type="text" id="search" class="form-control"
-                           placeholder="Search Advertiser"
-                           value="{{ request('search') }}" />
+                            {{-- Left Side: Search + Status Filter --}}
+                            <div class="d-flex align-items-center flex-wrap" style="gap: 10px;">
+                                <div>
+                                    <input type="text" id="search" class="form-control"
+                                        placeholder="Search Advertiser"
+                                        value="{{ request('search') }}" />
+                                </div>
+
+                                <select id="statusFilter" class="form-control p-1" accesskey=""
+                                        style="height:2rem; width: auto;">
+                                    @foreach($defaultStatus as $status => $selected)
+                                        <option value="{{ $status }}" @if($status == $selected_status) selected @endif>
+                                            {{ ucfirst($status) }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                            {{-- Right Side: Filter + Export Buttons --}}
+                            <div class="d-flex align-items-center mt-2 mt-md-0">
+                                {{-- Export Button --}}
+                                <button type="button" id="exportBttn" class="btn btn-sm btn-success"
+                                        data-toggle="modal" data-target="#kt_modal_export_data">
+                                    <i class="fas fa-file-export mr-1"></i> Export as CSV
+                                </button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+                <div class="modal fade" id="kt_modal_export_data" tabindex="-1" aria-hidden="true">
+                    <div class="modal-lg modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <div>
+                                    <h4 class="text-dark">Export Advertiser Data</h4>
+                                </div>
+                                <button type="button" class="btn btn-sm btn-close btn-danger" data-dismiss="modal" aria-label="Close">
+                                    <span class="text-white text-lg">&times;</span>
+                                </button>
+                            </div>
+                            <form class="form" novalidate="novalidate" id="kt_advertiser_export_in_form"
+                                action="{{ route('publisher.generate-export-advertiser') }}" method="post">
+                                @csrf
+                                <div class="modal-body">
+                                    <input type="hidden" id="route_name" name="route_name"
+                                        value="{{ request()->route()->getName() }}">
+                                    <input type="hidden" id="totalExport" name="total"
+                                        value="{{ $advertisers->total() }}">
+                                    <input type="hidden" name="search" id="search_export">
+                                    <input type="hidden" name="status" id="status_export">
+                                    <input type="hidden" name="country" id="country_export">
+                                    <input type="hidden" name="advertiser_type" id="advertiser_type_export">
+                                    <input type="hidden" name="categories" id="categories_export">
+                                    <input type="hidden" name="methods" id="methods_export">
+                                    <input type="hidden" name="export_format" id="export_format">
+                                    <div class="fw-semibold text-muted">
+                                        After your request is completed, the formatted file you requested will be
+                                        available for download in the <b>Tools> Download Export Files</b> section.
+                                    </div>
 
-                <select id="statusFilter" class="form-control p-1" accesskey=""
-                        style="height:2rem; width: auto;">
-                    @foreach($defaultStatus as $status => $selected)
-                        <option value="{{ $status }}" @if($status == $selected_status) selected @endif>
-                            {{ ucfirst($status) }}
-                        </option>
-                    @endforeach
-                </select>
-            </div>
-
-            {{-- Right Side: Filter + Export Buttons --}}
-            <div class="d-flex align-items-center mt-2 mt-md-0">
-                {{-- Export Button --}}
-                <button type="button" id="exportBttn" class="btn btn-sm btn-success"
-                        data-toggle="modal" data-target="#kt_modal_export_data">
-                    <i class="fas fa-file-export mr-1"></i> Export as CSV
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
+                                </div>
+                                <div class="modal-footer">
+                                        <button type="reset" class="btn btn-light me-3"
+                                            data-dismiss="modal">Discard</button>
+                                        <button type="submit" class="btn btn-outline-success"
+                                            id="kt_advertiser_export_submit"
+                                            data-kt-export-data-modal-action="submit">
+                                            <span class="indicator-label">Request to Export Data</span>
+                                        </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
                 <div class="card-body py-4">
 
                     <div id="advertisers-container">

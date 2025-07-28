@@ -90,7 +90,7 @@
                 type: 'POST',
                 headers: {'X-CSRF-Token': "{{ csrf_token() }}"},
                 success: function(response) {
-                    console.log(response); // Handle response data
+                    // console.log(response); // Handle response data
                 },
                 error: function(xhr, status, error) {
                     console.error(error); // Handle errors

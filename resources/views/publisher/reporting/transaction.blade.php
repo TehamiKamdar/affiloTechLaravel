@@ -150,7 +150,7 @@
 @section('breadcrumb')
     <ol class="breadcrumb mb-0 bg-white rounded-50 nav-link nav-link-lg collapse-btn">
         <li class="breadcrumb-item mt-1">
-            <a href="#"><i data-feather="home"></i></a>
+            <a href="{{ route('publisher.dashboard') }}"><i data-feather="home"></i></a>
         </li>
         <li class="breadcrumb-item mt-1">
             <a href="#" class="text-sm">Reporting</a>
@@ -476,57 +476,57 @@
                     <i class="fas fa-file-export mr-1"></i> Export as CSV
                 </button>
             </div>
-            <div class="modal fade" id="kt_modal_add_auth_app" tabindex="-1" role="dialog" aria-hidden="true">
-                <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header d-flex justify-content-between align-items-start">
-                            <div>
-                                <h5 class="modal-title font-weight-bold mb-1">Export Transaction Data</h5>
-                                <small class="text-muted">
-                                    After your request is completed, the formatted file you requested will be available for
-                                    download in the
-                                    <b>Tools > Download Export Files</b> section.
-                                </small>
+
+        </div>
+        <div class="modal fade" id="kt_modal_add_auth_app" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header d-flex justify-content-between align-items-start">
+                        <div>
+                            <h4 class="text-dark">Export Transaction Data</h4>
+                        </div>
+                        <button type="button" class="btn btn-sm btn-close btn-danger" data-dismiss="modal" aria-label="Close">
+                            <span class="text-white text-lg">&times;</span>
+                        </button>
+                    </div>
+
+                    <form class="w-100" id="kt_advertiser_export_in_form"
+                        action="{{ route('publisher.generate-export-transaction') }}" method="post" novalidate>
+                        @csrf
+
+                        <div class="modal-body">
+                            <div class="fw-semibold text-muted">
+                                After your request is completed, the formatted file you requested will be available for
+                                download in the
+                                <b>Tools > Download Export Files</b> section.
                             </div>
-                            <button type="button" class="close btn btn-sm bg-danger ml-3" data-dismiss="modal"
-                                aria-label="Close">
-                                <span aria-hidden="true" class="text-lg text-white">&times;</span>
-                            </button>
+                            <input type="hidden" id="totalExport" name="total" value="{{ $transactions->total() }}">
+                            <input type="hidden" name="search" id="search_export">
+                            <input type="hidden" name="status" id="status_export">
+                            <input type="hidden" name="region" id="region_export">
+                            <input type="hidden" name="advertiser" id="advertiser_export">
+                            <input type="hidden" name="date" id="date_export">
+                            <input type="hidden" name="export_format" id="export_format" value="csv">
+
+                            {{-- <div class="form-group">
+                                <label for="export_format" class="small font-weight-bold">Select Export Format:</label>
+                                <select name="export_format" id="export_format" class="form-control select2"
+                                    data-placeholder="Select a format" data-hide-search="true">
+                                    <option></option>
+                                    <option value="csv">CSV</option>
+                                </select>
+                            </div> --}}
                         </div>
 
-                        <form class="w-100" id="kt_advertiser_export_in_form"
-                            action="{{ route('publisher.generate-export-transaction') }}" method="post" novalidate>
-                            @csrf
-
-                            <div class="modal-body mx-auto w-100" style="max-width: 500px;">
-                                <input type="hidden" id="totalExport" name="total" value="{{ $transactions->total() }}">
-                                <input type="hidden" name="search" id="search_export">
-                                <input type="hidden" name="status" id="status_export">
-                                <input type="hidden" name="region" id="region_export">
-                                <input type="hidden" name="advertiser" id="advertiser_export">
-                                <input type="hidden" name="date" id="date_export">
-
-                                <div class="form-group">
-                                    <label for="export_format" class="small font-weight-bold">Select Export Format:</label>
-                                    <select name="export_format" id="export_format" class="form-control select2"
-                                        data-placeholder="Select a format" data-hide-search="true">
-                                        <option></option>
-                                        <option value="csv">CSV</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="modal-footer">
-                                <button type="reset" class="btn btn-light mr-2">Discard</button>
-                                <button type="submit" class="btn btn-outline-success">
-                                    Request to Export Data
-                                </button>
-                            </div>
-                        </form>
-                    </div>
+                        <div class="modal-footer">
+                            <button type="reset" class="btn btn-light mr-2" data-dismiss="modal">Discard</button>
+                            <button type="submit" class="btn btn-outline-success">
+                                Request to Export Data
+                            </button>
+                        </div>
+                    </form>
                 </div>
             </div>
-
         </div>
         <!--end::Card header-->
         <!--begin::Card body-->

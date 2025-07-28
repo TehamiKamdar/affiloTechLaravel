@@ -13,9 +13,9 @@
         .hide {
             display: none !important;
         }
-        
+
         .form-check-label {
-  
+
      background-color: transparent !important
 }
     </style>
@@ -27,7 +27,7 @@
     <div class="contents">
         <div class="container-fluid">
             <div class="social-dash-wrap">
-                
+
                  <!-- [ breadcrumb ] start -->
     <div class="page-header">
         <div class="page-block">
@@ -140,11 +140,11 @@
             </div>
         </div>
     </div>
-   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         let GET_ADVERTISERS_BY_NETWORK_URL = '{{ route("admin.advertisers.api.show_on_publisher.get-advertisers-by-network") }}';
         let GET_COUNTRIES_BY_NETWORK_URL = '{{ route("admin.advertisers.api.show_on_publisher.get-countries-by-network") }}';
     </script>
-    <script type="text/javascript" src="{{ \App\Helper\Static\Methods::staticAsset("assets/js/admin/advertiser/show_on.js") }}"></script>
+    <script type="text/javascript" src="{{ asset("adminDashboard/assets/js/show_on.js") }}"></script>
 
 @endsection

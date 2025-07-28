@@ -1,7 +1,6 @@
 @extends("layouts.admin.layout")
 
 @section('styles')
-    <link rel="stylesheet" type="text/css" href="{{ \App\Helper\Methods::staticAsset('assets/plugins/custom/datatables/datatables.bundle.css') }}">
     <style>
         .width-150 {
             width: 150%;
@@ -12,7 +11,6 @@
 
 @section('scripts')
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="{{ \App\Helper\Methods::staticAsset('assets/plugins/custom/datatables/datatables.bundle.js') }}"></script>
     <script type="text/javascript">
 
         $('#transactionListing').dataTable({

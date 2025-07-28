@@ -825,21 +825,12 @@
 @endsection
 
 @section('scripts')
-    <script src="{{ \App\Helper\Methods::staticAsset('dashboard_assets/js/core/popper.min.js') }}"></script>
-    <script src="{{ \App\Helper\Methods::staticAsset('dashboard_assets/js/core/bootstrap.min.js') }}"></script>
-    <script src="{{ \App\Helper\Methods::staticAsset('dashboard_assets/js/plugins/perfect-scrollbar.min.js') }}"></script>
-    <script src="{{ \App\Helper\Methods::staticAsset('dashboard_assets/js/plugins/smooth-scrollbar.min.js') }}"></script>
-    <script src="{{ \App\Helper\Methods::staticAsset('dashboard_assets/js/plugins/chartjs.min.js') }}"></script>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/apexcharts/4.5.0/apexcharts.min.js"
-        integrity="sha512-yMnvLee1a5S9nemgCoMth5YvOchnQMFMOSao/bH6SLAXZnauuHs1gd92DnE9+sVQ5aglei3LZDelg8LauSlWkw=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/apexcharts/4.5.0/apexcharts.min.js"></script>
     <script type="text/javascript">
         document.addEventListener("DOMContentLoaded", function () {
             fetch("{{ route('admin.chart.data') }}")
                 .then(response => response.json())
                 .then(data => {
-                    console.log(data)
                     const { labels, barData } = data;
 
                     const options = {
@@ -910,7 +901,6 @@
                 const data = await response.json();
 
                 if (loadingText) loadingText.remove();
-                console.log(data); // ✅ Confirm response contains series and labels
 
                 const options = {
                     chart: {

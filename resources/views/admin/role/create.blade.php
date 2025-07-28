@@ -3,7 +3,7 @@
 @section("styles")
 
     <!-- data tables css -->
-    <link rel="stylesheet" href="{{ \App\Helper\Methods::staticAsset('panel/assets/plugins/data-tables/css/datatables.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('adminDashboard/assets/plugins/data-tables/css/datatables.min.css') }}">
 
     <style>
         table td:last-child{
@@ -78,7 +78,7 @@
 <script>
        $(document).ready(function(){
     // Initialize Select2
-    console.log($('#permissions'))
+    // console.log($('#permissions'))
     $('#permissions').select2();
 
     // Add "Select All" button functionality
@@ -105,7 +105,7 @@
 
     </script>
 @pushonce('scripts')
-    <script src="{{ \App\Helper\Static\Methods::staticAsset("vendor_assets/js/jquery.validate.min.js") }}"></script>
+    <script src="{{ asset("adminDashboard/assets/js/plugins/jquery.validate.min.js") }}"></script>
     <script>
 
         $(document).ready(function () {

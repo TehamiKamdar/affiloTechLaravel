@@ -252,6 +252,11 @@
     <div class="profile-header text-center">
         <div class="row justify-content-center">
             <div class="col-12 text-center">
+                @php
+                    $initials = \App\Helper\Methods::getInitials($advertiser->name);
+                    $colorCode = \App\Helper\Methods::getColorFromName($advertiser->name);
+                    $imageUrl = "https://placehold.co/280x125/{$colorCode}/FFFFFF?text={$initials}";
+                @endphp
                 @if(!empty($advertiser->fetch_logo_url))
 
                     <img src="{{ $advertiser->fetch_logo_url }}" alt="{{ $advertiser->name }}" class="profile-avatar mb-3" />
@@ -262,8 +267,8 @@
                         alt="{{ $advertiser->name }}" class="profile-avatar mb-3" />
 
                 @else
-                    <img src="{{ \App\Helper\Methods::staticAsset('assets/media/logos/placeholder.jpeg') }}"
-                        alt="{{ $advertiser->name }}" class="mw-50px mw-lg-75px" class="profile-avatar mb-3" />
+                    <img src="{{ $imageUrl }}"
+                        alt="{{ $advertiser->name }}" class="profile-avatar mb-3" />
                 @endif
                 <h2 class="mb-2">{{ $advertiser->name }}</h2>
                 <div class="mb-2">
@@ -372,45 +377,45 @@
 
             <!-- If Want to show some more details, enable this and work out!! -->
             <!-- <div class="profile-card">
-                                <div class="profile-card-header">
-                                    <i class="fas fa-code mr-2"></i>Skills
-                                </div>
-                                <div class="card-body">
-                                    <div class="mb-3">
-                                        <h6>UI/UX Design</h6>
-                                        <div class="progress mt-2">
-                                            <div class="progress-bar" role="progressbar" style="width: 95%" aria-valuenow="95" aria-valuemin="0" aria-valuemax="100"></div>
-                                        </div>
-                                    </div>
-                                    <div class="mb-3">
-                                        <h6>HTML/CSS</h6>
-                                        <div class="progress mt-2">
-                                            <div class="progress-bar" role="progressbar" style="width: 90%" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100"></div>
-                                        </div>
-                                    </div>
-                                    <div class="mb-3">
-                                        <h6>JavaScript</h6>
-                                        <div class="progress mt-2">
-                                            <div class="progress-bar" role="progressbar" style="width: 85%" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100"></div>
-                                        </div>
-                                    </div>
-                                    <div class="mb-3">
-                                        <h6>React</h6>
-                                        <div class="progress mt-2">
-                                            <div class="progress-bar" role="progressbar" style="width: 80%" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <h6 class="mb-2">Other Skills</h6>
-                                        <div>
-                                            <span class="skill-badge"><i class="fas fa-check mr-1"></i>Figma</span>
-                                            <span class="skill-badge"><i class="fas fa-check mr-1"></i>Adobe XD</span>
-                                            <span class="skill-badge"><i class="fas fa-check mr-1"></i>Bootstrap</span>
-                                            <span class="skill-badge"><i class="fas fa-check mr-1"></i>SASS</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div> -->
+                    <div class="profile-card-header">
+                        <i class="fas fa-code mr-2"></i>Skills
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <h6>UI/UX Design</h6>
+                            <div class="progress mt-2">
+                                <div class="progress-bar" role="progressbar" style="width: 95%" aria-valuenow="95" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <h6>HTML/CSS</h6>
+                            <div class="progress mt-2">
+                                <div class="progress-bar" role="progressbar" style="width: 90%" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <h6>JavaScript</h6>
+                            <div class="progress mt-2">
+                                <div class="progress-bar" role="progressbar" style="width: 85%" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <h6>React</h6>
+                            <div class="progress mt-2">
+                                <div class="progress-bar" role="progressbar" style="width: 80%" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <h6 class="mb-2">Other Skills</h6>
+                            <div>
+                                <span class="skill-badge"><i class="fas fa-check mr-1"></i>Figma</span>
+                                <span class="skill-badge"><i class="fas fa-check mr-1"></i>Adobe XD</span>
+                                <span class="skill-badge"><i class="fas fa-check mr-1"></i>Bootstrap</span>
+                                <span class="skill-badge"><i class="fas fa-check mr-1"></i>SASS</span>
+                            </div>
+                        </div>
+                    </div>
+                </div> -->
         </div>
 
         <!-- Right Column -->
@@ -435,7 +440,7 @@
                                 <i class="fas fa-trophy"></i>
                             </div>
                             <h3 class="mb-1">@if($advertiser->average_payment_time) {{ $advertiser->average_payment_time }}
-                            days @else - @endif</h3>
+                            @else - @endif</h3>
                             <p class="text-muted mb-0">Avg. Payout (Days)</p>
                         </div>
                     </div>
@@ -478,34 +483,51 @@
                 <div class="tab-pane fade show active" id="transaction" role="tabpanel">
                     <div class="card p-0">
                         <div class="card-body p-0">
-                            <table class="table table-sm" style="font-size: 0.875rem;">
+                            <table class="table table-sm mb-0" style="font-size: 0.875rem;">
                                 <thead class="text-white" style="background-color: #00a9da;">
                                     <tr>
                                         <th scope="col" class="pl-3 py-2">ID</th>
-                                        <th scope="col" class="py-2">Name</th>
                                         <th scope="col" class="py-2">Date</th>
+                                        <th scope="col" class="py-2">Amount</th>
                                         <th scope="col" class="pr-3 py-2">Status</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td class="pl-3 py-2">001</td>
-                                        <td class="py-2">John Doe</td>
-                                        <td class="py-2">2023-05-15</td>
-                                        <td class="pr-3 py-2"><span class="badge badge-success">Active</span></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="pl-3 py-2">002</td>
-                                        <td class="py-2">Jane Smith</td>
-                                        <td class="py-2">2023-06-20</td>
-                                        <td class="pr-3 py-2"><span class="badge badge-warning">Pending</span></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="pl-3 py-2">003</td>
-                                        <td class="py-2">Robert Johnson</td>
-                                        <td class="py-2">2023-07-10</td>
-                                        <td class="pr-3 py-2"><span class="badge badge-danger">Inactive</span></td>
-                                    </tr>
+                                    @if ($transactions->count() > 0)
+                                        @foreach ($transactions as $data)
+                                        <tr>
+                                            <td class="pl-3">{{ $data->transaction_id }}</td>
+                                            <td class="">{{\Carbon\Carbon::parse($data->transaction_date)->format('d F Y')}}</td>
+                                            <td class="">${{ number_format($data->sale_amount , 2) }}</td>
+                                            <td class="p-0 ">
+                                                @if ($data->commission_status == 'approved')
+                                                <div class="d-flex align-items-center">
+                                                    <span class="rounded-circle bg-success mr-2"
+                                                        style="width:10px; height:10px;"></span>
+                                                    <h6 class="fw-semibold text-dark mt-2">Approved</h6>
+                                                </div>
+                                                @elseif($data->commission_status == 'rejected')
+                                                    <div class="d-flex align-items-center">
+                                                        <span class="rounded-circle bg-danger mr-2"
+                                                            style="width:10px; height:10px;"></span>
+                                                        <h6 class="fw-semibold text-dark mt-2">Rejected</h6>
+                                                    </div>
+                                                @else
+                                                    <div class="d-flex align-items-center">
+                                                        <span class="rounded-circle bg-warning mr-2"
+                                                            style="width:10px; height:10px;"></span>
+                                                        <h6 class="fw-semibold text-dark mt-2">Pending</h6>
+                                                    </div>
+                                                @endif
+                                            </td>
+                                        </tr>
+                                        @endforeach
+                                    @else
+                                        <tr>
+                                            <td colspan="4" class="text-center"><span class="text-danger">No Transaction Record Available</span></td>
+                                        </tr>
+                                    @endif
+
                                 </tbody>
                             </table>
                         </div>
@@ -838,19 +860,19 @@
                                             <div>
                                                 @if ($data->commission_status == 'approved')
                                                 <div class="d-flex align-items-center">
-                                                    <span class="rounded-circle bg-success me-2"
+                                                    <span class="rounded-circle bg-success mr-2"
                                                         style="width:10px; height:10px;"></span>
                                                     <h6 class="fw-semibold text-dark mt-2">Approved</h6>
                                                 </div>
                                                 @elseif($data->commission_status == 'rejected')
                                                 <div class="d-flex align-items-center">
-                                                    <span class="rounded-circle bg-danger me-2"
+                                                    <span class="rounded-circle bg-danger mr-2"
                                                         style="width:10px; height:10px;"></span>
                                                     <h6 class="fw-semibold text-dark mt-2">Rejected</h6>
                                                 </div>
                                                 @else
                                                 <div class="d-flex align-items-center">
-                                                    <span class="rounded-circle bg-warning me-2"
+                                                    <span class="rounded-circle bg-warning mr-2"
                                                         style="width:10px; height:10px;"></span>
                                                     <h6 class="fw-semibold text-dark mt-2">Pending</h6>
                                                 </div>

@@ -3,10 +3,8 @@
 @section("styles")
 
     <!-- data tables css -->
-    <link rel="stylesheet"
-        href="{{ asset('assets/plugins/data-tables/css/datatables.min.css') }}">
-    <link href="{{ asset('assets/plugins/data-tables/css/buttons.dataTables.min.css') }}" rel="stylesheet" />
-    <link href="{{ asset('assets/plugins/data-tables/css/select.dataTables.min.css') }}" rel="stylesheet" />
+    <link href="{{ asset('adminDashboard/assets/plugins/data-tables/css/datatables.min.css') }}" />
+    <link href="{{ asset('adminDashboard/assets/plugins/data-tables/css/select.dataTables.min.css') }}" />
 
     <style>
         table td:last-child {
@@ -55,14 +53,6 @@
             <div class="card">
                 <div class="card-header">
                     <h5 class="mt-1">{{ $title }} - Listing</h5>
-                    {{-- <a href="javascript:void(0)" id="selectAll" class="btn btn-sm btn-primary my-0">Select All</a>--}}
-                    {{-- <a href="javascript:void(0)" id="deSelectAll" class="btn btn-sm btn-danger my-0">De Select
-                        All</a>--}}
-                    {{-- <div class="float-end">--}}
-                        {{-- <a href="javascript:void(0)" id="approve" class="btn btn-sm btn-success my-0">Approve</a>--}}
-                        {{-- <a href="javascript:void(0)" id="hold" class="btn btn-sm btn-info my-0">Hold</a>--}}
-                        {{-- <a href="javascript:void(0)" id="reject" class="btn btn-sm btn-danger my-0">Reject</a>--}}
-                        {{-- </div>--}}
                 </div>
                 <div class="card-body">
                     <div class="dt-responsive table-responsive">
@@ -125,9 +115,8 @@
 @section("scripts")
 
 
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="{{ asset('assets/plugins/data-tables/js/dataTables.buttons.min.js') }}"></script>
-    <script src="{{ asset('assets/plugins/data-tables/js/dataTables.select.min.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>\
+    <script src="{{ asset('adminDashboard/assets/plugins/data-tables/js/dataTables.select.min.js') }}"></script>
 
     <script>
 
@@ -346,7 +335,7 @@ let advertiserListingDraw;
                 <span>Select Network:</span>
                 <select class="form-control form-control-sm" id="networkFilter" name="source" aria-controls="advertiserListing">
                     <option value="All" selected>All</option>`;
-        
+
         for (let i = 0; i < networkList.length; i++) {
             selectHtml += `<option value="${networkList[i]}">${networkList[i]}</option>`;
         }
@@ -354,7 +343,7 @@ let advertiserListingDraw;
         selectHtml += `</select></label>`;
 
         $('#advertiserListing_filter').append(selectHtml);
-        
+
         $('#networkFilter').on('change', function () {
             var selected = $(this).val();
             // Build a new URL that includes the selected network as a parameter

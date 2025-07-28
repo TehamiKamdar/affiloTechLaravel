@@ -11,11 +11,11 @@
                 <a href="{{route('publisher.dashboard')}}" class="nav-link"><i data-feather="monitor"></i><span>Dashboard</span></a>
             </li>
             <li class="menu-header">advertisers management</li>
-            <li class="dropdown {{ Route::is('publisher.my-advertisers') || Route::is('publisher.new-advertisers') || Route::is('publisher.find-advertisers') ? 'active' : '' }}">
+            <li class="dropdown {{ Route::is('publisher.my-advertisers') || Route::is('publisher.new-advertisers') || Route::is('publisher.find-advertisers') || Route::is('publisher.view-advertiser') ? 'active' : '' }}">
                 <a href="#" class="menu-toggle nav-link has-dropdown"><i
                         data-feather="users"></i><span>Advertisers</span></a>
                 <ul class="dropdown-menu">
-                    <li class="{{ Route::is('publisher.my-advertisers') ? 'active' : '' }}"><a class="nav-link" href="{{route('publisher.my-advertisers')}}">My Advertisers</a></li>
+                    <li class="{{ Route::is('publisher.my-advertisers') || Route::is('publisher.view-advertiser') ? 'active' : '' }}"><a class="nav-link" href="{{route('publisher.my-advertisers')}}">My Advertisers</a></li>
                     <li class="{{ Route::is('publisher.new-advertisers') ? 'active' : '' }}"><a class="nav-link" href="{{route('publisher.new-advertisers')}}">New Advertisers</a></li>
                     <li class="{{ Route::is('publisher.find-advertisers') ? 'active' : '' }}"><a class="nav-link" href="{{route('publisher.find-advertisers')}}">Find Advertisers</a></li>
                 </ul>

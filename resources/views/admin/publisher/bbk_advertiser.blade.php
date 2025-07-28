@@ -101,12 +101,12 @@
 @section('internal_styles')
 
     <!-- data tables css -->
-    <link rel="stylesheet" href="{{ \App\Helper\Methods::staticAsset('panel/assets/plugins/data-tables/css/datatables.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('adminDashboard/assets/plugins/data-tables/css/datatables.min.css') }}">
 
 @endsection
 
 @section('internal_scripts')
-    <script src="{{ \App\Helper\Methods::staticAsset('panel/assets/plugins/data-tables/js/datatables.min.js') }}"></script>
+    <script src="{{ asset('adminDashboard/assets/plugins/data-tables/js/datatables.min.js') }}"></script>
     <script>
         $(document).on('click', '.pagination a', function(e) {
             e.preventDefault();

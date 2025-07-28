@@ -61,6 +61,15 @@ class Methods {
         Log::error($exception ?? '');
     }
 
+    public static function getInitials($name) {
+        return strtoupper(substr($name, 0, 2));
+    }
+
+    public static function getColorFromName($name) {
+        // Get the first 6 hex chars of md5 hash to use as color
+        return substr(md5($name), 0, 6); // e.g., "f4c242"
+    }
+
     public static function tryBodyFetchDaily($jobID, $isStatusChange, $isHistory = false, $isExported = false) {
         if ($isHistory) {
             History::where("id", $jobID)->update(array(

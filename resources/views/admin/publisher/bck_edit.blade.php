@@ -4,7 +4,7 @@
 @endsection
 
 @section('scripts')
-    <script src="{{ \App\Helper\Methods::staticAsset('admin/assets/js/validation/edit-publisher.js') }}"></script>
+    <script src="{{ asset('adminDashboard/assets/js/edit-publisher.js') }}"></script>
 @endsection
 
 @section("content")

@@ -3,7 +3,7 @@
 @section('content')
 
     <!--begin::Page bg image-->
-    <style>body { background-image: url('{{ \App\Helper\Methods::staticAsset("assets/media/auth/bg4.jpg") }}'); } [data-bs-theme="dark"] body { background-image: url('{{ \App\Helper\Methods::staticAsset('assets/media/auth/bg4-dark.jpg') }}'); }</style>
+    <style>body { background-image: url('{{ asset("assets/media/auth/bg4.jpg") }}'); } [data-bs-theme="dark"] body { background-image: url('{{ \App\Helper\Methods::staticAsset('assets/media/auth/bg4-dark.jpg') }}'); }</style>
     <!--end::Page bg image-->
     <!--begin::Authentication - Sign-in -->
     <div class="d-flex flex-column flex-column-fluid flex-lg-row">
@@ -21,7 +21,7 @@
                         @if(env("APP_ENV") != "local")
                                 <!--begin::Logo-->
                                 <a href="{{ url('/') }}" class="mb-12">
-                                    <img alt="Logo" src="{{ \App\Helper\Methods::staticAsset('assets/media/logos/logo.png') }}"  />
+                                    <img alt="Logo" src="{{ asset('publisherAssets/assets/affiloTechLogo.png') }}"  />
                                 </a>
                                 <!--end::Logo-->
                             @endif

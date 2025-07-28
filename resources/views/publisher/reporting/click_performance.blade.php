@@ -432,7 +432,7 @@
 @section ('breadcrumb')
     <ol class="breadcrumb mb-0 bg-white rounded-50 nav-link nav-link-lg collapse-btn">
         <li class="breadcrumb-item mt-1">
-            <a href="#"><i data-feather="home"></i></a>
+            <a href="{{ route('publisher.dashboard') }}"><i data-feather="home"></i></a>
         </li>
         <li class="breadcrumb-item mt-1">
             <a href="#" class="text-sm">Reporting</a>
@@ -443,111 +443,47 @@
     </ol>
 @endsection
 @section('content')
-    @include("partial.alert")
-    {{-- <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4">
+<div class="card border-0 shadow-sm mb-4">
+        <div class="card-header">
+            <h4>Advanced Filters</h4>
+        </div>
+        <div class="card-body">
+            <div class="row align-items-center">
+                <div class="col-12 col-lg-6 mb-3">
+                    <label for="at_report_datepicker">Select Date</label>
+                    <input class="form-control py-1" name="date" id="at_report_datepicker" placeholder="Pick date range" />
+                </div>
 
-        <!-- Right Side: Filter + Export -->
-        <div class="card-toolbar d-flex align-items-center gap-3">
-
-            <!--begin::Daterangepicker-->
-            <div class="dropdown">
-                <button class="btn btn-sm btn-outline-primary d-flex align-items-center gap-1 filter-toggle" type="button"
-                    data-bs-toggle="dropdown" aria-expanded="false" style="min-width: 90px; transition: none;">
-                    <i class="ri-filter-3-line"></i>
-                    <span>Filter</span>
-                </button>
-
-                <div class="dropdown-menu p-4 shadow-sm" style="min-width: 320px;">
-                    <div class="mb-3">
-                        <label for="pr_report_datepicker" class="form-label fw-semibold small">Date Range</label>
-                        <input class="form-control form-control h-auto py-1" name="date" id="pr_report_datepicker"
-                            placeholder="Pick date range" />
-                    </div>
+                <div class="col-12 col-lg-6 mb-3">
+                    <label for="status">Select Status</label>
+                    <select class="form-control text-muted" id="status" data-control="select2" data-hide-search="true"
+                        data-placeholder="Status">
+                        <option value="" selected disabled>Status</option>
+                        <option value="all">All</option>
+                        <option value="{{ \App\Models\Transaction::STATUS_PENDING }}"
+                            @if(\App\Models\Transaction::STATUS_PENDING == request()->status) selected @endif>Pending</option>
+                        <option value="{{ \App\Models\Transaction::STATUS_APPROVED }}"
+                            @if(\App\Models\Transaction::STATUS_APPROVED == request()->status) selected @endif>Approved
+                        </option>
+                        <option value="{{ \App\Models\Transaction::STATUS_DECLINED }}"
+                            @if(\App\Models\Transaction::STATUS_DECLINED == request()->status) selected @endif>Declined
+                        </option>
+                        <option value="{{ \App\Models\Transaction::STATUS_PAID }}"
+                            @if(\App\Models\Transaction::STATUS_PAID == request()->status) selected @endif>Paid</option>
+                        <option value="{{ \App\Models\Transaction::STATUS_PENDING_PAID }}"
+                            @if(\App\Models\Transaction::STATUS_PENDING_PAID == request()->status) selected @endif>Pending
+                            Paid
+                        </option>
+                    </select>
                 </div>
             </div>
-            <!--end::Daterangepicker-->
-
-            <!--begin::Export-->
-            <button type="button" id="exportBttn" class="btn btn-sm btn-outline-success" data-bs-toggle="modal"
-                data-bs-target="#kt_modal_add_auth_app">
-                <i class="ri-upload-2-line"></i>
-                Export
-            </button>
-            <!--end::Export-->
-
         </div>
+
+
+
     </div>
-    <!--begin::Modal - Adjust Balance-->
-    <div class="modal fade" id="kt_modal_add_auth_app" tabindex="-1" aria-hidden="true">
-        <!--begin::Modal dialog-->
-        <div class="modal-lg modal-dialog modal-dialog-centered mw-650px">
-            <!--begin::Modal content-->
-            <div class="modal-content">
-                <!--begin::Modal header-->
-                <div class="modal-header">
-                    <!--begin::Modal title-->
-                    <h4 class="fw-bold">
-                        Export Transaction Data
-                        <div class="fs-7 fw-semibold text-muted">After your request is completed, the formatted file
-                            you requested will be available for download in the <b>Tools > Download Export Files</b>
-                            section.</div>
-                    </h4>
-                    <!--end::Modal title-->
-                    <div class="btn btn-sm btn-close bg-danger" data-bs-dismiss="modal"
-                        data-kt-export-data-modal-action="close">
-                    </div>
-                </div>
-                <!--end::Modal header-->
-                <form class="form w-100" novalidate="novalidate" id="kt_advertiser_export_in_form"
-                    action="{{ route('publisher.generate-export-transaction') }}" method="post">
-                    @csrf
-                    <!--begin::Modal body-->
-                    <div class="modal-body mx-auto w-50 scroll-y">
-                        <!--begin::Form-->
-                        <input type="hidden" id="totalExport" name="total" value="{{ $clicks->total() }}">
-                        <input type="hidden" name="search" id="search_export">
-                        <input type="hidden" name="status" id="status_export">
-                        <input type="hidden" name="region" id="region_export">
-                        <input type="hidden" name="advertiser" id="advertiser_export">
-                        <input type="hidden" name="date" id="date_export">
+    @include("partial.alert")
 
-                        <!--begin::Input group-->
-                        <div class="fv-row mb-10">
-                            <!--begin::Label-->
-                            <label class="required fs-6 fw-semibold form-label mb-2">Select Export Format:</label>
-                            <!--end::Label-->
-                            <!--begin::Input-->
-                            <select name="export_format" data-control="select2" data-placeholder="Select a format"
-                                data-hide-search="true" class="form-select form-select-solid fw-bold">
-                                <option></option>
-                                <option value="csv">CSV</option>
-                            </select>
-                            <!--end::Input-->
-                        </div>
-                        <!--end::Input group-->
-
-                    </div>
-                    <!--end::Modal body-->
-                    <div class="modal-footer">
-                        <!--begin::Actions-->
-                        <div class="text-center">
-                            <button type="reset" class="btn btn-light me-3"
-                                data-kt-users-modal-action="cancel">Discard</button>
-                            <button type="submit" class="btn btn-outline-success" id="kt_advertiser_export_submit"
-                                data-kt-users-modal-action="submit">
-                                <span class="indicator-label">Request to Export Data</span>
-                            </button>
-                        </div>
-                        <!--end::Actions-->
-                    </div>
-                </form>
-                <!--end::Form-->
-            </div>
-            <!--end::Modal content-->
-        </div>
-        <!--end::Modal dialog-->
-    </div> --}}
-    <!--end::Modal - New Card-->
     <!-- Total Clicks -->
             <div class="col-12 col-md-6 col-lg-4 px-0">
                 <div class="metric-card">
@@ -584,43 +520,6 @@
 
             <!-- Filter Button & Select -->
             <div class="d-flex align-items-center flex-wrap mb-2 mb-md-0">
-                <div class="dropdown mr-3">
-                    <button class="btn btn-sm btn-outline-primary d-flex align-items-center" type="button"
-                        data-toggle="dropdown">
-                        <i class="fas fa-sort-down mr-1"></i>
-                        <span>Filter</span>
-                    </button>
-                    <div class="dropdown-menu p-4 shadow" style="min-width: 320px;">
-                        <div class="form-group mb-3">
-                            <label for="pr_report_datepicker" class="small font-weight-bold">Date Range</label>
-                            <input type="text" class="form-control form-control" name="date" id="pr_report_datepicker"
-                                placeholder="Pick date range">
-                        </div>
-                        <div class="form-group mb-0">
-                            <select class="form-control form-control" id="status" data-control="select2"
-                                data-hide-search="true" data-placeholder="Status">
-                                <option value="" selected disabled>Status</option>
-                                <option value="all">All</option>
-                                <option value="{{ \App\Models\Transaction::STATUS_PENDING }}"
-                                    @if(\App\Models\Transaction::STATUS_PENDING == request()->status) selected @endif>Pending
-                                </option>
-                                <option value="{{ \App\Models\Transaction::STATUS_APPROVED }}"
-                                    @if(\App\Models\Transaction::STATUS_APPROVED == request()->status) selected @endif>
-                                    Approved</option>
-                                <option value="{{ \App\Models\Transaction::STATUS_DECLINED }}"
-                                    @if(\App\Models\Transaction::STATUS_DECLINED == request()->status) selected @endif>
-                                    Declined</option>
-                                <option value="{{ \App\Models\Transaction::STATUS_PAID }}"
-                                    @if(\App\Models\Transaction::STATUS_PAID == request()->status) selected @endif>Paid
-                                </option>
-                                <option value="{{ \App\Models\Transaction::STATUS_PENDING_PAID }}"
-                                    @if(\App\Models\Transaction::STATUS_PENDING_PAID == request()->status) selected @endif>
-                                    Pending Paid</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-
                 <!-- Export Button -->
                 <button type="button" id="exportBttn" class="btn btn-sm btn-success" data-toggle="modal"
                     data-target="#kt_modal_add_auth_app">
@@ -635,9 +534,9 @@
                 <div class="modal-content">
                     <div class="modal-header d-flex justify-content-between">
                         <h5 class="modal-title font-weight-bold mb-0">Export Transaction Data</h5>
-                        <button type="button" class="close text-white bg-danger btn btn-sm ml-2" data-dismiss="modal"
+                        <button type="button" class="btn-close text-white btn-danger btn btn-sm" data-dismiss="modal"
                             aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
+                            <span aria-hidden="true" class="text-white text-lg">&times;</span>
                         </button>
                     </div>
 
@@ -645,10 +544,11 @@
                         id="kt_advertiser_export_in_form">
                         @csrf
                         <div class="modal-body">
-                            <p class="text-muted mb-3">
-                                After your request is completed, the formatted file will be available in
-                                <strong>Tools > Download Export Files</strong>.
-                            </p>
+                            <div class="text-muted fw-semibold">
+                                After your request is completed, the formatted file you requested will be available for
+                                download in the
+                                <b>Tools > Download Export Files</b> section.
+                            </div>
                             <input type="hidden" id="totalExport" name="total" value="{{ $clicks->total() }}">
                             <input type="hidden" name="search" id="search_export">
                             <input type="hidden" name="status" id="status_export">
@@ -658,7 +558,7 @@
                             <input type="hidden" name="export_format" id="export_format" value="csv">
                         </div>
                         <div class="modal-footer">
-                            <button type="reset" class="btn btn-light">Discard</button>
+                            <button type="reset" class="btn btn-light" data-dismiss="modal">Discard</button>
                             <button type="submit" class="btn btn-outline-success">Request to Export Data</button>
                         </div>
                     </form>

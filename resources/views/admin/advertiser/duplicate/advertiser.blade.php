@@ -25,7 +25,7 @@
             <div class="social-dash-wrap">
                 <div class="row">
                     <div class="col-lg-4">
-                       
+
                           <!-- [ breadcrumb ] start -->
     <div class="page-header">
         <div class="page-block">
@@ -127,11 +127,11 @@
                                                 </td>
                                             </tr>
                                         @endforeach
-                                        
+
     <tr class="text-center">
         <td colspan="4">
             <div class="d-flex justify-content-center mt-1 mb-20">
-               
+
                 {{  $advertisers->links('partial.publisher_pagination') }}
             </div>
         </td>
@@ -191,7 +191,7 @@
 
         document.addEventListener("DOMContentLoaded", function () {
             $("#assignedFilter").change((event) => {
-console.log('hey')
+// console.log('hey')
                 // Get the current URL
                 let currentURL = new URL(window.location.href);
 

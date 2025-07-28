@@ -23,38 +23,23 @@
             @foreach($transactions as $transaction)
                 @php
                     $advertiser = \App\Models\Advertiser::find($transaction->internal_advertiser_id);
+                    $initials = \App\Helper\Methods::getInitials($transaction->advertiser_name);
+                    $colorCode = \App\Helper\Methods::getColorFromName($transaction->advertiser_name);
+                    $imageUrl = "https://placehold.co/32/{$colorCode}/FFFFFF?text={$initials}";
                    @endphp
                 <tr>
                     <td>
-                        <!--begin::User details-->
-                        <div class="d-flex flex-column">
-                            <a href="{{ route("publisher.view-advertiser", ['advertiser' => $transaction->internal_advertiser_id]) }}"
-                                class="text-gray-800 text-hover-primary mb-1">
-                                {{ \Illuminate\Support\Str::limit($transaction->advertiser_name, 50, '....') }}
-                            </a>
-
-                            <span class="text-sm">({{ $advertiser->sid }})</span>
-                        </div>
-                        <!--end::User details-->
+                        <a href="{{ route("publisher.view-advertiser", ['advertiser' => $transaction->internal_advertiser_id]) }}"class="nav-link px-0 d-flex align-items-center" style="gap: 8px;">
+                            <img src="{{ $imageUrl }}" alt="{{ $initials }}" class="rounded-circle" width="32" height="32">
+                            <div>
+                                <h6 class="fw-semibold mb-0">{{ \Illuminate\Support\Str::limit($transaction->advertiser_name, 50, '....') }}</h6>
+                                <span class="text-muted">({{ $advertiser->sid }})</span>
+                            </div>
+                        </a>
                     </td>
-                    <td>
-                        <div>
-                            <h6 class="fw-semibold text-dark mt-2">{{ $transaction->transaction_date }}</h6>
-                        </div>
-                    </td>
-
-                    <td class="pe-0">
-                        <div>
-                            <h6 class="fw-semibold text-dark mt-2">${{ number_format($transaction->sale_amount ?? 0, 2) }}</h6>
-                        </div>
-                    </td>
-                    <td class="pe-0">
-                        <div>
-                            <h6 class="fw-semibold text-dark mt-2">${{ number_format($transaction->commission_amount ?? 0, 2) }}</h6>
-                        </div>
-                    </td>
-
-
+                    <td>{{ $transaction->transaction_date }}</td>
+                    <td>${{ number_format($transaction->sale_amount ?? 0, 2) }}</td>
+                    <td>${{ number_format($transaction->commission_amount ?? 0, 2) }}</td>
                 </tr>
             @endforeach
         @else

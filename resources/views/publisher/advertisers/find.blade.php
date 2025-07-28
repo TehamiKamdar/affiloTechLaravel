@@ -247,13 +247,13 @@
 @section('breadcrumb')
     <ol class="breadcrumb mb-0 bg-white rounded-50 nav-link nav-link-lg collapse-btn">
         <li class="breadcrumb-item mt-1">
-            <a href="#"><i data-feather="home"></i></a>
+            <a href="{{ route('publisher.dashboard') }}"><i data-feather="home"></i></a>
         </li>
         <li class="breadcrumb-item mt-1">
             <a href="#" class="text-sm">Advertisers</a>
         </li>
         <li class="breadcrumb-item mt-1 active">
-            <a href="#" class="text-sm">My Advertisers</a>
+            <a href="{{ route('publisher.my-advertisers') }}" class="text-sm">My Advertisers</a>
         </li>
     </ol>
 @endsection
@@ -351,7 +351,7 @@
             <!-- Modal Header -->
             <div class="modal-header">
                 <div>
-                    <h4 class="fw-bold">Export Advertiser Data</h4>
+                    <h4 class="text-dark">Export Advertiser Data</h4>
                 </div>
                 <button type="button" class="btn btn-sm btn-close btn-danger" data-dismiss="modal" aria-label="Close">
                     <span class="text-white text-lg">&times;</span>
@@ -364,8 +364,8 @@
                 <div class="modal-body">
 
                     <div class="fw-semibold text-muted">
-                        After your request is completed, the formatted file will be available in
-                        <b>Tools > Download Export Files</b>.
+                        After your request is completed, the formatted file you requested will be
+                        available for download in the <b>Tools> Download Export Files</b> section.
                     </div>
                     <!-- Hidden Inputs -->
                     <input type="hidden" name="route_name" value="{{ request()->route()->getName() }}">
