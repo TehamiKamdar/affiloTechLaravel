@@ -1,6 +1,7 @@
 @extends('layouts.publisher.layout')
 
 @section('styles')
+    <link rel="stylesheet" href="{{ asset('publisherAssets/assets/bundles/izitoast/css/iziToast.min.css') }}">
     <style>
         label {
             color: var(--primary-color);
@@ -153,6 +154,8 @@
     <script src="{{asset('publisherAssets/assets/bundles/amcharts4/charts.js')}}"></script>
     <script src="{{asset('publisherAssets/assets/bundles/amcharts4/animated.js')}}"></script>
     <script src="{{asset('publisherAssets/assets/bundles/amcharts4/worldLow.js')}}"></script>
+    <script src="{{ asset('publisherAssets/assets/bundles/izitoast/js/iziToast.min.js') }}"></script>
+    <script src="{{ asset('publisherAssets/assets/js/export.js') }}"></script>
     <script>
         let clicksChartInstance = null;
 
@@ -540,14 +543,12 @@
                         </button>
                     </div>
 
-                    <form action="{{ route('publisher.generate-export-transaction') }}" method="post"
-                        id="kt_advertiser_export_in_form">
+                    <form action="{{ route('publisher.generate-export-transaction') }}" method="post" id="kt_advertiser_export_in_form">
                         @csrf
                         <div class="modal-body">
                             <div class="text-muted fw-semibold">
                                 After your request is completed, the formatted file you requested will be available for
-                                download in the
-                                <b>Tools > Download Export Files</b> section.
+                                download in the <b>Tools > Download Export Files</b> section.
                             </div>
                             <input type="hidden" id="totalExport" name="total" value="{{ $clicks->total() }}">
                             <input type="hidden" name="search" id="search_export">
@@ -559,7 +560,7 @@
                         </div>
                         <div class="modal-footer">
                             <button type="reset" class="btn btn-light" data-dismiss="modal">Discard</button>
-                            <button type="submit" class="btn btn-outline-success">Request to Export Data</button>
+                            <button type="submit" class="btn btn-outline-success" id="kt_advertiser_export_submit">Request to Export Data</button>
                         </div>
                     </form>
                 </div>

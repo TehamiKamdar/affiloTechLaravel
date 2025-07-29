@@ -90,32 +90,44 @@
             <span class="badge badge-primary">{{ count($exports) }} files to download</span>
         </div>
         @if(count($exports))
-    @foreach($exports->chunk(4) as $exportChunk)
-        <!-- File Item 1 -->
-        <div class="file-card bg-white p-3">
+    @foreach($exports as $export)
+        <div class="file-card bg-white p-3 mb-3">
             <div class="d-flex justify-content-between align-items-center">
                 <div class="d-flex align-items-center">
                     <i class="fas fa-file-csv file-icon text-success"></i>
                     <div>
-                        <h6 class="mb-1 font-weight-bold text-dark">user_data_export_20231025.csv</h6>
+                        <h6 class="mb-1 font-weight-bold text-dark">{{ $export->name }}.csv</h6>
                         <div class="d-flex">
-                            <span class="file-date mr-3"><i class="far fa-calendar-alt mr-1"></i>Generated: Oct 25, 2023
-                                14:30</span>
-                            <span class="file-size"><i class="fas fa-database mr-1"></i>2.4 MB</span>
+                            <span class="file-date mr-3">
+                                <i class="far fa-calendar-alt mr-1"></i>
+                                Generated: {{ \Carbon\Carbon::parse($export->created_at)->format('M d, Y H:i') }}
+                            </span>
                         </div>
                     </div>
                 </div>
                 <div class="d-flex align-items-center">
-                    <span class="badge badge-success mr-3">Ready</span>
-                    <button class="btn btn-primary export-btn">
+                    @php
+                        $created = \Carbon\Carbon::parse($export->created_at);
+                        $diffDays = \Carbon\Carbon::parse($export->created_at)->diffInDays(now(), false);
+                        // dd($diffDays);
+                    @endphp
+
+                    @if ($diffDays >= 6)
+                        <span class="badge badge-danger mr-3">Expires Tomorrow</span>
+                    @elseif ($diffDays >= 4)
+                        <span class="badge badge-warning mr-3">Expires Soon</span>
+                    @else
+                        <span class="badge badge-success mr-3">Ready</span>
+                    @endif
+
+                    <a href="{{ asset("storage/{$export->path}") }}" download class="btn btn-primary export-btn">
                         <i class="fas fa-download mr-1"></i>Download
-                    </button>
+                    </a>
                 </div>
             </div>
         </div>
-    </div>
     @endforeach
-    @else
+@else
     <div class="row justify-content-center my-4">
         <div class="col-6">
             <div class="card shadow-sm">
@@ -123,18 +135,17 @@
                     <h5 class="text-md text-center mb-0">No Download Export Files</h5>
                 </div>
                 <div class="card-body pt-2">
-                    <div class="mb-3">
-                        <p class="text-center text-sm text-muted">Currently, there are no files available for
-                            download in the export
-                            files section. Please use the export options in various sections to generate files.
-                            Files will remain
-                            in this section for up to 3 months.</p>
-                    </div>
+                    <p class="text-center text-sm text-muted">
+                        Currently, there are no files available for download in the export files section.
+                        Please use the export options in various sections to generate files.
+                        Files will remain in this section for up to 3 months.
+                    </p>
                 </div>
             </div>
         </div>
     </div>
-    @endif
+@endif
+
     {{-- @include("partial.alert")
 
     @if(count($exports))

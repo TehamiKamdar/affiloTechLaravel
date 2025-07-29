@@ -40,6 +40,9 @@ class ExportService extends BaseService
             ]
         );
 
-        return true;
+        return response()->json([
+            'success' => true,
+            'message' => 'Export request submitted. You can download the file shortly.'
+        ]);
     }
 }

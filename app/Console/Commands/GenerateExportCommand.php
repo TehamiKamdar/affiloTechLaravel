@@ -16,16 +16,16 @@ class GenerateExportCommand extends Command
     public function handle()
     {
         try {
-            
+
             if ($this->shouldFetchData()) {
                 $fetchDailyData = GenerateExportRequest::select("source")
                     ->where("is_processing", Vars::JOB_NOT_PROCESS)
                     ->where("status", Vars::JOB_STATUS_IN_PROCESS)
                     ->groupBy("source")
                     ->get();
-$this->info($fetchDailyData->count());
+            $this->info($fetchDailyData->count());
                 foreach ($fetchDailyData as $key => $source) {
-                    
+
                     $jobs = $this->getJobsForSource($source->source);
                     $this->info($jobs);
 
@@ -55,7 +55,7 @@ $this->info($fetchDailyData->count());
             ->orderBy("date", "ASC")
             ->take(20)
             ->get();
-            
+
     }
 
     private function processJobs($jobs, int $totalSources, int $currentIndex)

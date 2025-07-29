@@ -1,6 +1,7 @@
 @extends('layouts.publisher.layout')
 
 @section('styles')
+    <link rel="stylesheet" href="{{ asset('publisherAssets/assets/bundles/izitoast/css/iziToast.min.css') }}">
     <style>
         label {
             color: var(--primary-color);
@@ -163,6 +164,8 @@
 
 @section('scripts')
 
+    <script src="{{ asset('publisherAssets/assets/bundles/izitoast/js/iziToast.min.js') }}"></script>
+    <script src="{{ asset('publisherAssets/assets/js/export.js') }}"></script>
     <script>
 
         $(document).ready(function () {
@@ -520,7 +523,7 @@
 
                         <div class="modal-footer">
                             <button type="reset" class="btn btn-light mr-2" data-dismiss="modal">Discard</button>
-                            <button type="submit" class="btn btn-outline-success">
+                            <button type="submit" class="btn btn-outline-success" id="kt_advertiser_export_submit">
                                 Request to Export Data
                             </button>
                         </div>

@@ -1,6 +1,7 @@
 @extends('layouts.publisher.layout')
 
 @section('styles')
+    <link rel="stylesheet" href="{{ asset('publisherAssets/assets/bundles/izitoast/css/iziToast.min.css') }}">
     <style>
         label {
             color: var(--primary-color);
@@ -130,6 +131,8 @@
 @endsection
 
 @section('scripts')
+    <script src="{{ asset('publisherAssets/assets/bundles/izitoast/js/iziToast.min.js') }}"></script>
+    <script src="{{ asset('publisherAssets/assets/js/export.js') }}"></script>
     <script>
         let advertiserCheckboxArr = @json($advertisersCheckboxValues);
     </script>

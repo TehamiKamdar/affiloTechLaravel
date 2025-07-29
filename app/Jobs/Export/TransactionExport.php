@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Services\Publisher\AdvertiserService;
 use App\Services\Publisher\Reporting\Transaction\BaseService;
 use App\Services\Publisher\TransactionService;
+use Carbon\Carbon;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Foundation\Queue\Queueable;
@@ -26,11 +27,11 @@ class TransactionExport implements ShouldQueue
     {
         $this->jobID = $data["job_id"];
         $this->isStatusChange = $data["is_status_change"];
-        
+
         // Remove unnecessary data from the original array
         unset($data["job_id"]);
         unset($data["is_status_change"]);
-        
+
         $this->data = $data;
     }
 
@@ -39,11 +40,11 @@ class TransactionExport implements ShouldQueue
         try {
             // Merging the data into the request
             $request->merge($this->data);
-            
+
             // Define the base directory path for exports
             $filePath = "public/exports";
             $directoryPath = Storage::path($filePath);
-            
+
             // Create directories if they do not exist
             if (!is_dir($directoryPath)) {
                 mkdir($directoryPath, 511, true);
@@ -77,10 +78,10 @@ class TransactionExport implements ShouldQueue
             // Create the CSV writer
             $chunkSize = 500;
             $csv = Writer::createFromPath($fullPath, "w+");
-            
+
             // Insert CSV headers
             $csv->insertOne([
-                "transaction_id", "transaction_date", "advertiser_name", "external_advertiser_id", 
+                "transaction_id", "transaction_date", "advertiser_name", "external_advertiser_id",
                 "sale_amount", "commission_amount", "commission_status", "payment_status"
             ]);
 
@@ -95,7 +96,7 @@ class TransactionExport implements ShouldQueue
                 $rows = $transactions->map(function ($transaction) {
                     return [
                         $transaction->transaction_id ?? "-",
-                        $transaction->transaction_date ?? "-",
+                        Carbon::parse($transaction->transaction_date)->format('d M Y') ?? "-",
                         $transaction->advertiser_name ?? "-",
                         $transaction->external_advertiser_id ?? "-",
                         $transaction->sale_amount ?? "-",

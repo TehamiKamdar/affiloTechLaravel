@@ -133,7 +133,7 @@
 
 @section('scripts')
     <script src="{{ asset('publisherAssets/assets/bundles/izitoast/js/iziToast.min.js') }}"></script>
-
+    <script src="{{ asset('publisherAssets/assets/js/export.js') }}"></script>
 
     <script>
         let advertiserCheckboxArr = @json($advertisersCheckboxValues);
@@ -359,7 +359,7 @@
             </div>
 
             <!-- Modal Body -->
-            <form action="{{ route('publisher.generate-export-advertiser') }}" method="post" class="form">
+            <form action="{{ route('publisher.generate-export-advertiser') }}" method="post" id="kt_advertiser_export_in_form" class="form">
                 @csrf
                 <div class="modal-body">
 
@@ -382,7 +382,7 @@
                 <!-- Modal Footer -->
                 <div class="modal-footer">
                     <button type="reset" class="btn btn-light me-3" data-dismiss="modal">Discard</button>
-                    <button type="submit" class="btn btn-outline-success">
+                    <button type="submit" id="kt_advertiser_export_submit" class="btn btn-outline-success">
                         <span class="indicator-label">Request to Export Data</span>
                     </button>
                 </div>

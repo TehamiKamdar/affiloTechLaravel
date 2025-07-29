@@ -1,89 +1,62 @@
 "use strict";
 
 const ExportFormHandler = (function () {
-    let form, submitButton, validator;
-
-    function handleValidation() {
-        validator = FormValidation.formValidation(
-            form,
-            {
-                fields: {
-                    'export_format': {
-                        validators: {
-                            notEmpty: {
-                                message: 'Please select an export format.'
-                            }
-                        }
-                    }
-                },
-                plugins: {
-                    bootstrap: new FormValidation.plugins.Bootstrap4({
-                        rowSelector: '.fv-row',
-                        eleInvalidClass: '',
-                        eleValidClass: ''
-                    })
-                }
-
-            }
-        );
-    }
+    let form, submitButton;
 
     function handleSubmitAjax() {
         $(submitButton).on('click', function (e) {
             e.preventDefault();
 
-            validator.validate().then(function (status) {
-                if (status === 'Valid') {
-                    $(submitButton).prop('disabled', true).html(
-                        `<span class="spinner-border spinner-border-sm mr-2"></span> Please wait...`
-                    );
+            const exportFormat = form.querySelector('[name="export_format"]').value;
 
-                    const formData = new FormData(form);
-                    const url = $(form).attr('action');
-                    const token = $('meta[name="csrf-token"]').attr('content');
+            if (!exportFormat) {
+                iziToast.error({
+                    title: 'Validation Error',
+                    message: 'Please select a valid export format.',
+                    position: 'topRight',
+                    timeout: 3000
+                });
+                return;
+            }
 
-                    $.ajax({
-                        url: url,
-                        method: 'POST',
-                        data: formData,
-                        processData: false,
-                        contentType: false,
-                        headers: {
-                            'X-CSRF-TOKEN': token
-                        },
-                        success: function (response) {
-                            iziToast.success({
-                                title: 'Success',
-                                message: 'Export request submitted. You can download the file shortly from Tools > Download Export Files.',
-                                position: 'topRight',
-                                timeout: 4000
-                            });
+            $(submitButton).prop('disabled', true).html(
+                `<span class="spinner-border spinner-border-sm mr-2"></span> Please wait...`
+            );
 
-                            // Reset the form (optional)
-                            form.reset();
+            const formData = new FormData(form);
+            const url = $(form).attr('action');
+            const token = $('meta[name="csrf-token"]').attr('content');
 
-                            // Optional: reload page or close modal
-                            setTimeout(() => location.reload(), 1500);
-                        },
-                        error: function () {
-                            iziToast.error({
-                                title: 'Error',
-                                message: 'Something went wrong. Please try again.',
-                                position: 'topRight',
-                                timeout: 4000
-                            });
-                        },
-                        complete: function () {
-                            $(submitButton).prop('disabled', false).html(`<span class="indicator-label">Request to Export Data</span>`);
-                        }
-                    });
-                } else {
-                    iziToast.error({
-                        title: 'Validation Error',
-                        message: 'Please select a valid export format.',
+            $.ajax({
+                url: url,
+                method: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                headers: {
+                    'X-CSRF-TOKEN': token
+                },
+                success: function (response) {
+                    iziToast.success({
+                        title: 'Success',
+                        message: 'Export request submitted. You can download the file shortly from Tools > Download Export Files.',
                         position: 'topRight',
-                        timeout: 3000
+                        timeout: 4000
                     });
+
+                    form.reset();
+                    setTimeout(() => location.reload(), 1500);
+                },
+                error: function () {
+                    iziToast.error({
+                        title: 'Error',
+                        message: 'Something went wrong. Please try again.',
+                        position: 'topRight',
+                        timeout: 4000
+                    });
+                },
+                complete: function () {
+                    $(submitButton).prop('disabled', false).html(`<span class="indicator-label">Request to Export Data</span>`);
                 }
             });
         });
@@ -96,7 +69,6 @@ const ExportFormHandler = (function () {
 
             if (!form || !submitButton) return;
 
-            handleValidation();
             handleSubmitAjax();
         }
     };

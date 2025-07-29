@@ -18,7 +18,7 @@ class ToolController extends BaseController
             'Tools',
             $title
         ];
-    
+
         return view('publisher.tools.deeplink_generate',compact('headings','title'));
     }
 
@@ -61,8 +61,7 @@ class ToolController extends BaseController
         $exports = $data['exports'];
         $title = "Download Export Files";
 
-        seo()
-            ->title(default: "{$title} — " . env("APP_NAME"));
+        seo()->title(default: "{$title} — " . env("APP_NAME"));
 
         $headings = [
             'Tools',

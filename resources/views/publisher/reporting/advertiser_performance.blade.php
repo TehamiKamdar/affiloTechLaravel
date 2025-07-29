@@ -2,6 +2,7 @@
 
 @section('styles')
 
+    <link rel="stylesheet" href="{{ asset('publisherAssets/assets/bundles/izitoast/css/iziToast.min.css') }}">
     <style>
         label {
             color: var(--primary-color);
@@ -155,6 +156,8 @@
     <script src="{{asset('publisherAssets/assets/bundles/amcharts4/charts.js')}}"></script>
     <script src="{{asset('publisherAssets/assets/bundles/amcharts4/animated.js')}}"></script>
     <script src="{{asset('publisherAssets/assets/bundles/amcharts4/worldLow.js')}}"></script>
+    <script src="{{ asset('publisherAssets/assets/bundles/izitoast/js/iziToast.min.js') }}"></script>
+    <script src="{{ asset('publisherAssets/assets/js/export.js') }}"></script>
     <script>
         let adChartInstance = null;
 
@@ -636,7 +639,7 @@
                         </div>
                         <div class="modal-footer">
                             <button type="reset" class="btn btn-light" data-dismiss="modal">Discard</button>
-                            <button type="submit" class="btn btn-outline-success">Request to Export Data</button>
+                            <button type="submit" class="btn btn-outline-success" id="kt_advertiser_export_submit">Request to Export Data</button>
                         </div>
                     </form>
                 </div>

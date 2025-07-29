@@ -12,5 +12,9 @@
         "laravel-vite-plugin": "^1.0",
         "sass": "^1.56.1",
         "vite": "^5.0"
+    },
+    "dependencies": {
+        "@form-validation/bundle": "^2.4.0",
+        "@form-validation/plugin-bootstrap": "^2.4.0"
     }
 }

@@ -1,15 +1,17 @@
 <?php
+
 namespace App\Jobs\Export;
 
+use App\Models\User;
+use League\Csv\Writer;
 use App\Helper\Methods;
 use App\Models\ExportFiles;
-use App\Models\User;
-use App\Services\Publisher\Advertiser\BaseService;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Foundation\Queue\Queueable;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
-use League\Csv\Writer;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Foundation\Queue\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use App\Services\Publisher\Advertiser\BaseService;
 
 class AdvertiserExport implements ShouldQueue
 {
@@ -21,15 +23,15 @@ class AdvertiserExport implements ShouldQueue
     {
         $this->jobID = $data["job_id"];
         $this->isStatusChange = $data["is_status_change"];
-        
+
         // Removing unnecessary data from the original array
         unset($data["job_id"]);
         unset($data["is_status_change"]);
-        
+
         $this->data = $data;
     }
 
-    public function handle(Request $request) : void
+    public function handle(Request $request): void
     {
         try {
             // Merging the data into the request
@@ -58,7 +60,6 @@ class AdvertiserExport implements ShouldQueue
                 mkdir($directoryPath, 511, true);
             }
 
-            // Prepare the filename with the current date
             $date = strtotime(now()->toDateTimeString());
             $fileName = "/{$date}-advertisers.csv";
             $fullPath = Storage::path("{$filePath}{$fileName}");
@@ -69,54 +70,75 @@ class AdvertiserExport implements ShouldQueue
             fclose($fp);
             chmod($fullPath, 511);
 
-            // Create the CSV writer and insert headers
             $chunkSize = 500;
             $csv = Writer::createFromPath($fullPath, "w+");
+
+            // ✅ Avoid SYLK bug by renaming "ID" to "Id"
             $csv->insertOne([
-                "ID", "SID", "Name", "Primary Regions", "Logo", "Commission", "Status", "Locked Status"
+                "Id",
+                "SID",
+                "Name",
+                "Primary Regions",
+                "Logo",
+                "Commission",
+                "Status",
+                "Locked Status"
             ]);
 
             info("Starting export...");
 
-            // Fetch user and advertiser data
             $user = User::where("publisher_id", $request->publisher_id)->first();
             $service = new BaseService();
 
-            // If no status is provided, set the default statuses
             if (empty($request->status)) {
                 $request->merge([
                     "status" => implode(",", array_keys($service->defaultStatuses($request)))
                 ]);
             }
 
-            // Fetch and chunk advertiser data
             $service->findAdvertiserQuery($request, $user)->chunk($chunkSize, function ($advertisers) use ($csv) {
                 $rows = $advertisers->map(function ($advertiser) {
+                    // ✅ Commission logic
+                    $commission = $advertiser->commission;
+
+                    if (is_null($commission) || $commission === '') {
+                        // Leave it blank
+                        $commission = '';
+                    } elseif (is_numeric($commission)) {
+                        if ($commission < 100) {
+                            $commission .= '%';
+                        }
+                        // else: 100 or more, leave as is
+                    } else {
+                        $commission = trim($commission);
+                        if (!Str::contains($commission, ['$', 'USD', '%'])) {
+                            $commission .= '%';
+                        }
+                    }
+
                     return [
                         $advertiser->id,
                         $advertiser->sid,
                         $advertiser->name,
-                         implode(", ", is_array($advertiser->primary_regions) ? $advertiser->primary_regions : []),
+                        implode(", ", is_array($advertiser->primary_regions) ? $advertiser->primary_regions : []),
                         $advertiser->logo
                             ? Methods::staticAsset("storage/{$advertiser->logo}")
-                            : Methods::staticAsset("assets/media/logos/placeholder.jpg"),
-                        $advertiser->commission . " " . $advertiser->commission_type,
+                            : Methods::staticAsset("assets/affiloTech.png"),
+                        $commission,
                         $advertiser->status,
                         $advertiser->locked_status
                     ];
                 })->toArray();
 
-                // Insert rows into the CSV
                 $csv->insertAll($rows);
                 info("Processed " . count($rows) . " records.");
             });
 
-            // Update or create an entry in the ExportFiles model
             ExportFiles::updateOrCreate(
                 [
                     "publisher_id" => $request->publisher_id,
                     "website_id" => $request->website_id,
-                    "path" => str_replace("public/", '', "{$filePath}/{$fileName}"),
+                    "path" => str_replace("public/", '', "{$filePath}{$fileName}"),
                     "expired_at" => now()->addMonth()->toDateTimeString()
                 ],
                 [
@@ -126,10 +148,8 @@ class AdvertiserExport implements ShouldQueue
 
             info("Export completed. File saved at: " . $fullPath);
 
-            // Attempt to fetch daily task data
             Methods::tryBodyFetchDaily($this->jobID, $this->isStatusChange, false, true);
         } catch (\Throwable $exception) {
-            // Log any exceptions encountered during the process
             Methods::catchBodyFetchDaily("EXPORT ADVERTISER FILE", $exception, $this->jobID, false, true);
         }
     }
