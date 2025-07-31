@@ -1,4 +1,8 @@
-@extends('layouts.pr_auth')
+@extends('layouts.at_auth')
+
+@section('title')
+Confirm Password
+@endsection
 
 @section('content')
 <div class="container">

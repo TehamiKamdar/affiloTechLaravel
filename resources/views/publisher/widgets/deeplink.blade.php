@@ -291,12 +291,22 @@
     </script>
 
 @else
-    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-        <h4 class="alert-heading">Error!</h4>
-        <div>Please go to <a href="https://app.profitrefer.com/publisher/profile/website">website settings</a> and verify
-            your site to Generate deeplink.</div>
-        <button type="button" class="btn-sm btn-close bg-white" data-bs-dismiss="alert" aria-label="Close"></button>
+    <div class="alert alert-danger alert-dismissible fade show d-flex justify-content-between align-items-start" role="alert">
+    <div>
+        <h4 class="alert-heading mb-1">Error!</h4>
+        <div>
+            Please go to
+            <a href="https://app.profitrefer.com/publisher/profile/website" class="text-white text-underline">
+                website settings
+            </a>
+            and verify your site to generate deeplink.
+        </div>
     </div>
+    <button type="button" class="btn btn-sm btn-close btn-danger ml-3 mt-1" aria-label="Close">
+        <span class="text-lg text-white">&times;</span>
+    </button>
+</div>
+
 
 
 @endif

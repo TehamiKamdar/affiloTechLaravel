@@ -1,10 +1,23 @@
 @extends("layouts.admin.layout")
 
+@section('breadcrumb')
+    <ol class="breadcrumb mb-0 bg-white rounded-50 nav-link nav-link-lg collapse-btn">
+        <li class="breadcrumb-item mt-1">
+            <a href="{{ route('publisher.dashboard') }}"><i data-feather="home"></i></a>
+        </li>
+        <li class="breadcrumb-item mt-1">
+            <a href="#" class="text-sm">Advertisers</a>
+        </li>
+        <li class="breadcrumb-item mt-1 active">
+            <a href="#" class="text-sm">{{ $title }}</a>
+        </li>
+    </ol>
+@endsection
+
 @section("styles")
 
-    <!-- data tables css -->
-    <link href="{{ asset('adminDashboard/assets/plugins/data-tables/css/datatables.min.css') }}" />
-    <link href="{{ asset('adminDashboard/assets/plugins/data-tables/css/select.dataTables.min.css') }}" />
+    <link rel="stylesheet" href="{{asset('assets/admin/plugins/datatables/css/dataTables.bootstrap4.min.css')}}">
+    <link rel="stylesheet" href="{{asset('assets/admin/plugins/datatables/css/select.bootstrap4.min.css')}}">
 
     <style>
         table td:last-child {
@@ -23,28 +36,15 @@
         .ml-2 {
             margin-left: .5rem !important;
         }
+        .dataTables_processing {
+            display: none;
+        }
+
     </style>
 
 @endsection
 
 @section('content')
-
-    <!-- [ breadcrumb ] start -->
-    <div class="page-header">
-        <div class="page-block">
-            <div class="row align-items-center">
-                <div class="col-md-12">
-                    <ul class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}"><i
-                                    class="ri-home-5-line text-primary"></i></a></li>
-                        <li class="breadcrumb-item"><a href="">Advertisers</a></li>
-                        <li class="breadcrumb-item"><a href="">{{ $title }}</a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- [ breadcrumb ] end -->
 
     <!-- [ Main Content ] start -->
     <div class="row">
@@ -53,11 +53,11 @@
             <div class="card">
                 <div class="card-header">
                     <h5 class="mt-1">{{ $title }} - Listing</h5>
+
                 </div>
                 <div class="card-body">
                     <div class="dt-responsive table-responsive">
-                        <table id="advertiserListing"
-                            class="table table table-hover datatable">
+                        <table id="advertiserListing" class="table table table-hover datatable">
                             <thead>
                                 <tr>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"></th>
@@ -116,7 +116,9 @@
 
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>\
-    <script src="{{ asset('adminDashboard/assets/plugins/data-tables/js/dataTables.select.min.js') }}"></script>
+    <script src="{{ asset('assets/admin/plugins/datatables/js/jquery.dataTables.min.js')}}"></script>
+    <script src="{{ asset('assets/admin/plugins/datatables/js/dataTables.bootstrap4.min.js')}}"></script>
+    <script src="{{ asset('assets/admin/plugins/datatables/js/dataTables.select.min.js')}}"></script>
 
     <script>
 
@@ -218,9 +220,9 @@
     </script>
 
     <script type="text/javascript">
-let advertiserListingDraw;
+        let advertiserListingDraw;
         $(document).ready(function () {
-    advertiserListingDraw = $('#advertiserListing').DataTable({
+            advertiserListingDraw = $('#advertiserListing').DataTable({
                 processing: true,
                 serverSide: true,
                 deferRender: true,
@@ -242,10 +244,10 @@ let advertiserListingDraw;
                         name: 'created_at',
                         render: function (data, type, row) {
                             return `
-                                        <td class="equal-width align-middle text-center text-sm">
-                                        <span class="text-sm fw-bold">${data}</span>
-                                        </td>
-                                    `;
+                                            <td class="equal-width align-middle text-center text-sm">
+                                            <span class="text-sm fw-bold">${data}</span>
+                                            </td>
+                                        `;
                         }
                     },
                     {
@@ -253,10 +255,10 @@ let advertiserListingDraw;
                         name: 'source',
                         render: function (data, type, row) {
                             return `
-                                        <td class="equal-width align-middle text-center text-sm">
-                                        <span class="text-sm fw-bold">${data}</span>
-                                        </td>
-                                    `;
+                                            <td class="equal-width align-middle text-center text-sm">
+                                            <span class="text-sm fw-bold">${data}</span>
+                                            </td>
+                                        `;
                         }
                     },
                     {
@@ -264,10 +266,10 @@ let advertiserListingDraw;
                         name: 'advertiser_sid',
                         render: function (data, type, row) {
                             return `
-                                        <td class="equal-width align-middle text-center text-sm">
-                                        <span class="text-sm fw-bold">${data}</span>
-                                        </td>
-                                    `;
+                                            <td class="equal-width align-middle text-center text-sm">
+                                            <span class="text-sm fw-bold">${data}</span>
+                                            </td>
+                                        `;
                         }
                     },
                     {
@@ -275,10 +277,10 @@ let advertiserListingDraw;
                         name: 'advertiser_name',
                         render: function (data, type, row) {
                             return `
-                                        <td class="equal-width align-middle text-center text-sm">
-                                        <span class="text-sm fw-bold">${data}</span>
-                                        </td>
-                                    `;
+                                            <td class="equal-width align-middle text-center text-sm">
+                                            <span class="text-sm fw-bold">${data}</span>
+                                            </td>
+                                        `;
                         }
                     },
                     {
@@ -286,10 +288,10 @@ let advertiserListingDraw;
                         name: 'publisher_name',
                         render: function (data, type, row) {
                             return `
-                                        <td class="equal-width align-middle text-center text-sm">
-                                        <span class="text-sm fw-bold">${data}</span>
-                                        </td>
-                                    `;
+                                            <td class="equal-width align-middle text-center text-sm">
+                                            <span class="text-sm fw-bold">${data}</span>
+                                            </td>
+                                        `;
                         }
                     },
                     {
@@ -297,10 +299,10 @@ let advertiserListingDraw;
                         name: 'publisher_website',
                         render: function (data, type, row) {
                             return `
-                                        <td class="equal-width align-middle text-center text-sm">
-                                        <span class="text-sm fw-bold">${data}</span>
-                                        </td>
-                                    `;
+                                            <td class="equal-width align-middle text-center text-sm">
+                                            <span class="text-sm fw-bold">${data}</span>
+                                            </td>
+                                        `;
                         }
                     },
                     {
@@ -308,10 +310,10 @@ let advertiserListingDraw;
                         name: 'applied_at',
                         render: function (data, type, row) {
                             return `
-                                        <td class="equal-width align-middle text-center text-sm">
-                                        <span class="text-sm fw-bold">${data}</span>
-                                        </td>
-                                    `;
+                                            <td class="equal-width align-middle text-center text-sm">
+                                            <span class="text-sm fw-bold">${data}</span>
+                                            </td>
+                                        `;
                         }
                     },
                     {
@@ -319,38 +321,38 @@ let advertiserListingDraw;
                         name: 'action',
                         render: function (data, type, row) {
                             return `
-                                        <td class="equal-width align-middle text-center text-sm">
-                                        <span class="text-sm fw-bold">${data}</span>
-                                        </td>
-                                    `;
+                                            <td class="equal-width align-middle text-center text-sm">
+                                            <span class="text-sm fw-bold">${data}</span>
+                                            </td>
+                                        `;
                         }
                     }
                 ]
             });
             let networkList = @json($list);
 
-    setTimeout(function () {
-        let selectHtml = `
-            <label style="margin-right: 10px; display: flex; gap: 3px; align-items: center;">
-                <span>Select Network:</span>
-                <select class="form-control form-control-sm" id="networkFilter" name="source" aria-controls="advertiserListing">
-                    <option value="All" selected>All</option>`;
+            setTimeout(function () {
+                let selectHtml = `
+                <label style="margin-right: 10px; display: flex; gap: 3px; align-items: center;">
+                    <span>Select Network:</span>
+                    <select class="form-control form-control-sm" id="networkFilter" name="source" aria-controls="advertiserListing">
+                        <option value="All" selected>All</option>`;
 
-        for (let i = 0; i < networkList.length; i++) {
-            selectHtml += `<option value="${networkList[i]}">${networkList[i]}</option>`;
-        }
+                for (let i = 0; i < networkList.length; i++) {
+                    selectHtml += `<option value="${networkList[i]}">${networkList[i]}</option>`;
+                }
 
-        selectHtml += `</select></label>`;
+                selectHtml += `</select></label>`;
 
-        $('#advertiserListing_filter').append(selectHtml);
+                $('#advertiserListing_filter').append(selectHtml);
 
-        $('#networkFilter').on('change', function () {
-            var selected = $(this).val();
-            // Build a new URL that includes the selected network as a parameter
-            var newUrl = '{{ route("admin.advertisers.approval.ajax") }}?status={{ $apiTitle }}&source=' + encodeURIComponent(selected);
-            advertiserListingDraw.ajax.url(newUrl).load();
-        });
-    }, 2000);
+                $('#networkFilter').on('change', function () {
+                    var selected = $(this).val();
+                    // Build a new URL that includes the selected network as a parameter
+                    var newUrl = '{{ route("admin.advertisers.approval.ajax") }}?status={{ $apiTitle }}&source=' + encodeURIComponent(selected);
+                    advertiserListingDraw.ajax.url(newUrl).load();
+                });
+            }, 2000);
         });
     </script>
 

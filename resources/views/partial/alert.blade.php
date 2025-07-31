@@ -1,77 +1,65 @@
 @if($errors->any())
-
-    <div class="alert alert-primary alert-dismissible fade show" role="alert">
-        <h6 class="alert-heading"><strong>Whoops!</strong> There were some problems with your input.</h6>
-        <ul class="mb-0">
-            @foreach ($errors->all() as $error)
-                <li class="text-sm">{{ $error }}</li>
-            @endforeach
-        </ul>
-        <button type="button" class="btn-sm btn-close bg-white" data-bs-dismiss="alert" aria-label="Close"></button>
+    <div class="alert alert-primary alert-dismissible fade show d-flex justify-content-between align-items-start" role="alert">
+        <div>
+            <h6 class="alert-heading"><strong>Whoops!</strong> There were some problems with your input.</h6>
+            <ul class="mb-0">
+                @foreach ($errors->all() as $error)
+                    <li class="text-sm">{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+        <button type="button" class="btn-close btn-danger ml-3 mt-1" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
     </div>
 @elseif(Session::has('success'))
-
-    <div class="alert alert-success alert-dismissible fade show" role="alert">
-        <h4 class="alert-heading">Process Completed!</h4>
-        <div>{{ Session::get('success') }}</div>
-        <button type="button" class="btn-sm btn-close bg-white text-black" data-bs-dismiss="alert" aria-label="Close"></button>
+    <div class="alert alert-success alert-dismissible fade show d-flex justify-content-between align-items-start" role="alert">
+        <div>
+            <h4 class="alert-heading">Process Completed!</h4>
+            <div>{{ Session::get('success') }}</div>
+        </div>
+        <button type="button" class="btn-close btn-danger ml-3 mt-1" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
     </div>
-
-    @php
-        \Illuminate\Support\Facades\Session::forget('success');
-    @endphp
+    @php Session::forget('success'); @endphp
 
 @elseif(Session::has('status'))
-
-    <div class="alert alert-success bg-light-success border border-success border-dashed alert-dismissible fade show" role="alert">
-        {!! Session::get('status') !!}
-        <button type="button" class="btn-sm btn-close bg-white" data-bs-dismiss="alert" aria-label="Close"></button>
+    <div class="alert alert-success border border-success alert-dismissible fade show d-flex justify-content-between align-items-start" role="alert" style="border-style: dashed;">
+        <div>{!! Session::get('status') !!}</div>
+        <button type="button" class="btn-close btn-danger ml-3 mt-1" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
     </div>
-
-    @php
-        \Illuminate\Support\Facades\Session::forget('success');
-    @endphp
+    @php Session::forget('success'); @endphp
 
 @elseif(Session::has('high_priority_error'))
-
-    <div class="notice d-flex bg-light-danger rounded border-danger border border-dashed min-w-lg-600px flex-shrink-0 p-6 mb-3">
-        <!--begin::Wrapper-->
-        <div class="d-flex flex-stack flex-grow-1 flex-wrap flex-md-nowrap">
-            <!--begin::Content-->
-            <div class="mb-3 mb-md-0 fw-semibold">
-                <h4 class="text-gray-900 fw-bold">Error!</h4>
-                <div class="fs-6 text-gray-700 pe-7">{!! \Illuminate\Support\Facades\Session::get('high_priority_error') !!}</div>
-            </div>
-            <!--end::Content-->
+    <div class="alert alert-danger border border-danger d-flex justify-content-between align-items-start" style="border-style: dashed;" role="alert">
+        <div>
+            <h4 class="text-danger">Error!</h4>
+            <div class="text-dark">{!! Session::get('high_priority_error') !!}</div>
         </div>
-        <!--end::Wrapper-->
     </div>
-
-    @php
-        \Illuminate\Support\Facades\Session::forget('high_priority_error');
-    @endphp
+    @php Session::forget('high_priority_error'); @endphp
 
 @elseif(Session::has('warning'))
-
-        <div class="notice alert border-warning" style="background-color: #fff0c2;border-style: dashed; padding: 15px; border-width: 2px;">
-            <h6 class="">Warning!</h6>
-            <p class="text-sm">{!! \Illuminate\Support\Facades\Session::get('warning') !!}</p>
+    <div class="alert alert-warning d-flex justify-content-between align-items-start" role="alert" style="background-color: #fff0c2; border-style: dashed; border-width: 2px;">
+        <div>
+            <h6>Warning!</h6>
+            <p class="text-sm mb-0">{!! Session::get('warning') !!}</p>
         </div>
-    @php
-        \Illuminate\Support\Facades\Session::forget('warning');
-    @endphp
+    </div>
+    @php Session::forget('warning'); @endphp
 
 @elseif(Session::has('error'))
-
-
-    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-        <h4 class="alert-heading">Error!</h4>
-        <div>{!! \Illuminate\Support\Facades\Session::get('error') !!}</div>
-        <button type="button" class="btn-sm btn-close bg-white" data-bs-dismiss="alert" aria-label="Close"></button>
+    <div class="alert alert-danger alert-dismissible fade show d-flex justify-content-between align-items-start" role="alert">
+        <div>
+            <h4 class="alert-heading">Error!</h4>
+            <div>{!! Session::get('error') !!}</div>
+        </div>
+        <button type="button" class="btn-close btn-danger ml-3 mt-1" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
     </div>
-
-    @php
-        \Illuminate\Support\Facades\Session::forget('error');
-    @endphp
-
+    @php Session::forget('error'); @endphp
 @endif

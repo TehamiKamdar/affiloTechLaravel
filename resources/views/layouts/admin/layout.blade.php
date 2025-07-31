@@ -15,82 +15,65 @@
 <!DOCTYPE html>
 <html lang="en">
 
-{{-- Head Tag Including CSS and FontIcons --}}
-@include('layouts.admin.components.head')
+<head>
+    @include('layouts.admin.components.head')
+    @yield('styles')
+</head>
 
-{{-- Custom Stylings (if Any) --}}
-@yield('styles')
-
-<body class="g-sidenav-show  bg-gray-100">
-    @include('layouts.admin.components.aside')
-    <main class="main-content position-relative max-height-vh-100 h-100  ">
-        <nav class="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl d-xl-none" id="navbarBlur" navbar-scroll="true">
-            <div class="container-fluid py-1 px-3 d-flex justify-content-end align-items-center">
-                <a href="javascript:;" class="nav-link text-body p-0 d-flex align-items-center" id="iconNavbarSidenav">
-                    <div class="sidenav-toggler-inner">
-                        <i class="sidenav-toggler-line"></i>
-                        <i class="sidenav-toggler-line"></i>
-                        <i class="sidenav-toggler-line"></i>
-                    </div>
-                </a>
-            </div>
-        </nav>
-        {{-- @include('layouts.admin.components.navbar') --}}
-
-        <div class="container-fluid py-4">
-            @yield('content')
+<body class="">
+    <div class="loader-container" id="chart-loader" style="display: none;">
+        <div class="loading-overlay">
+            <div class="loading-spinner"></div>
+            <div class="loading-text">Loading data...</div>
         </div>
+    </div>
+    <div class="loader"></div>
+    <div id="app">
+        <div class="main-wrapper main-wrapper-1">
+            <div class="navbar-bg"></div>
+            <nav class="navbar navbar-expand-lg navbar-light sticky-top">
+                <div class="w-100 d-flex justify-content-between">
+                    <ul class="navbar-nav mr-3">
+                        <div class="menu-box"><a href="#" data-toggle="sidebar" class="bg-white rounded-circle nav-link nav-link-lg
+                                            collapse-btn"> <i data-feather="align-justify"></i></a></div>
+                    </ul>
+                    {{-- Main Navbar --}}
+                    @yield('breadcrumb')
 
-        <footer class="footer py-4  ">
-            <div class="container-fluid">
-                <div class="row align-items-center justify-content-lg-between">
-                    <div class="col-lg-6 mb-lg-0 mb-4">
-                        <div class="copyright text-center text-sm text-muted text-lg-start">
-                            ©
-                            <script>
-                                document.write(new Date().getFullYear())
-                            </script>,
-                            ProfitRefer
-                        </div>
-                    </div>
-                    <div class="col-lg-6">
-                        <ul class="nav nav-footer justify-content-center justify-content-lg-end">
-                            <li class="nav-item">
-                                <a href="https://profitrefer.com/privacypolicy.html" class="nav-link text-muted"
-                                    target="_blank">Privacy Policy</a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="https://profitrefer.com/termsandconditions.html" class="nav-link text-muted"
-                                    target="_blank">Terms & Conditions</a>
-                            </li>
-                            
-                        </ul>
+                    <div class="logout-box">
+                        <form id="logoutform" style="height: 44px" action="{{ route('logout') }}" method="POST" class="display-hidden">
+                            <button type="submit" href="" class="border-0 bg-white rounded-circle nav-link nav-link-lg collapse-btn" title="Logout"><i data-feather="power" class="text-danger"></i>
+                                {{ csrf_field() }}
+                            </button>
+                        </form>
                     </div>
                 </div>
+            </nav>
+            {{-- Aside Navbar --}}
+            @include('layouts.admin.components.aside')
+
+            {{-- Main Content --}}
+            <div class="main-content">
+
+                @yield('content')
+
             </div>
-        </footer>
-    </main>
+            {{-- Main Content End --}}
+
+
+        </div>
+    </div>
+
 </body>
 
 </html>
 
-<!--   Core JS Files   -->
-<script src="{{asset('adminDashboard/assets/plugins/jquery/js/jquery.min.js') }}"></script>
-<script src="{{asset('adminDashboard/assets/plugins/data-tables/js/datatables.min.js') }}"></script>
-<script src="{{asset('adminDashboard/assets/plugins/sweetalert/js/sweetalert.min.js')}}"></script>
-<script src="{{asset('adminDashboard/assets/js/core/popper.min.js')}}"></script>
-<script src="{{asset('adminDashboard/assets/js/core/bootstrap.min.js')}}"></script>
-<script src="{{asset('adminDashboard/assets/js/plugins/perfect-scrollbar.min.js')}}"></script>
-<script src="{{asset('adminDashboard/assets/js/plugins/smooth-scrollbar.min.js')}}"></script>
-<script src="{{asset('adminDashboard/assets/js/plugins/chartjs.min.js')}}"></script>
-<script src="{{asset('adminDashboard/assets/js/soft-ui-dashboard.min.js')}}"></script>
-<script>
-    var win = navigator.platform.indexOf('Win') > -1;
-    if (win && document.querySelector('#sidenav-scrollbar')) {
-        var options = {
-            damping: '0.5'
-        }
-        Scrollbar.init(document.querySelector('#sidenav-scrollbar'), options);
-    }
-</script>
+<!-- General JS Scripts -->
+<script src="{{asset('publisherAssets/assets/js/app.min.js')}}"></script>
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+<!-- Template JS File -->
+<script src="{{asset('publisherAssets/assets/js/scripts.js')}}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-daterangepicker/3.1/daterangepicker.min.js"></script>
+
 @yield('scripts')

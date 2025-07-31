@@ -68,7 +68,7 @@ class RegisterController extends Controller
             'type' => User::PUBLISHER,
             'status'=>'pending',
             'api_token' => Str::random(30),
-            'user_name' => $data['user_name'],
+            'user_name' => $data['user_name']
              'recaptcha_response' => $data['g-recaptcha-response']
         ]);
          $user->generateVerificationCode();
@@ -77,14 +77,14 @@ class RegisterController extends Controller
 
         return $user;
  }
-        
+
         }
 
 
 
 
 
-    
+
 
     protected function registered(Request $request, $user)
     {

@@ -1,4 +1,8 @@
-@extends('layouts.pr_auth')
+@extends('layouts.at_auth')
+
+@section('title')
+Reset Password
+@endsection
 
 @section('content')
 

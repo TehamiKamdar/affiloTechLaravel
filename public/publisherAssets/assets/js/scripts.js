@@ -439,13 +439,15 @@ $(function () {
   });
 
   // alert dismissible
-  $(".alert-dismissible").each(function () {
-    var me = $(this);
+$(".alert-dismissible").each(function () {
+  var me = $(this);
 
-    me.find(".close").click(function () {
-      me.alert("close");
-    });
+  me.find(".btn-close").on("click", function () {
+    me.removeClass("show").addClass("fade"); // Remove show, keep fade
+    setTimeout(() => me.remove(), 300); // Optional: remove from DOM
   });
+});
+
 
   if ($(".main-navbar").length) {
   }

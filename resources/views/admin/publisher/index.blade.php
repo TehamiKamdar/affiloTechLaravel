@@ -1,11 +1,25 @@
 @extends("layouts.admin.layout")
 
+@section('breadcrumb')
+<ol class="breadcrumb mb-0 bg-white rounded-50 nav-link nav-link-lg collapse-btn">
+    <li class="breadcrumb-item mt-1">
+        <a href="{{ route('publisher.dashboard') }}"><i data-feather="home"></i></a>
+    </li>
+    <li class="breadcrumb-item mt-1">
+        <a href="#" class="text-sm">Publishers</a>
+    </li>
+    <li class="breadcrumb-item mt-1 active">
+        <a href="{{ route("admin.publishers.status", ['status' => $status]) }}" class="text-sm">{{ $title }}  Publishers</a>
+    </li>
+</ol>
+@endsection
+
 @section("styles")
 
     <!-- data tables css -->
-    <link href="{{ asset('adminDashboard/assets/plugins/data-tables/css/datatables.min.css') }}">
-    <link href="{{ asset('adminDashboard/assets/plugins/data-tables/css/buttons.dataTables.min.css') }}" />
-    <link href="{{ asset('adminDashboard/assets/plugins/data-tables/css/select.dataTables.min.css') }}" />
+<link rel="stylesheet" href="{{asset('assets/admin/plugins/datatables/css/dataTables.bootstrap4.min.css')}}">
+<link rel="stylesheet" href="{{asset('assets/admin/plugins/datatables/css/select.bootstrap4.min.css')}}">
+
 
     <style>
         .dataTables_wrapper .dataTables_paginate .paginate_button.current,
@@ -26,35 +40,41 @@
             align-items: center;
             gap: 8px;
         }
+        select option {
+            background-color: white;
+            color: var(--primary-color);
+            font-weight: 500;
+            border-bottom: 1px solid #f0f2fc;
+        }
 
+        option:hover {
+            background-color: var(--primary-very-light) !important;
+        }
+
+        select option:checked,
+        select option:active {
+            background-color: var(--primary-very-light) !important;
+            color: var(--primary-color);
+        }
+
+
+        .form-control {
+            border: 2px solid #e0e3ed;
+            color: var(--primary-color);
+            font-weight: 500;
+            border-radius: 8px !important;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            box-shadow: none;
+            border-color: var(--primary-color);
+        }
     </style>
 
 @endsection
 
 @section('content')
-
-    <!-- [ breadcrumb ] start -->
-    <div class="page-header">
-        <div class="page-block">
-            <div class="row align-items-center">
-                <div class="col-md-12">
-                    <ul class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}"><i
-                                    class="ri-home-5-line text-primary"></i></a></li>
-                        <li class="breadcrumb-item"><a href="javascript:void(0)">Publishers</a></li>
-                        <li class="breadcrumb-item"><a
-                                href="{{ route("admin.publishers.status", ['status' => $status]) }}">{{ $title }}
-                                Publishers</a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- [ breadcrumb ] end -->
-
-
-
-
     <!-- [ Main Content ] start -->
     <div class="row">
         <!-- Base style - Hover table start -->
@@ -66,6 +86,7 @@
 
                     <a href="javascript:void(0)" id="delete" class="btn btn-sm btn-danger my-0">Delete</a>
 
+                </div>
                     <div class="card-body">
                         <div class="dt-responsive table-responsive">
                             <table id="publisherListing" class="table table-hover nowrap mb-0">
@@ -120,7 +141,6 @@
                             </table>
                         </div>
                     </div>
-                </div>
             </div>
             <!-- Base style - Hover table end -->
         </div>
@@ -129,9 +149,10 @@
 
     @section("scripts")
 
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-        <script src="{{ asset('adminDashboard/assets/plugins/data-tables/js/datatables.min.js') }}"></script>
+        <script src="{{ asset('assets/admin/plugins/datatables/js/jquery.dataTables.min.js')}}"></script>
+        <script src="{{ asset('assets/admin/plugins/datatables/js/dataTables.bootstrap4.min.js')}}"></script>
+        <script src="{{ asset('assets/admin/plugins/datatables/js/dataTables.select.min.js')}}"></script>
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
         <script type="text/javascript">
@@ -148,8 +169,8 @@
                     dom: '<"d-flex justify-content-between"<\'length-wrapper\'l><\'filter-wrapper\'f>>t<"d-flex justify-content-between mt-2"<\'info-wrapper text-sm\'i><\'pagination-wrapper\'p>>',
                     language: {
                         paginate: {
-                            previous: '<i class="ri-arrow-left-s-line"></i>',
-                            next: '<i class="ri-arrow-right-s-line"></i>'
+                            previous: '<i class="fas fa-chevron-left"></i>',
+                            next: '<i class="fas fa-chevron-right"></i>'
                         }
                     },
                     lengthMenu: [10, 25, 50, 100, 250, 500, 1000],
