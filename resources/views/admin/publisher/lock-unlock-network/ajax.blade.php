@@ -32,9 +32,6 @@
                                 </select>
                             </label>
                         </div>
-                        <div class="dataTables_info" id="kt_project_users_table_info" role="status" aria-live="polite">
-                            Showing {{ $from }} to {{ $to }} of {{ $advertisers->total() }} entries
-                        </div>
                     </div>
 
                     <div class="col-sm-12 col-md-7 d-flex align-items-center justify-content-center justify-content-md-end" id="pagination-container">

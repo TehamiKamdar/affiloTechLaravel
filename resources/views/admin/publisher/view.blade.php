@@ -1,5 +1,22 @@
 @extends("layouts.admin.layout")
 
+@section('breadcrumb')
+<ol class="breadcrumb mb-0 bg-white rounded-50 nav-link nav-link-lg collapse-btn">
+        <li class="breadcrumb-item mt-1">
+            <a href="{{ route('publisher.dashboard') }}"><i data-feather="home"></i></a>
+        </li>
+        <li class="breadcrumb-item mt-1">
+            <a href="#" class="text-sm">Publishers</a>
+        </li>
+        <li class="breadcrumb-item mt-1">
+            <a href="#" class="text-sm">View Publisher</a>
+        </li>
+        <li class="breadcrumb-item mt-1 active">
+            <a href="#" class="text-sm">{{ $publisher->name }}</a>
+        </li>
+    </ol>
+@endsection
+
 @section("styles")
 
     <style>
@@ -16,40 +33,21 @@
         .nav-pills .nav-link.active,
         .nav-pills .show>.nav-link {
             background: transparent !important;
-            color: #f97316 !important;
+            color: #007bff !important;
             font-weight: bold;
             font-size: 14px;
-            border-bottom: 2px solid #f97316;
+            border-bottom: 2px solid #007bff;
         }
     </style>
 @endsection
 
 @section('content')
-
-    <!-- [ breadcrumb ] start -->
-    <div class="page-header">
-        <div class="page-block">
-            <div class="row align-items-center">
-                <div class="col-md-12">
-                    <ul class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}"><i
-                                    class="ri-home-5-line text-primary"></i></a></li>
-                        <li class="breadcrumb-item"><a href="{{ route("admin.publishers.status", ['status' => $publisher->status]) }}">Publishers</a></li>
-                        <li class="breadcrumb-item"><a href="">View Publisher</a></li>
-                        <li class="breadcrumb-item"><a href=""> {{ $publisher->name }} </a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- [ breadcrumb ] end -->
-
     <!-- [ Main Content ] start -->
     <div class="row">
         <!-- Base style - Hover table start -->
         <div class="col-sm-12">
             <div class="card">
-                <div class="card-header">
+                <div class="card-header justify-content-between">
                     <h5 class="float-start">View - Publisher ( {{ $publisher->name }} )</h5>
                     <ul class="nav nav-pills float-end">
                         @php
@@ -63,7 +61,7 @@
                             ];
                         @endphp
                         @foreach($routes as $route => $label)
-                            <li class="nav-item\">
+                            <li class="nav-item">
                                 <a class="nav-link @if(request()->route()->getName() === $route) active @endif"
                                     href="{{ route($route, ['publisher' => $id]) }}">
                                     {{ $label }}

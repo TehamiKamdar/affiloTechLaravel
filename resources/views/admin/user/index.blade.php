@@ -80,24 +80,24 @@
                                class="table table-hover nowrap">
                             <thead>
                                 <tr>
-                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">ID</th>
-                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Name</th>
-                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Email</th>
-                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Status</th>
-                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Created At</th>
-                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Action</th>
+                                    <th class="text-uppercase text-secondary text-sm font-weight-bolder opacity-7">ID</th>
+                                    <th class="text-uppercase text-secondary text-sm font-weight-bolder opacity-7">Name</th>
+                                    <th class="text-uppercase text-secondary text-sm font-weight-bolder opacity-7">Email</th>
+                                    <th class="text-uppercase text-secondary text-sm font-weight-bolder opacity-7">Status</th>
+                                    <th class="text-uppercase text-secondary text-sm font-weight-bolder opacity-7">Created At</th>
+                                    <th class="text-uppercase text-secondary text-sm font-weight-bolder opacity-7">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
                             </tbody>
                             <tfoot>
                                 <tr>
-                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">ID</th>
-                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Name</th>
-                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Email</th>
-                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Status</th>
-                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Created At</th>
-                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Action</th>
+                                    <th class="text-uppercase text-secondary text-sm font-weight-bolder opacity-7">ID</th>
+                                    <th class="text-uppercase text-secondary text-sm font-weight-bolder opacity-7">Name</th>
+                                    <th class="text-uppercase text-secondary text-sm font-weight-bolder opacity-7">Email</th>
+                                    <th class="text-uppercase text-secondary text-sm font-weight-bolder opacity-7">Status</th>
+                                    <th class="text-uppercase text-secondary text-sm font-weight-bolder opacity-7">Created At</th>
+                                    <th class="text-uppercase text-secondary text-sm font-weight-bolder opacity-7">Action</th>
                                 </tr>
                             </tfoot>
                         </table>

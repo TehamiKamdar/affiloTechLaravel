@@ -79,13 +79,13 @@
                         <table id="transactionListing" class="table table table-hover datatable nowrap">
                             <thead>
                                 <tr>
-                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Name
+                                    <th class="text-uppercase text-secondary text-sm font-weight-bolder opacity-7">Name
                                     </th>
-                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Guard
+                                    <th class="text-uppercase text-secondary text-sm font-weight-bolder opacity-7">Guard
                                         Name</th>
-                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                    <th class="text-uppercase text-secondary text-sm font-weight-bolder opacity-7">
                                         Permissions</th>
-                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Action
+                                    <th class="text-uppercase text-secondary text-sm font-weight-bolder opacity-7">Action
                                     </th>
                                 </tr>
                             </thead>
@@ -93,13 +93,13 @@
                             </tbody>
                             <tfoot>
                                 <tr>
-                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Name
+                                    <th class="text-uppercase text-secondary text-sm font-weight-bolder opacity-7">Name
                                     </th>
-                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Guard
+                                    <th class="text-uppercase text-secondary text-sm font-weight-bolder opacity-7">Guard
                                         Name</th>
-                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                    <th class="text-uppercase text-secondary text-sm font-weight-bolder opacity-7">
                                         Permissions</th>
-                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Action
+                                    <th class="text-uppercase text-secondary text-sm font-weight-bolder opacity-7">Action
                                     </th>
                                 </tr>
                             </tfoot>

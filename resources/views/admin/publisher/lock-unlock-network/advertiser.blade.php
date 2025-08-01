@@ -32,18 +32,20 @@
     </div>
 
     <div class="card ">
-        <div class="card-header">
-            <div class="card-title">
-                <h4 class="float-start">Advertiser List</h4>
-                <div class="float-end">
-                    <div class="form-group d-inline">
-                        <div
-                            class="checkbox checkbox-primary checkbox-fill d-inline">
-                            <input type="checkbox" id="selectAll" name="selectAll" disabled value="1">
-                            <label for="selectAll" class="cr">Select All</label>
-                        </div>
+        <div class="card-header justify-content-around">
+            <h4 class="float-start">Advertiser List</h4>
+            <div class="float-end">
+                <div class="form-group d-inline">
+                    <div
+                        class="checkbox checkbox-primary checkbox-fill d-inline">
+                        <input type="checkbox" id="selectAll" name="selectAll" disabled value="1">
+                        <label for="selectAll" class="cr">Select All</label>
                     </div>
                 </div>
+            </div>
+
+            <div class="dataTables_info" id="kt_project_users_table_info" role="status" aria-live="polite">
+                Showing {{ $from }} to {{ $to }} of {{ $advertisers->total() }} entries
             </div>
         </div>
         <div class="card-body p-0">
@@ -71,11 +73,7 @@
 
 @endif
 
-@section('internal_styles')
-
-@endsection
-
-@section('internal_scripts')
+@section('scripts')
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         $("#selectAll").removeAttr('disabled')

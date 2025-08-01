@@ -77,44 +77,44 @@
                                class="table table table-hover datatable nowrap">
                             <thead>
                                 <tr>
-                                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Transaction ID</th>
-                                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Advertiser Name</th>
-                                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Transaction Date</th>
-                                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Country</th>
-                                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Advertiser Country</th>
-                                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Commission Status</th>
-                                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Payment Status</th>
-                                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Commission Amount</th>
-                                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Received Commission Amount</th>
-                                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Commission Amount Currency</th>
-                                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Sale Amount</th>
-                                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Received Sale Amount</th>
-                                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Sale Amount Currency</th>
-                                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Received Sale Amount Currency</th>
-                                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Source</th>
-                                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Action</th>
+                                    <th class="text-center text-uppercase text-secondary text-sm font-weight-bolder opacity-7">Transaction ID</th>
+                                    <th class="text-center text-uppercase text-secondary text-sm font-weight-bolder opacity-7">Advertiser Name</th>
+                                    <th class="text-center text-uppercase text-secondary text-sm font-weight-bolder opacity-7">Transaction Date</th>
+                                    <th class="text-center text-uppercase text-secondary text-sm font-weight-bolder opacity-7">Country</th>
+                                    <th class="text-center text-uppercase text-secondary text-sm font-weight-bolder opacity-7">Advertiser Country</th>
+                                    <th class="text-center text-uppercase text-secondary text-sm font-weight-bolder opacity-7">Commission Status</th>
+                                    <th class="text-center text-uppercase text-secondary text-sm font-weight-bolder opacity-7">Payment Status</th>
+                                    <th class="text-center text-uppercase text-secondary text-sm font-weight-bolder opacity-7">Commission Amount</th>
+                                    <th class="text-center text-uppercase text-secondary text-sm font-weight-bolder opacity-7">Received Commission Amount</th>
+                                    <th class="text-center text-uppercase text-secondary text-sm font-weight-bolder opacity-7">Commission Amount Currency</th>
+                                    <th class="text-center text-uppercase text-secondary text-sm font-weight-bolder opacity-7">Sale Amount</th>
+                                    <th class="text-center text-uppercase text-secondary text-sm font-weight-bolder opacity-7">Received Sale Amount</th>
+                                    <th class="text-center text-uppercase text-secondary text-sm font-weight-bolder opacity-7">Sale Amount Currency</th>
+                                    <th class="text-center text-uppercase text-secondary text-sm font-weight-bolder opacity-7">Received Sale Amount Currency</th>
+                                    <th class="text-center text-uppercase text-secondary text-sm font-weight-bolder opacity-7">Source</th>
+                                    <th class="text-center text-uppercase text-secondary text-sm font-weight-bolder opacity-7">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
                             </tbody>
                             <tfoot>
                                 <tr>
-                                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Transaction ID</th>
-                                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Advertiser Name</th>
-                                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Transaction Date</th>
-                                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Country</th>
-                                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Advertiser Country</th>
-                                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Commission Status</th>
-                                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Payment Status</th>
-                                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Commission Amount</th>
-                                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Received Commission Amount</th>
-                                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Commission Amount Currency</th>
-                                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Sale Amount</th>
-                                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Received Sale Amount</th>
-                                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Sale Amount Currency</th>
-                                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Received Sale Amount Currency</th>
-                                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Source</th>
-                                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Action</th>
+                                    <th class="text-center text-uppercase text-secondary text-sm font-weight-bolder opacity-7">Transaction ID</th>
+                                    <th class="text-center text-uppercase text-secondary text-sm font-weight-bolder opacity-7">Advertiser Name</th>
+                                    <th class="text-center text-uppercase text-secondary text-sm font-weight-bolder opacity-7">Transaction Date</th>
+                                    <th class="text-center text-uppercase text-secondary text-sm font-weight-bolder opacity-7">Country</th>
+                                    <th class="text-center text-uppercase text-secondary text-sm font-weight-bolder opacity-7">Advertiser Country</th>
+                                    <th class="text-center text-uppercase text-secondary text-sm font-weight-bolder opacity-7">Commission Status</th>
+                                    <th class="text-center text-uppercase text-secondary text-sm font-weight-bolder opacity-7">Payment Status</th>
+                                    <th class="text-center text-uppercase text-secondary text-sm font-weight-bolder opacity-7">Commission Amount</th>
+                                    <th class="text-center text-uppercase text-secondary text-sm font-weight-bolder opacity-7">Received Commission Amount</th>
+                                    <th class="text-center text-uppercase text-secondary text-sm font-weight-bolder opacity-7">Commission Amount Currency</th>
+                                    <th class="text-center text-uppercase text-secondary text-sm font-weight-bolder opacity-7">Sale Amount</th>
+                                    <th class="text-center text-uppercase text-secondary text-sm font-weight-bolder opacity-7">Received Sale Amount</th>
+                                    <th class="text-center text-uppercase text-secondary text-sm font-weight-bolder opacity-7">Sale Amount Currency</th>
+                                    <th class="text-center text-uppercase text-secondary text-sm font-weight-bolder opacity-7">Received Sale Amount Currency</th>
+                                    <th class="text-center text-uppercase text-secondary text-sm font-weight-bolder opacity-7">Source</th>
+                                    <th class="text-center text-uppercase text-secondary text-sm font-weight-bolder opacity-7">Action</th>
                                 </tr>
                             </tfoot>
                         </table>

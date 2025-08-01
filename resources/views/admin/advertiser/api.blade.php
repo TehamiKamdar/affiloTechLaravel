@@ -73,18 +73,18 @@
                         <table id="advertiserListing" class="table table-hover nowrap">
                             <thead>
                                 <tr>
-                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Advert.
+                                    <th class="text-uppercase text-secondary text-sm font-weight-bolder opacity-7">Advert.
                                         ID</th>
-                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Name
+                                    <th class="text-uppercase text-secondary text-sm font-weight-bolder opacity-7">Name
                                     </th>
-                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">URL</th>
-                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Source
+                                    <th class="text-uppercase text-secondary text-sm font-weight-bolder opacity-7">URL</th>
+                                    <th class="text-uppercase text-secondary text-sm font-weight-bolder opacity-7">Source
                                     </th>
-                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Is
+                                    <th class="text-uppercase text-secondary text-sm font-weight-bolder opacity-7">Is
                                         Tracking URL</th>
-                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Provider
+                                    <th class="text-uppercase text-secondary text-sm font-weight-bolder opacity-7">Provider
                                         Status</th>
-                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Action
+                                    <th class="text-uppercase text-secondary text-sm font-weight-bolder opacity-7">Action
                                     </th>
                                 </tr>
                             </thead>
@@ -92,13 +92,13 @@
                             </tbody>
                             <tfoot>
                                 <tr>
-                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Advert. ID</th>
-                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Name</th>
-                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">URL</th>
-                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Source</th>
-                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Is Tracking URL</th>
-                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Provider Status</th>
-                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Action</th>
+                                    <th class="text-uppercase text-secondary text-sm font-weight-bolder opacity-7">Advert. ID</th>
+                                    <th class="text-uppercase text-secondary text-sm font-weight-bolder opacity-7">Name</th>
+                                    <th class="text-uppercase text-secondary text-sm font-weight-bolder opacity-7">URL</th>
+                                    <th class="text-uppercase text-secondary text-sm font-weight-bolder opacity-7">Source</th>
+                                    <th class="text-uppercase text-secondary text-sm font-weight-bolder opacity-7">Is Tracking URL</th>
+                                    <th class="text-uppercase text-secondary text-sm font-weight-bolder opacity-7">Provider Status</th>
+                                    <th class="text-uppercase text-secondary text-sm font-weight-bolder opacity-7">Action</th>
                                 </tr>
                             </tfoot>
                         </table>

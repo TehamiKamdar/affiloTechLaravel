@@ -1,9 +1,9 @@
 <div class="table-responsive">
-    <table class="table invoice-detail-table">
+    <table class="table table-hover">
         <thead>
-            <tr class="thead-default">
-                <th style="width: 30%">Key</th>
-                <th>Value</th>
+            <tr>
+                <th class="text-uppercase text-secondary text-sm font-weight-bolder opacity-7" style="width: 30%">Key</th>
+                <th class="text-uppercase text-secondary text-sm font-weight-bolder opacity-7">Value</th>
             </tr>
         </thead>
         <tbody>
@@ -12,7 +12,7 @@
                 <td>{{ $publisher->name }}</td>
             </tr>
             <tr>
-                <th>publisher id</th>
+                <th>Publisher id</th>
                 <td>{{ $publisher->publisher_id }}</td>
             </tr>
             <tr>
@@ -92,53 +92,28 @@
     </table>
 </div>
 
+@if($publisher->status != \App\Models\User::STATUS_ACTIVE)
+    @php
+        $class = "bg-warning";
+        $message = "The publisher is waiting for the admin's approval to activate the account.";
 
-<div class="card mb-5 mb-xl-10" id="kt_profile_details_view">
-    <!--begin::Card body-->
-    <div class="card-body p-9">
+        if ($publisher->status == \App\Models\User::STATUS_REJECT) {
+            $class = "bg-danger text-white";
+            $message = "The admin has rejected the account.";
+        } elseif ($publisher->status == \App\Models\User::STATUS_HOLD) {
+            $class = "bg-light";
+            $message = "The admin has put the account on hold.";
+        }
+    @endphp
 
-        <!--begin::Notice-->
-
-        @if($publisher->status != \App\Models\User::STATUS_ACTIVE)
-
-            @php
-                $class = "bg-light-warning";
-                $message = "The publisher is waiting for the admin's approval to activate the account.";
-                if($publisher->status == \App\Models\User::STATUS_REJECT)
-                {
-                    $class = "bg-light-danger";
-                    $message = "The admin's has put the account on reject.";
-                }
-                elseif($publisher->status == \App\Models\User::STATUS_HOLD)
-                {
-                    $class = "bg-light-light";
-                    $message = "The admin's has put the account on hold.";
-                }
-            @endphp
-
-                <!--begin::Notice-->
-            <div class="notice d-flex {{ $class }} rounded border-warning border border-dashed p-6">
-                <!--begin::Icon-->
-                <i class="ki-duotone ki-information fs-2tx text-warning me-4">
-                    <span class="path1"></span>
-                    <span class="path2"></span>
-                    <span class="path3"></span>
-                </i>
-                <!--end::Icon-->
-                <!--begin::Wrapper-->
-                <div class="d-flex flex-stack flex-grow-1">
-                    <!--begin::Content-->
-                    <div class="fw-semibold">
-                        <h4 class="text-gray-900 fw-bold">Publisher status still in {{ $publisher->status }}!</h4>
-                        <div class="fs-6 text-gray-700">{{ $message }}</div>
-                    </div>
-                    <!--end::Content-->
+    <div class="card mb-5" id="kt_profile_details_view">
+        <div class="card-body p-4">
+            <div class="d-flex {{ $class }} p-3 rounded">
+                <div class="flex-grow-1">
+                    <h5 class="mb-1">Publisher status: {{ ucfirst($publisher->status) }}</h5>
+                    <p class="mb-0">{{ $message }}</p>
                 </div>
-                <!--end::Wrapper-->
             </div>
-            <!--end::Notice-->
-        @endif
-
+        </div>
     </div>
-    <!--end::Card body-->
-</div>
+@endif

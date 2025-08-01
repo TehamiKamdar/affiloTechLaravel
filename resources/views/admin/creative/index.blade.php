@@ -88,24 +88,24 @@
                         <table id="transactionListing" class="table table table-hover datatable">
                             <thead>
                                 <tr>
-                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Advertiser Name</th>
-                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Coupon Name</th>
-                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Start Date</th>
-                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">End Date</th>
-                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Source</th>
-                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Action</th>
+                                    <th class="text-uppercase text-secondary text-sm font-weight-bolder opacity-7">Advertiser Name</th>
+                                    <th class="text-uppercase text-secondary text-sm font-weight-bolder opacity-7">Coupon Name</th>
+                                    <th class="text-uppercase text-secondary text-sm font-weight-bolder opacity-7">Start Date</th>
+                                    <th class="text-uppercase text-secondary text-sm font-weight-bolder opacity-7">End Date</th>
+                                    <th class="text-uppercase text-secondary text-sm font-weight-bolder opacity-7">Source</th>
+                                    <th class="text-uppercase text-secondary text-sm font-weight-bolder opacity-7">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
                             </tbody>
                             <tfoot>
                                 <tr>
-                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Advertiser Name</th>
-                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Coupon Name</th>
-                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Start Date</th>
-                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">End Date</th>
-                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Source</th>
-                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Action</th>
+                                    <th class="text-uppercase text-secondary text-sm font-weight-bolder opacity-7">Advertiser Name</th>
+                                    <th class="text-uppercase text-secondary text-sm font-weight-bolder opacity-7">Coupon Name</th>
+                                    <th class="text-uppercase text-secondary text-sm font-weight-bolder opacity-7">Start Date</th>
+                                    <th class="text-uppercase text-secondary text-sm font-weight-bolder opacity-7">End Date</th>
+                                    <th class="text-uppercase text-secondary text-sm font-weight-bolder opacity-7">Source</th>
+                                    <th class="text-uppercase text-secondary text-sm font-weight-bolder opacity-7">Action</th>
                                 </tr>
                             </tfoot>
                         </table>

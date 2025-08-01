@@ -15,10 +15,10 @@
         .nav-pills .nav-link.active,
         .nav-pills .show>.nav-link {
             background: transparent !important;
-            color: #f97316 !important;
+            color: #007bff !important;
             font-weight: bold;
             font-size: 14px;
-            border-bottom: 2px solid #f97316;
+            border-bottom: 2px solid #007bff;
         }
     </style>
 @endsection
@@ -28,7 +28,7 @@
         <!-- Base style - Hover table start -->
         <div class="col-sm-12">
             <div class="card">
-                <div class="card-header">
+                <div class="card-header justify-content-between">
                     <h5 class="float-start">View - Publisher ( {{ $publisher->name }} )</h5>
                     <ul class="nav nav-pills float-end">
                         @php
@@ -42,7 +42,7 @@
                             ];
                         @endphp
                         @foreach($routes as $route => $label)
-                            <li class="nav-item\">
+                            <li class="nav-item">
                                 <a class="nav-link @if(request()->route()->getName() === $route) active @endif"
                                     href="{{ route($route, ['publisher' => $id]) }}">
                                     {{ $label }}

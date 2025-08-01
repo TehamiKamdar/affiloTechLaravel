@@ -1,5 +1,22 @@
 @extends("layouts.admin.layout")
 
+@section('breadcrumb')
+<ol class="breadcrumb mb-0 bg-white rounded-50 nav-link nav-link-lg collapse-btn">
+        <li class="breadcrumb-item mt-1">
+            <a href="{{ route('publisher.dashboard') }}"><i data-feather="home"></i></a>
+        </li>
+        <li class="breadcrumb-item mt-1">
+            <a href="#" class="text-sm">Advertisers</a>
+        </li>
+        <li class="breadcrumb-item mt-1">
+            <a href="#" class="text-sm">View Advertisers</a>
+        </li>
+        <li class="breadcrumb-item mt-1 active">
+            <a href="#" class="text-sm">{{ $advertiser->name }}</a>
+        </li>
+    </ol>
+@endsection
+
 @section("styles")
     <style>
         .nav-pills {
