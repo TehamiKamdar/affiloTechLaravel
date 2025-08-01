@@ -72,5 +72,5 @@
 </div>
 
 <div>
-    <input class="btn btn-sm btn-primary" type="submit" value="Save">
+    <input class="btn btn-primary" type="submit" value="Save">
 </div>

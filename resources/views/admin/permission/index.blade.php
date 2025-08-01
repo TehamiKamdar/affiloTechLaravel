@@ -1,5 +1,19 @@
 @extends("layouts.admin.layout")
 
+@section('breadcrumb')
+<ol class="breadcrumb mb-0 bg-white rounded-50 nav-link nav-link-lg collapse-btn">
+        <li class="breadcrumb-item mt-1">
+            <a href="{{ route('publisher.dashboard') }}"><i data-feather="home"></i></a>
+        </li>
+        <li class="breadcrumb-item mt-1">
+            <a href="#" class="text-sm">Manage</a>
+        </li>
+        <li class="breadcrumb-item mt-1 active">
+            <a href="#" class="text-sm">Permissions</a>
+        </li>
+    </ol>
+@endsection
+
 @section("styles")
 
     <!-- data tables css -->
@@ -14,42 +28,56 @@
         table td:last-child .btn {
             margin-right: 0 !important;
         }
+        select option {
+            background-color: white;
+            color: var(--primary-color);
+            font-weight: 500;
+            border-bottom: 1px solid #f0f2fc;
+        }
+
+        option:hover {
+            background-color: var(--primary-very-light) !important;
+        }
+
+        select option:checked,
+        select option:active {
+            background-color: var(--primary-very-light) !important;
+            color: var(--primary-color);
+        }
+
+
+        .form-control {
+            border: 2px solid #e0e3ed;
+            color: var(--primary-color);
+            font-weight: 500;
+            border-radius: 8px !important;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            box-shadow: none;
+            border-color: var(--primary-color);
+        }
     </style>
 
 @endsection
 
 @section('content')
 
-    <!-- [ breadcrumb ] start -->
-    <div class="page-header">
-        <div class="page-block">
-            <div class="row align-items-center">
-                <div class="col-md-12">
-                    <ul class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}"><i class="ri-home-5-line text-primary"></i></a></li>
-                        <li class="breadcrumb-item"><a href="javascript:void(0)">Permissions Management</a></li>
-                        <li class="breadcrumb-item"><a href="{{ route("admin.permissions.index") }}">Permissions</a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- [ breadcrumb ] end -->
-
-    <div class="d-flex justify-content-end">
-        <a href="{{route('admin.permissions.create')}}" class="btn btn-primary btn-sm">Create New Permission</a>
-    </div>
     <!-- [ Main Content ] start -->
     <div class="row">
         <!-- Base style - Hover table start -->
         <div class="col-sm-12">
             <div class="card">
-                <div class="card-header">
+                <div class="card-header justify-content-between">
                     <h5>Permissions - Listing</h5>
+                    <div class="d-flex justify-content-end">
+                        <a href="{{route('admin.permissions.create')}}" class="btn btn-primary btn-sm">Create New Permission</a>
+                    </div>
                 </div>
                 <div class="card-body">
                     <div class="dt-responsive table-responsive">
-                        <table id="transactionListing" class="table table-striped table-hover table-bordered nowrap">
+                        <table id="transactionListing" class="table table table-hover datatable nowrap">
                             <thead>
                                 <tr>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Name
@@ -79,9 +107,9 @@
 @endsection
 
 @section("scripts")
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-    <script src="{{ asset('adminDashboard/assets/plugins/data-tables/js/datatables.min.js') }}"></script>
+    <script src="{{ asset('assets/admin/plugins/datatables/js/jquery.dataTables.min.js')}}"></script>
+    <script src="{{ asset('assets/admin/plugins/datatables/js/dataTables.bootstrap4.min.js')}}"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script type="text/javascript">

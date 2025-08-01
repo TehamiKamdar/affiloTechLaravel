@@ -12,17 +12,14 @@ use Yajra\DataTables\DataTables;
 class CouponService
 {
     public function ajax(Request $request)
-{
-    $perPage = 48;
-    $coupons = Coupon::paginate($perPage);
+    {
+        $permissions = Coupon::all();
 
-    return response()->json([
-        'data' => $coupons->items(),
-        'current_page' => $coupons->currentPage(),
-        'last_page' => $coupons->lastPage(),
-        'pagination_links' => (string) $coupons->links(), // Optional: for server-rendered HTML links
-    ]);
-}
+        return DataTables::of($permissions)
+            ->addColumn('action', fn($permission) => $this->getActionButtons($permission->id))
+            ->rawColumns(['action'])
+            ->make(true);
+    }
 
 
     private function getActionButtons($permissionId)
@@ -41,6 +38,6 @@ class CouponService
         //     </form>';
 
         return '
-       <a href="' . $viewUrl . '" class="btn btn-sm btn-glow-secondary btn-secondary">View</a>';
+       <a href="' . $viewUrl . '" class="btn btn-sm btn-secondary">View</a>';
     }
 }

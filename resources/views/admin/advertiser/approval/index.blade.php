@@ -39,7 +39,36 @@
         .dataTables_processing {
             display: none;
         }
+        select option {
+            background-color: white;
+            color: var(--primary-color);
+            font-weight: 500;
+            border-bottom: 1px solid #f0f2fc;
+        }
 
+        option:hover {
+            background-color: var(--primary-very-light) !important;
+        }
+
+        select option:checked,
+        select option:active {
+            background-color: var(--primary-very-light) !important;
+            color: var(--primary-color);
+        }
+
+
+        .form-control {
+            border: 2px solid #e0e3ed;
+            color: var(--primary-color);
+            font-weight: 500;
+            border-radius: 8px !important;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            box-shadow: none;
+            border-color: var(--primary-color);
+        }
     </style>
 
 @endsection
@@ -119,7 +148,11 @@
     <script src="{{ asset('assets/admin/plugins/datatables/js/jquery.dataTables.min.js')}}"></script>
     <script src="{{ asset('assets/admin/plugins/datatables/js/dataTables.bootstrap4.min.js')}}"></script>
     <script src="{{ asset('assets/admin/plugins/datatables/js/dataTables.select.min.js')}}"></script>
-
+    <script src="{{ asset('assets/admin/plugins/datatables/js/dataTables.buttons.min.js')}}"></script>
+    <script src="{{ asset('assets/admin/plugins/datatables/js/buttons.bootstrap4.min.js')}}"></script>
+    <script src="{{ asset('assets/admin/plugins/datatables/js/buttons.html5.min.js')}}"></script>
+    <script src="{{ asset('assets/admin/plugins/datatables/js/buttons.print.min.js')}}"></script>
+    <script src="{{ asset('assets/admin/plugins/datatables/js/buttons.colVis.min.js')}}"></script>
     <script>
 
         let selectAllButtonTrans = 'Select All'
@@ -223,17 +256,21 @@
         let advertiserListingDraw;
         $(document).ready(function () {
             advertiserListingDraw = $('#advertiserListing').DataTable({
-                processing: true,
-                serverSide: true,
-                deferRender: true,
-                sScrollXInner: "100%",
-                scrollY: true,
-                scrollX: true,
-                scrollCollapse: true,
-                paging: true,
-                ordering: true,
+                scrollY: true,          // Enable vertical scrolling
+                scrollX: true,          // Enable horizontal scrolling
+                scrollCollapse: true,   // Allow scrolling collapse when content is smaller
+                paging: true,           // Enable pagination
+                autoWidth: false,       // Prevent automatic column width adjustment
+                responsive: false,      // Disable responsive behavior if not needed
+                ordering: true,         // Enable column ordering
                 pageLength: 250,
                 lengthMenu: [10, 25, 50, 100, 250, 500, 1000],
+                language: {
+                    paginate: {
+                        previous: '<i class="fas fa-chevron-left"></i>',
+                        next: '<i class="fas fa-chevron-right"></i>'
+                    }
+                },
                 ajax: {
                     url: '{{ route('admin.advertisers.approval.ajax') }}?status={{ $apiTitle }}'
                 },
@@ -244,10 +281,10 @@
                         name: 'created_at',
                         render: function (data, type, row) {
                             return `
-                                            <td class="equal-width align-middle text-center text-sm">
-                                            <span class="text-sm fw-bold">${data}</span>
-                                            </td>
-                                        `;
+                                <td class="equal-width align-middle text-center text-sm">
+                                <span class="text-sm fw-bold">${data}</span>
+                                </td>
+                            `;
                         }
                     },
                     {

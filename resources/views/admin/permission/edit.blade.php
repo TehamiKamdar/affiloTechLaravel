@@ -1,5 +1,22 @@
 @extends("layouts.admin.layout")
 
+@section('breadcrumb')
+<ol class="breadcrumb mb-0 bg-white rounded-50 nav-link nav-link-lg collapse-btn">
+        <li class="breadcrumb-item mt-1">
+            <a href="{{ route('publisher.dashboard') }}"><i data-feather="home"></i></a>
+        </li>
+        <li class="breadcrumb-item mt-1">
+            <a href="#" class="text-sm">Manage</a>
+        </li>
+        <li class="breadcrumb-item mt-1">
+            <a href="#" class="text-sm">Permissions</a>
+        </li>
+        <li class="breadcrumb-item mt-1 active">
+            <a href="#" class="text-sm">Edit Permission</a>
+        </li>
+    </ol>
+@endsection
+
 @section("styles")
 
     <!-- data tables css -->
@@ -14,6 +31,36 @@
         table td:last-child .btn {
             margin-right: 0 !important;
         }
+        select option {
+            background-color: white;
+            color: var(--primary-color);
+            font-weight: 500;
+            border-bottom: 1px solid #f0f2fc;
+        }
+
+        option:hover {
+            background-color: var(--primary-very-light) !important;
+        }
+
+        select option:checked,
+        select option:active {
+            background-color: var(--primary-very-light) !important;
+            color: var(--primary-color);
+        }
+
+
+        .form-control {
+            border: 2px solid #e0e3ed;
+            color: var(--primary-color);
+            font-weight: 500;
+            border-radius: 8px !important;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            box-shadow: none;
+            border-color: var(--primary-color);
+        }
     </style>
 
 @endsection
@@ -23,21 +70,6 @@
 
     <div class="container">
         <div class="social-dash-wrap">
-            <div class="row">
-                <div class="page-header">
-                    <div class="page-block">
-                        <div class="row align-items-center">
-                            <div class="col-md-12">
-                                <ul class="breadcrumb">
-                                    <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}"><i  class="ri-home-5-line text-primary"></i></a></li>
-                                    <li class="breadcrumb-item"><a href="{{ route("admin.permissions.index") }}">Permissions</a></li>
-                                    <li class="breadcrumb-item"><a href="javascript:void(0)">Edit Permission</a></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
             <div class="row mb-5">
                 <div class="col-md-12">
                     <div class="card">
@@ -53,7 +85,7 @@
                                 <input type="text" placeholder="Enter Permission" class="form-control" name="name"
                                     value="{{$permission->name}}">
                                 <div style="margin-top:20px;">
-                                    <input class="btn btn-sm btn-primary" type="submit" value="Save">
+                                    <input class="btn btn-primary" type="submit" value="Save">
                                 </div>
                             </form>
 

@@ -1,5 +1,19 @@
 @extends("layouts.admin.layout")
 
+@section('breadcrumb')
+<ol class="breadcrumb mb-0 bg-white rounded-50 nav-link nav-link-lg collapse-btn">
+        <li class="breadcrumb-item mt-1">
+            <a href="{{ route('publisher.dashboard') }}"><i data-feather="home"></i></a>
+        </li>
+        <li class="breadcrumb-item mt-1">
+            <a href="#" class="text-sm">Settings</a>
+        </li>
+        <li class="breadcrumb-item mt-1 active">
+            <a href="#" class="text-sm">Notifications</a>
+        </li>
+    </ol>
+@endsection
+
 @section("styles")
 
     <!-- data tables css -->
@@ -14,6 +28,36 @@
         table td:last-child .btn {
             margin-right: 0 !important;
         }
+        select option {
+            background-color: white;
+            color: var(--primary-color);
+            font-weight: 500;
+            border-bottom: 1px solid #f0f2fc;
+        }
+
+        option:hover {
+            background-color: var(--primary-very-light) !important;
+        }
+
+        select option:checked,
+        select option:active {
+            background-color: var(--primary-very-light) !important;
+            color: var(--primary-color);
+        }
+
+
+        .form-control {
+            border: 2px solid #e0e3ed;
+            color: var(--primary-color);
+            font-weight: 500;
+            border-radius: 8px !important;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            box-shadow: none;
+            border-color: var(--primary-color);
+        }
     </style>
 
 @endsection
@@ -23,22 +67,6 @@
 
     <div class="container-fluid">
         <div class="social-dash-wrap">
-            <div class="row">
-                <div class="page-header">
-                    <div class="page-block">
-                        <div class="row align-items-center">
-                            <div class="col-md-12">
-                                <ul class="breadcrumb">
-                                    <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}"><i
-                                                class="ri-home-5-line text-primary"></i></a></li>
-                                    <li class="breadcrumb-item"><a href="#">Settings</a></li>
-                                    <li class="breadcrumb-item"><a href="javascript:void(0)">Notification</a></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
             <div class="row mb-5">
                 <div class="col-md-12">
                     <div class="card">
@@ -61,7 +89,7 @@
                                 <textarea type="text" class="form-control"
                                     name="notification">{{$notification}}</textarea>
                                 <div style="margin-top:20px;">
-                                    <input class="btn btn-sm btn-primary" type="submit" value="Save">
+                                    <input class="btn btn-primary" type="submit" value="Save">
                                 </div>
                             </form>
 
@@ -73,41 +101,9 @@
     </div>
 
 </div>
+@endsection
 
-<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-
-
-
-<script>
-    $(document).ready(function () {
-        // Initialize Select2
-        // console.log($('#permissions'))
-        $('#permissions').select2();
-
-        // Add "Select All" button functionality
-        // let selectAll = $('<button/>', {
-        //     text: 'Select All',
-        //     class: 'btn btn-primary btn-sm',
-        //     click: function (e) {
-        //         e.preventDefault();
-        //         $('#permissions > option').prop('selected', true).trigger('change');
-        //     }
-        // });
-
-        // let deselectAll = $('<button/>', {
-        //     text: 'Deselect All',
-        //     class: 'btn btn-secondary btn-sm',
-        //     click: function (e) {
-        //         e.preventDefault();
-        //         $('#permissions > option').prop('selected', false).trigger('change');
-        //     }
-        // });
-
-        // $('#permissions').parent().prepend(selectAll).append(deselectAll);
-    });
-
-</script>
-@pushonce('scripts')
+@section('scripts')
 <script src="{{ asset("adminDashboard/assets/js/plugins/jquery.validate.min.js") }}"></script>
 <script>
 
@@ -137,5 +133,4 @@
     });
 </script>
 
-@endpushonce
 @endsection
