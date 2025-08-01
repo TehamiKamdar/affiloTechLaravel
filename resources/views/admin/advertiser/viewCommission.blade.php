@@ -2,11 +2,11 @@
     <table class="table invoice-detail-table">
         <thead>
             <tr>
-                <th scope="col">Date</th>
-                <th scope="col">Condition</th>
-                <th scope="col">Rate</th>
-                <th scope="col">Type</th>
-                <th scope="col">Additional Info</th>
+                <th class="text-uppercase text-secondary text-sm font-weight-bolder opacity-7" scope="col">Date</th>
+                <th class="text-uppercase text-secondary text-sm font-weight-bolder opacity-7" scope="col">Condition</th>
+                <th class="text-uppercase text-secondary text-sm font-weight-bolder opacity-7" scope="col">Rate</th>
+                <th class="text-uppercase text-secondary text-sm font-weight-bolder opacity-7" scope="col">Type</th>
+                <th class="text-uppercase text-secondary text-sm font-weight-bolder opacity-7" scope="col">Additional Info</th>
             </tr>
         </thead>
         <tbody>

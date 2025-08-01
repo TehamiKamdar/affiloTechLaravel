@@ -17,8 +17,8 @@
 @section("styles")
 
     <!-- data tables css -->
-    <link rel="stylesheet" href="{{asset('assets/admin/plugins/datatables/css/dataTables.bootstrap4.min.css')}}">
-    <link rel="stylesheet" href="{{asset('assets/admin/plugins/datatables/css/select.bootstrap4.min.css')}}">
+    <link rel="stylesheet" href="{{asset('assets/admin/plugins/css/dataTables.bootstrap4.min.css')}}">
+    <link rel="stylesheet" href="{{asset('assets/admin/plugins/css/select.bootstrap4.min.css')}}">
 
     <style>
         table td:last-child {
@@ -112,9 +112,9 @@
 @endsection
 
 @section("scripts")
-    <script src="{{ asset('assets/admin/plugins/datatables/js/jquery.dataTables.min.js')}}"></script>
-        <script src="{{ asset('assets/admin/plugins/datatables/js/dataTables.bootstrap4.min.js')}}"></script>
-        <script src="{{ asset('assets/admin/plugins/datatables/js/dataTables.select.min.js')}}"></script>
+    <script src="{{ asset('assets/admin/plugins/js/jquery.dataTables.min.js')}}"></script>
+        <script src="{{ asset('assets/admin/plugins/js/dataTables.bootstrap4.min.js')}}"></script>
+        <script src="{{ asset('assets/admin/plugins/js/dataTables.select.min.js')}}"></script>
     <script type="text/javascript">
         $(document).ready(function () {
             $('#advertiserListing').dataTable({

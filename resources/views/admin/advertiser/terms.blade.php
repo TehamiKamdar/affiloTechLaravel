@@ -2,8 +2,8 @@
     <table class="table invoice-detail-table">
         <thead>
             <tr class="thead-default">
-                <th style="width: 30%">Key</th>
-                <th>Value</th>
+                <th class="text-uppercase text-secondary text-sm font-weight-bolder opacity-7" style="width: 30%">Key</th>
+                <th class="text-uppercase text-secondary text-sm font-weight-bolder opacity-7">Value</th>
             </tr>
         </thead>
         <tbody>

@@ -74,15 +74,15 @@
 }
 
 .nav-tabs .nav-link.active {
-    color: #f37916;
+    color: #007bff;
     background: transparent;
-    border-bottom: 2px solid #f37916;
+    border-bottom: 2px solid #007bff;
     margin-bottom: -2px;
 }
 
 .nav-tabs .nav-link:hover {
-    color: #f37916;
-    background: rgba(243, 121, 22, 0.1);
+    color: #007bff;
+    background: rgba(1, 73, 114, 0.1);
 }
 
 .tab-content .card {
@@ -110,7 +110,7 @@
                 <div class="card-body">
                     <!-- Status Badge -->
                     <div class="d-flex justify-content-end mb-3">
-                        <span class="badge bg-{{ $advertiser->status == 1 ? 'success' : 'secondary' }} text-white text-xs">
+                        <span class="badge badge-{{ $advertiser->status == 1 ? 'success' : 'secondary' }} text-white">
                             {{ $advertiser->status == 1 ? "Active" : ($advertiser->status == 0 ? "Inactive" : "Not Found") }}
                         </span>
                     </div>
@@ -119,45 +119,45 @@
                     <div class="row align-items-center">
                         <div class="col-md-6">
                             <h4 class="mb-1">{{ $advertiser->name }}</h4>
-                            <p class="mb-1 text-muted text-sm">
-                                <i class="fas fa-globe me-1"></i> Network: <strong>{{ ucwords($advertiser->source) }}</strong>
+                            <p class="mb-1 text-muted small">
+                                <i class="fas fa-globe mr-1"></i> Network: <strong>{{ ucwords($advertiser->source) }}</strong>
                             </p>
                             @if($advertiser->average_payment_time)
-                            <p class="mb-1 text-muted text-sm">
-                                <i class="fas fa-clock me-1"></i> Avg Payout: <strong>{{ $advertiser->average_payment_time }}</strong>
+                            <p class="mb-1 text-muted small">
+                                <i class="fas fa-clock mr-1"></i> Avg Payout: <strong>{{ $advertiser->average_payment_time }}</strong>
                             </p>
                             @endif
                             @if($supportedRegions)
-                            <p class="mb-1 text-muted text-sm">
-                                <i class="fas fa-map-marker-alt me-1"></i> Regions:
+                            <p class="mb-1 text-muted small">
+                                <i class="fas fa-map-marker-alt mr-1"></i> Regions:
                                 @foreach(explode(',', $supportedRegions) as $region)
                                     <img src="https://flagsapi.com/{{ strtoupper(trim($region)) }}/flat/24.png"
                                          title="{{ trim($region) }}"
-                                         class="img-fluid cursor-pointer ms-1"
+                                         class="img-fluid cursor-pointer ml-1"
                                          alt="{{ trim($region) }}">
                                 @endforeach
                             </p>
                             @endif
-                            <a href="{{ $advertiser->url }}" target="_blank" class="text-primary text-sm d-inline-flex align-items-center mt-2">
-                                <i class="fas fa-external-link-alt me-1"></i> Visit Advertiser Website
+                            <a href="{{ $advertiser->url }}" target="_blank" class="text-primary small d-inline-flex align-items-center mt-2">
+                                <i class="fas fa-external-link-alt mr-1"></i> Visit Advertiser Website
                             </a>
                         </div>
 
                         <!-- Company Logo -->
-                        <div class="col-md-6 text-md-end mt-3 mt-md-0">
+                        <div class="col-md-6 text-md-right mt-3 mt-md-0">
                             @if(!empty($advertiser->fetch_logo_url))
                                 <img src="{{ $advertiser->fetch_logo_url }}"
                                      alt="{{ $advertiser->name }}"
                                      class="img-fluid rounded"
                                      style="max-height: 120px;">
-                                     @elseif(!empty($advertiser->logo))
-                                    <img src="{{ \App\Helper\Methods::staticAsset("storage/{$advertiser->logo}") }}"
+                            @elseif(!empty($advertiser->logo))
+                                <img src="{{ \App\Helper\Methods::staticAsset("storage/{$advertiser->logo}") }}"
                                      alt="{{ $advertiser->name }}"
                                      class="img-fluid rounded"
-                                     style="max-height: 120px;"> 
+                                     style="max-height: 120px;">
                             @else
                                 <div class="logo-placeholder">
-                                    <i class="fas fa-building" style="font-size: 80px; color: #f37916;"></i>
+                                    <i class="fas fa-building fa-4x text-primary"></i>
                                 </div>
                             @endif
                         </div>
@@ -169,25 +169,25 @@
         <!-- Tabs Navigation -->
         <div class="col-12 mb-4">
             <ul class="nav nav-tabs" id="advertiserTabs" role="tablist">
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link active" id="details-tab" data-bs-toggle="tab" data-bs-target="#details" type="button" role="tab">
-                        <i class="fas fa-info-circle me-1"></i> Details
-                    </button>
+                <li class="nav-item">
+                    <a class="nav-link active" id="details-tab" data-toggle="tab" href="#details" role="tab">
+                        <i class="fas fa-info-circle mr-1"></i> Details
+                    </a>
                 </li>
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="financial-tab" data-bs-toggle="tab" data-bs-target="#financial" type="button" role="tab">
-                        <i class="fas fa-money-bill-wave me-1"></i> Financial
-                    </button>
+                <li class="nav-item">
+                    <a class="nav-link" id="financial-tab" data-toggle="tab" href="#financial" role="tab">
+                        <i class="fas fa-money-bill-wave mr-1"></i> Financial
+                    </a>
                 </li>
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="settings-tab" data-bs-toggle="tab" data-bs-target="#settings" type="button" role="tab">
-                        <i class="fas fa-cog me-1"></i> Settings
-                    </button>
+                <li class="nav-item">
+                    <a class="nav-link" id="settings-tab" data-toggle="tab" href="#settings" role="tab">
+                        <i class="fas fa-cog mr-1"></i> Settings
+                    </a>
                 </li>
             </ul>
 
             <!-- Tab Content -->
-            <div class="tab-content" id="advertiserTabsContent">
+            <div class="tab-content mt-3" id="advertiserTabsContent">
                 <!-- Details Tab -->
                 <div class="tab-pane fade show active" id="details" role="tabpanel">
                     <div class="card">

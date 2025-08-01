@@ -3,8 +3,8 @@
 @section("styles")
 
     <!-- data tables css -->
-        <link rel="stylesheet" href="{{asset('assets/admin/plugins/datatables/css/dataTables.bootstrap4.min.css')}}">
-    <link rel="stylesheet" href="{{asset('assets/admin/plugins/datatables/css/select.bootstrap4.min.css')}}">
+        <link rel="stylesheet" href="{{asset('assets/admin/plugins/css/dataTables.bootstrap4.min.css')}}">
+    <link rel="stylesheet" href="{{asset('assets/admin/plugins/css/select.bootstrap4.min.css')}}">
     <style>
         table td:last-child {
             padding: 0.65rem 0.75rem !important;
@@ -120,8 +120,8 @@
 
 @section("scripts")
 
-    <script src="{{ asset('assets/admin/plugins/datatables/js/jquery.dataTables.min.js')}}"></script>
-    <script src="{{ asset('assets/admin/plugins/datatables/js/dataTables.bootstrap4.min.js')}}"></script>
+    <script src="{{ asset('assets/admin/plugins/js/jquery.dataTables.min.js')}}"></script>
+    <script src="{{ asset('assets/admin/plugins/js/dataTables.bootstrap4.min.js')}}"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script type="text/javascript">
         document.addEventListener('DOMContentLoaded', function() {

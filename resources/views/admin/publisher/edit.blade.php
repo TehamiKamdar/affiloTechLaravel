@@ -1,30 +1,55 @@
 @extends("layouts.admin.layout")
 
-@section("styles")
+@section('breadcrumb')
+<ol class="breadcrumb mb-0 bg-white rounded-50 nav-link nav-link-lg collapse-btn">
+    <li class="breadcrumb-item mt-1">
+        <a href="{{ route('publisher.dashboard') }}"><i data-feather="home"></i></a>
+    </li>
+    <li class="breadcrumb-item mt-1">
+        <a href="#" class="text-sm">Publishers</a>
+    </li>
+    <li class="breadcrumb-item mt-1 active">
+        <a href="#" class="text-sm">Edit Publishers</a>
+    </li>
+</ol>
+@endsection
 
+@section("styles")
+<style>
+    select option {
+        background-color: white;
+        color: var(--primary-color);
+        font-weight: 500;
+        border-bottom: 1px solid #f0f2fc;
+    }
+
+    option:hover {
+        background-color: var(--primary-very-light) !important;
+    }
+
+    select option:checked,
+    select option:active {
+        background-color: var(--primary-very-light) !important;
+        color: var(--primary-color);
+    }
+
+
+    .form-control {
+        border: 2px solid #e0e3ed;
+        color: var(--primary-color);
+        font-weight: 500;
+        border-radius: 8px !important;
+        transition: all 0.3s ease;
+    }
+
+    .form-control:focus {
+        box-shadow: none;
+        border-color: var(--primary-color);
+    }
+</style>
 @endsection
 
 @section('content')
-
-    <!-- [ breadcrumb ] start -->
-    <div class="page-header">
-        <div class="page-block">
-            <div class="row align-items-center">
-                <div class="col-md-12">
-                    <div class="page-header-title">
-                        <h5>Edit Publisher ( {{ $publisher->name }} )</h5>
-                    </div>
-                    <ul class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}"><i
-                                    class="feather icon-home"></i></a></li>
-                        <li class="breadcrumb-item"><a href="{{ route("admin.publishers.status", ['status' => $publisher->status]) }}">Publishers</a></li>
-                        <li class="breadcrumb-item"><a href="">Edit Publisher</a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- [ breadcrumb ] end -->
 
     <!-- [ Main Content ] start -->
     <div class="row">
@@ -73,7 +98,7 @@
                             </div>
                         </div>
 
-                        <button type="submit" class="btn btn-sm btn-gradient-primary">Submit</button>
+                        <button type="submit" class="btn btn-primary">Submit</button>
 
                     </form>
 

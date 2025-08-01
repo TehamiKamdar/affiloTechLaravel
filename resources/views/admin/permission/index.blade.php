@@ -108,8 +108,8 @@
 
 @section("scripts")
 
-    <script src="{{ asset('assets/admin/plugins/datatables/js/jquery.dataTables.min.js')}}"></script>
-    <script src="{{ asset('assets/admin/plugins/datatables/js/dataTables.bootstrap4.min.js')}}"></script>
+    <script src="{{ asset('assets/admin/plugins/js/jquery.dataTables.min.js')}}"></script>
+    <script src="{{ asset('assets/admin/plugins/js/dataTables.bootstrap4.min.js')}}"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script type="text/javascript">
